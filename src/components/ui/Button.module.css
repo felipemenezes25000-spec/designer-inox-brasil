@@ -1,0 +1,129 @@
+.base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  /* Nenhum controle fica abaixo do alvo mínimo da WCAG 2.2, mesmo quando o
+     rótulo visível é curto. */
+  min-width: var(--touch-target-min);
+  min-height: var(--touch-target-min);
+  padding-inline: var(--space-md);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--motion-easing),
+    border-color var(--motion-fast) var(--motion-easing),
+    color var(--motion-fast) var(--motion-easing),
+    transform var(--motion-fast) var(--motion-easing);
+}
+
+.base:disabled,
+.base[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.base:not(:disabled):not([aria-disabled='true']):active {
+  transform: translateY(1px);
+}
+
+/* Tamanhos */
+.sm {
+  min-height: var(--touch-target-min);
+  padding-inline: var(--space-sm);
+  font-size: 0.875rem;
+}
+
+.md {
+  min-height: 48px;
+  font-size: 1rem;
+}
+
+.lg {
+  min-height: 56px;
+  padding-inline: var(--space-lg);
+  font-size: 1.0625rem;
+}
+
+/* Variantes */
+.primary {
+  background-color: var(--color-blue-industrial);
+  color: var(--color-white-technical);
+}
+
+.primary:not(:disabled):not([aria-disabled='true']):hover {
+  background-color: var(--color-blue-deep);
+}
+
+.secondary {
+  background-color: transparent;
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.secondary:not(:disabled):not([aria-disabled='true']):hover {
+  border-color: var(--color-blue-ice);
+  color: var(--color-blue-ice);
+}
+
+.text {
+  min-height: var(--touch-target-min);
+  padding-inline: var(--space-2xs);
+  background-color: transparent;
+  color: var(--color-blue-ice);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.text:not(:disabled):not([aria-disabled='true']):hover {
+  color: var(--color-white-technical);
+}
+
+/**
+ * Única variante verde do produto.
+ * A tinta é grafite: branco sobre #25D366 fica em 1,8:1, abaixo do mínimo AA.
+ */
+.whatsapp {
+  background-color: var(--color-whatsapp);
+  color: var(--color-whatsapp-ink);
+}
+
+.whatsapp:not(:disabled):not([aria-disabled='true']):hover {
+  background-color: color-mix(in srgb, var(--color-whatsapp) 88%, var(--color-black-industrial));
+}
+
+.block {
+  width: 100%;
+}
+
+.loading {
+  cursor: progress;
+}
+
+.spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentcolor;
+  border-block-start-color: transparent;
+  border-radius: var(--radius-pill);
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+    border-block-start-color: currentcolor;
+    opacity: 0.6;
+  }
+}

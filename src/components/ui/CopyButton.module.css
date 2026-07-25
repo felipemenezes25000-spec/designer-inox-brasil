@@ -1,0 +1,14 @@
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  flex-wrap: wrap;
+}
+
+.feedback {
+  font-size: 0.875rem;
+  color: var(--color-blue-ice);
+  /* A região vive no DOM desde o início, vazia. Inserir o elemento só na hora
+     do anúncio faz leitores de tela perderem a primeira mensagem. */
+  min-height: 1lh;
+}

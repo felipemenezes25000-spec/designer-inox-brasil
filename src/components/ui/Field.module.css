@@ -1,0 +1,58 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+
+.label {
+  font-family: var(--font-heading);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.requiredMark {
+  margin-inline-start: var(--space-3xs);
+  color: var(--color-blue-ice);
+}
+
+.hint {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3xs);
+  font-size: 0.875rem;
+  font-weight: 500;
+  /* A mensagem nunca depende só de cor: vem acompanhada de um marcador
+     textual e é associada ao campo por aria-describedby. */
+  color: var(--color-blue-ice);
+}
+
+.errorIcon {
+  flex: none;
+  font-weight: 700;
+}
+
+.control > :is(input, textarea, select) {
+  width: 100%;
+  min-height: var(--touch-target-min);
+  padding: var(--space-2xs) var(--space-xs);
+  background-color: var(--color-black-industrial);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+}
+
+.control > :is(input, textarea, select)[aria-invalid='true'] {
+  border-color: var(--color-blue-ice);
+  border-width: 2px;
+}
+
+.control > :is(input, textarea, select):disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

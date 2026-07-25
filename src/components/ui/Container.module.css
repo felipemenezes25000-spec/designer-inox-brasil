@@ -1,0 +1,7 @@
+.container {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  /* Recuo lateral fluido: a 320 px sobra respiro sem estrangular o texto. */
+  padding-inline: clamp(var(--space-sm), 4vw, var(--space-lg));
+}

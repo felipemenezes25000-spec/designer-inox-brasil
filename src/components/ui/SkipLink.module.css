@@ -1,0 +1,22 @@
+.skipLink {
+  position: absolute;
+  inset-inline-start: var(--space-sm);
+  inset-block-start: var(--space-sm);
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target-min);
+  padding-inline: var(--space-md);
+  background-color: var(--color-blue-ice);
+  color: var(--color-black-industrial);
+  border-radius: var(--radius-md);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  /* Fora da tela, mas ainda focável e ainda na ordem de tabulação. */
+  transform: translateY(calc(-100% - var(--space-lg)));
+  transition: transform var(--motion-fast) var(--motion-easing);
+}
+
+.skipLink:focus-visible {
+  transform: translateY(0);
+}
