@@ -26,11 +26,23 @@ type Params = { params: Promise<{ slug: string }> }
  * plano. Com `dynamicParams`, cada segmento é renderizado sob demanda no
  * primeiro acesso e servido do cache depois disso.
  */
-export function generateStaticParams(): { slug: string }[] {
-  return []
-}
-
 export const dynamicParams = true
+
+/**
+ * Rota dinâmica, sem `generateStaticParams`.
+ *
+ * O plano previa `generateStaticParams` retornando `[]` para documentar que o
+ * build não consulta conteúdo. Na prática isso não funciona: a simples
+ * presença da função faz o Next classificar a rota como gerada
+ * estaticamente, e o `connection()` de `deferToRuntime` passa a ser uso
+ * dinâmico proibido — a página respondia 500 com `DYNAMIC_SERVER_USAGE` em
+ * produção, reproduzido localmente. `force-dynamic` junto da função não
+ * resolve; a classificação continua SSG.
+ *
+ * `deferToRuntime` já garante sozinho o requisito real: nenhuma leitura de
+ * conteúdo durante o build. O cache público entra por cima no Task 11.
+ */
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   await deferToRuntime()
