@@ -1,0 +1,44 @@
+@import './tokens.css';
+@import './reset.css';
+@import './utilities.css';
+
+/**
+ * Superfície base do site público.
+ *
+ * O produto é escuro por definição de marca — não há alternância clara/escura
+ * no lançamento —, então a superfície é fixa e o `color-scheme` informa ao
+ * navegador para desenhar barras de rolagem e controles nativos em modo
+ * escuro, evitando um retângulo branco no primeiro pintar.
+ */
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--surface-base);
+  color: var(--text-primary);
+}
+
+/* Fundo em degradê discreto: a "linha de dobra" da direção visual aparece
+   como transição de luz, não como textura repetida. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(
+      120% 80% at 50% 0%,
+      color-mix(in srgb, var(--color-blue-industrial) 12%, transparent) 0%,
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--color-graphite-deep) 0%, var(--color-black-industrial) 100%);
+  pointer-events: none;
+}
+
+::selection {
+  background-color: var(--color-blue-ice);
+  color: var(--color-black-industrial);
+}

@@ -1,0 +1,98 @@
+/**
+ * Tokens "Linha de Dobra" como custom properties.
+ * Espelho de `tokens.ts`; a suíte unitária reprova divergência entre os dois.
+ */
+
+:root {
+  /* Paleta */
+  --color-black-industrial: #06090d;
+  --color-graphite-deep: #0d1218;
+  --color-graphite-secondary: #151c24;
+  --color-steel-gray: #7e8994;
+  --color-silver: #bfc8d0;
+  --color-silver-light: #e7edf2;
+  --color-white-technical: #f8fafc;
+  --color-blue-ice: #74d9ff;
+  --color-blue-industrial: #168dc3;
+  --color-blue-deep: #0b5f87;
+  --color-whatsapp: #25d366;
+
+  /* Texto sobre verde WhatsApp: grafite, nunca branco (branco fica em 1,8:1). */
+  --color-whatsapp-ink: var(--color-graphite-deep);
+
+  /* Papéis de superfície e texto */
+  --surface-base: var(--color-graphite-deep);
+  --surface-raised: var(--color-graphite-secondary);
+  --surface-deep: var(--color-black-industrial);
+  --surface-inverse: var(--color-white-technical);
+  --text-primary: var(--color-white-technical);
+  --text-secondary: var(--color-silver-light);
+  --text-muted: var(--color-silver);
+  --text-on-inverse: var(--color-graphite-deep);
+  --text-muted-on-inverse: var(--color-steel-gray);
+  /* Derivadas da prata por `color-mix`, e não por rgb() literal, para que
+     nenhuma cor fora da paleta aprovada entre pela porta dos fundos. */
+  --border-subtle: color-mix(in srgb, var(--color-silver) 18%, transparent);
+  --border-strong: color-mix(in srgb, var(--color-silver) 38%, transparent);
+  --overlay-scrim: color-mix(in srgb, var(--color-black-industrial) 72%, transparent);
+
+  /* Espaçamento */
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-xs: 12px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+
+  /* Raios */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  /* Layout */
+  --content-max-width: 1200px;
+  --header-height-desktop: 72px;
+  --header-height-mobile: 64px;
+  --minimum-viewport: 320px;
+  --desktop-breakpoint: 1024px;
+  --touch-target-min: 44px;
+
+  /* Movimento */
+  --motion-fast: 120ms;
+  --motion-base: 180ms;
+  --motion-slow: 240ms;
+  --motion-easing: cubic-bezier(0.2, 0, 0, 1);
+  --motion-shift: 8px;
+
+  /* Foco */
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 3px;
+  --focus-ring-color: var(--color-blue-ice);
+
+  /* Tipografia */
+  --font-heading: var(--font-sora), system-ui, sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --line-height-tight: 1.12;
+  --line-height-heading: 1.2;
+  --line-height-body: 1.6;
+}
+
+/**
+ * Movimento reduzido.
+ *
+ * O deslocamento é zerado e a duração cai para 1ms em vez de `none`: manter
+ * uma duração mínima preserva os eventos de transição de que os componentes
+ * dependem, sem produzir movimento perceptível.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 1ms;
+    --motion-base: 1ms;
+    --motion-slow: 1ms;
+    --motion-shift: 0px;
+  }
+}
