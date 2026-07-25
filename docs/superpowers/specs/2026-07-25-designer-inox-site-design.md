@@ -498,9 +498,7 @@ Publicação, ocultação ou arquivamento disparará invalidação on-demand da 
 
 ### 13.2 Operação
 
-- `admin_users`
-- `roles`
-- `user_roles`
+- `admin_users`, com papéis enumerados embutidos no registro e carregados na sessão autenticada; não haverá tabelas paralelas `roles`/`user_roles`
 - `audit_events`
 - `leads`
 - `lead_events`
