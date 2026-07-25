@@ -1,0 +1,41 @@
+{
+  "$comment": "Hashes aprovados das entradas da marca. O gerador recusa executar se qualquer entrada divergir, para que um derivado publicado nunca venha de um arquivo trocado.",
+  "approvedAt": "2026-07-25",
+  "master": {
+    "path": "assets/brand/source/logo-official.png",
+    "sha256": "BDBC9A38A01E60D451C4433CA72FF812F8E661DB476F4406585C96955287AD40",
+    "width": 1024,
+    "height": 1536,
+    "note": "Cópia byte a byte de D:\\LOGO OFICIALL.png. O arquivo original nunca é escrito."
+  },
+  "symbol": {
+    "path": "assets/brand/derived/symbol-isolated.png",
+    "sha256": "30B6EC453E0F898D1E5ABBF69BCB6CD056ADA6DE932CAD0CCBABF20544F76146",
+    "width": 486,
+    "height": 519,
+    "producedBy": "scripts/brand/prepare-symbol.mjs",
+    "note": "Recorte pelo canal alpha do master, sem redesenho. Geometria idêntica ao original."
+  },
+  "wordmark": {
+    "path": "assets/brand/derived/wordmark-sora.png",
+    "sha256": "646405D43FA3959DC03490C3F9DBE5DA3D48A08904374574FDB338575627247D",
+    "width": 1272,
+    "height": 159,
+    "producedBy": "scripts/brand/render-wordmark.mjs",
+    "text": "Designer Inox Brasil",
+    "font": "Sora 600, 128px",
+    "note": "Raster canônico. Builds posteriores não rerenderizam glifos por plataforma."
+  },
+  "fonts": [
+    {
+      "path": "src/assets/fonts/sora-latin.woff2",
+      "sha256": "FA26406EEDA9A3C6EC3D9EA8813C3045D6DC755E30C716D5C094E8EF43BE5A7F",
+      "source": "https://cdn.jsdelivr.net/fontsource/fonts/sora:vf@5.3.0/latin-wght-normal.woff2"
+    },
+    {
+      "path": "src/assets/fonts/inter-latin.woff2",
+      "sha256": "3100E775E8616CD2611BEECFA23A4263D7037586789B43F035236A2E6FBD4C62",
+      "source": "https://cdn.jsdelivr.net/fontsource/fonts/inter:vf@5.3.0/latin-wght-normal.woff2"
+    }
+  ]
+}
