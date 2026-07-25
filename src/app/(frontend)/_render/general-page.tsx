@@ -5,6 +5,7 @@ import type { ReactElement } from 'react'
 import { WhatsAppLink } from '@/components/conversion/WhatsAppLink'
 import { PageHero } from '@/components/sections/PageHero'
 import { PageSections } from '@/components/sections/PageSections'
+import { TrustBar } from '@/components/sections/TrustBar'
 import { ButtonLink } from '@/components/ui/Button'
 import { getPublicContentRepository } from '@/modules/content/public/composition-root'
 import { deferToRuntime } from '@/modules/site/runtime'
@@ -53,6 +54,7 @@ export async function renderGeneralPage(slug: string): Promise<ReactElement> {
 
   const hasProjects = projects.length > 0
   const isHome = page.kind === 'home'
+  const currentPath = isHome ? '/' : `/${slug}`
 
   return (
     <>
@@ -84,7 +86,14 @@ export async function renderGeneralPage(slug: string): Promise<ReactElement> {
         }
       />
 
-      <PageSections blocks={page.blocks} services={services} segments={segments} />
+      {isHome ? <TrustBar /> : null}
+
+      <PageSections
+        blocks={page.blocks}
+        services={services}
+        segments={segments}
+        currentPath={currentPath}
+      />
     </>
   )
 }

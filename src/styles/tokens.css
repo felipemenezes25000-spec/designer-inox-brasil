@@ -39,6 +39,30 @@
   --border-strong: color-mix(in srgb, var(--color-silver) 38%, transparent);
   --overlay-scrim: color-mix(in srgb, var(--color-black-industrial) 72%, transparent);
 
+  /* Elevação e textura "Linha de Dobra".
+     Tudo derivado da paleta aprovada por `color-mix` — nenhuma cor nova entra
+     por aqui, o que mantém a guarda de paleta do teste unitário satisfeita.
+     Sombras sobre fundo escuro são pretas e profundas, não cinza difuso. */
+  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--color-black-industrial) 55%, transparent);
+  --shadow-md: 0 14px 30px -12px color-mix(in srgb, var(--color-black-industrial) 72%, transparent);
+  --shadow-lg: 0 30px 64px -20px color-mix(in srgb, var(--color-black-industrial) 80%, transparent);
+
+  /* Superfície elevada de cartão: um brilho de aço no topo que decai para o
+     grafite. Simula chapa iluminada de cima, não um retângulo chapado. */
+  --surface-card: linear-gradient(
+    162deg,
+    color-mix(in srgb, var(--color-graphite-secondary) 86%, var(--color-steel-gray)) 0%,
+    var(--color-graphite-secondary) 46%,
+    color-mix(in srgb, var(--color-graphite-secondary) 82%, var(--color-black-industrial)) 100%
+  );
+  /* Banda alternada de seção — uma chapa ligeiramente mais funda que a base. */
+  --surface-band: color-mix(in srgb, var(--color-graphite-deep) 58%, var(--color-black-industrial));
+
+  /* Fio de luz superior (bisel) e linha de grade técnica (blueprint). */
+  --edge-highlight: color-mix(in srgb, var(--color-silver) 16%, transparent);
+  --edge-accent: color-mix(in srgb, var(--color-blue-ice) 55%, transparent);
+  --grid-line: color-mix(in srgb, var(--color-silver) 7%, transparent);
+
   /* Espaçamento */
   --space-3xs: 4px;
   --space-2xs: 8px;

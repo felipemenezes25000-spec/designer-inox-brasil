@@ -3,8 +3,23 @@
 }
 
 .sectionHead {
+  position: relative;
   max-width: 62ch;
   margin-block-end: var(--space-xl);
+  padding-block-start: var(--space-md);
+  border-block-start: 1px solid var(--border-subtle);
+}
+
+/* Segmento de dobra no início do filete: cada seção abre como uma cota de
+   desenho, dando ritmo ao scroll sem recorrer a bandas pesadas. */
+.sectionHead::before {
+  content: '';
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline-start: 0;
+  width: 64px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-blue-industrial), var(--color-blue-ice));
 }
 
 .sectionTitle {
@@ -29,14 +44,26 @@
 
 @media (min-width: 1024px) {
   .heroGrid {
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    gap: var(--space-3xl);
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: var(--space-2xl);
+    align-items: center;
   }
 }
 
 .heroEyebrow {
-  display: block;
-  margin-block-end: var(--space-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-block-end: var(--space-md);
+}
+
+/* Linha de chamada antes do rótulo — leader line de desenho técnico. */
+.heroEyebrow::before {
+  content: '';
+  flex: none;
+  width: 32px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-blue-industrial), var(--color-blue-ice));
 }
 
 .heroTitle {
@@ -62,14 +89,101 @@
   font-size: 0.9375rem;
 }
 
+/* ----------------------------------------------------------- faixa de prova */
+
+.trustBand {
+  border-block: 1px solid var(--border-subtle);
+  background-color: var(--surface-band);
+  padding-block: var(--space-xl);
+}
+
+.trustGrid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 560px) {
+  .trustGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .trustGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-xl);
+  }
+}
+
+.trustItem {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-start;
+}
+
+/* Cada coluna, exceto a primeira, ganha um filete à esquerda no desktop — a
+   grade técnica separando as capacidades como cotas de um desenho. */
+@media (min-width: 1024px) {
+  .trustItem + .trustItem {
+    padding-inline-start: var(--space-xl);
+    margin-inline-start: calc(var(--space-xl) * -0.5);
+    border-inline-start: 1px solid var(--border-subtle);
+  }
+}
+
+.trustIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background-color: color-mix(in srgb, var(--color-black-industrial) 40%, transparent);
+  color: var(--color-blue-ice);
+  box-shadow: inset 0 1px 0 var(--edge-highlight);
+}
+
+.trustIcon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.trustItemTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.trustItemBody {
+  margin-block-start: var(--space-3xs);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
 /* --------------------------------------------------------------- figure */
 
 .figure {
+  position: relative;
   margin: 0;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   overflow: hidden;
   background-color: var(--surface-raised);
+  box-shadow: var(--shadow-md);
+}
+
+/* Aresta de luz no topo da moldura — chapa iluminada, não caixa chapada. */
+.figure::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 var(--edge-highlight);
+  pointer-events: none;
 }
 
 .figureImage {
@@ -101,6 +215,12 @@
   grid-template-columns: 1fr;
 }
 
+@media (min-width: 1024px) {
+  .cardGrid {
+    gap: var(--space-lg);
+  }
+}
+
 @media (min-width: 640px) {
   .cardGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -114,36 +234,78 @@
 }
 
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-2xs);
   height: 100%;
-  padding: var(--space-md);
+  padding: var(--space-lg);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  background-color: var(--surface-raised);
+  background: var(--surface-card);
   color: inherit;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
   transition:
     border-color var(--motion-base) var(--motion-easing),
+    box-shadow var(--motion-base) var(--motion-easing),
     transform var(--motion-base) var(--motion-easing);
 }
 
-.card:hover {
-  border-color: var(--color-blue-ice);
-  transform: translateY(calc(var(--motion-shift) * -0.25));
+/* Fio de luz no topo do cartão: bisel de chapa iluminada de cima. */
+.card::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--edge-highlight) 28%,
+    var(--edge-highlight) 72%,
+    transparent
+  );
+}
+
+/* Acento de dobra no canto superior direito — eco do símbolo da marca,
+   revelado quando o cartão recebe hover ou foco. */
+.card::after {
+  content: '';
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline-end: -1px;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(225deg, var(--edge-accent) 0 2px, transparent 2px);
+  opacity: 0;
+  transition: opacity var(--motion-base) var(--motion-easing);
+}
+
+.card:hover,
+.card:focus-visible {
+  border-color: var(--edge-accent);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(calc(var(--motion-shift) * -0.5));
+}
+
+.card:hover::after,
+.card:focus-visible::after {
+  opacity: 1;
 }
 
 .cardEyebrow {
   font-family: var(--font-heading);
   font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-blue-ice);
 }
 
 .cardTitle {
-  font-size: 1.125rem;
+  font-size: 1.1875rem;
+  letter-spacing: -0.01em;
 }
 
 .cardBody {
@@ -153,10 +315,17 @@
 
 .cardCue {
   margin-block-start: auto;
-  padding-block-start: var(--space-2xs);
+  padding-block-start: var(--space-sm);
   color: var(--color-blue-ice);
+  font-family: var(--font-heading);
   font-size: 0.875rem;
   font-weight: 600;
+  transition: transform var(--motion-base) var(--motion-easing);
+}
+
+/* O rótulo com a seta avança discretamente no hover do cartão. */
+.card:hover .cardCue {
+  transform: translateX(var(--space-3xs));
 }
 
 /* --------------------------------------------------------------- process */
@@ -168,32 +337,77 @@
   grid-template-columns: 1fr;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
+  .processList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
   .processList {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-lg);
   }
 }
 
 .processStep {
   position: relative;
-  padding-block-start: var(--space-md);
-  border-block-start: 2px solid var(--border-strong);
+  counter-increment: step;
+  overflow: hidden;
+  padding: var(--space-2xl) var(--space-lg) var(--space-lg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-sm);
 }
 
+/* Filete de dobra no topo de cada etapa: a linha de luz corre pela sequência. */
 .processStep::before {
-  counter-increment: step;
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--color-blue-industrial),
+    var(--color-blue-ice) 55%,
+    transparent
+  );
+}
+
+/* Cota da etapa: chip numerado no canto superior — número de desenho técnico,
+   com contraste suficiente para leitura (não é marca-d'água decorativa). */
+.processStep::after {
   content: counter(step, decimal-leading-zero);
-  display: block;
-  margin-block-end: var(--space-2xs);
-  font-family: var(--font-heading);
-  font-size: 0.8125rem;
-  font-weight: 600;
+  position: absolute;
+  inset-block-start: var(--space-lg);
+  inset-inline-start: var(--space-lg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 30px;
+  border: 1px solid var(--edge-accent);
+  border-radius: var(--radius-sm);
+  background-color: color-mix(in srgb, var(--color-blue-industrial) 22%, transparent);
   color: var(--color-blue-ice);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.02em;
 }
 
 .processTitle {
-  margin-block-end: var(--space-3xs);
-  font-size: 1.0625rem;
+  position: relative;
+  margin-block: var(--space-md) var(--space-3xs);
+  font-size: 1.1875rem;
+  letter-spacing: -0.01em;
+}
+
+/* Dentro da etapa, o padding superior do cartão já afasta o título do chip. */
+.processStep .processTitle {
+  margin-block-start: 0;
 }
 
 /* ------------------------------------------------------------------ lists */
@@ -283,10 +497,34 @@
 /* ------------------------------------------------------------- final CTA */
 
 .finalCta {
-  padding: var(--space-xl);
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-2xl);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
-  background-color: var(--surface-raised);
+  background:
+    radial-gradient(
+      120% 140% at 100% 0%,
+      color-mix(in srgb, var(--color-blue-industrial) 18%, transparent),
+      transparent 58%
+    ),
+    var(--surface-card);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Filete de dobra no topo do bloco de fechamento. */
+.finalCta::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--color-blue-industrial),
+    var(--color-blue-ice) 50%,
+    transparent
+  );
 }
 
 .finalCtaBody {

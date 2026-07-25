@@ -10,10 +10,10 @@ import {
   FaqAccordion,
   FinalCta,
   ProcessTimeline,
+  QuoteCta,
   Section,
   ServiceGrid,
 } from '@/components/sections/PageSections'
-import { ButtonLink } from '@/components/ui/Button'
 import { getPublicContentRepository } from '@/modules/content/public/composition-root'
 import { deferToRuntime } from '@/modules/site/runtime'
 import styles from '@/components/sections/sections.module.css'
@@ -75,9 +75,7 @@ export async function renderServicePage(slug: string): Promise<ReactElement> {
         actions={
           <>
             <WhatsAppLink context={service.whatsappContext} size="lg" />
-            <ButtonLink href="/orcamento" variant="secondary" size="lg">
-              Enviar formulário detalhado
-            </ButtonLink>
+            <QuoteCta currentPath={`/${slug}`} />
           </>
         }
       />
@@ -121,6 +119,7 @@ export async function renderServicePage(slug: string): Promise<ReactElement> {
         heading="Vamos avaliar o seu caso"
         body="Descreva a operação e a necessidade para organizarmos escopo, etapas e próximos passos."
         whatsappContext={service.whatsappContext}
+        currentPath={`/${slug}`}
       />
     </>
   )

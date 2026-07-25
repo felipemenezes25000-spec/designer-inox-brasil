@@ -17,8 +17,17 @@ export type SiteFooterProps = {
  * perfil social: esses dados ainda não foram confirmados pelo proprietário, e
  * a especificação proíbe criar fato substituto. As seções correspondentes
  * simplesmente não são renderizadas — nada de "em breve" nem de placeholder.
+ *
+ * A `nav` de documentos legais permanece presente como landmark (o shell tem
+ * um contrato de acessibilidade que a exige), mas seu conteúdo só aparece
+ * quando houver links aprovados. Enquanto isso, a barra inferior mostra apenas
+ * o copyright dinâmico.
  */
 export function SiteFooter({ footer }: SiteFooterProps): ReactElement {
+  const year = new Date().getFullYear()
+  const hasLegal = footer.legal.length > 0
+  const hasSocial = footer.social.length > 0
+
   return (
     <footer className={styles.footer}>
       <Container>
@@ -27,6 +36,9 @@ export function SiteFooter({ footer }: SiteFooterProps): ReactElement {
             <BrandLockup tone="negative" className={styles.footerLockup} />
             <p className={styles.footerTagline}>
               Soluções industriais completas em aço inox, do espaço vazio à operação pronta.
+            </p>
+            <p className={styles.footerCapabilities}>
+              Projeto técnico, fabricação, instalação e manutenção coordenados conforme a operação.
             </p>
           </div>
 
@@ -42,42 +54,44 @@ export function SiteFooter({ footer }: SiteFooterProps): ReactElement {
               ))}
             </ul>
           </nav>
+        </div>
 
-          <nav aria-label="Documentos legais">
-            <h2 className={styles.footerHeading}>Legal</h2>
-            <ul className={styles.footerList}>
-              {footer.legal.map((link) => (
-                <li key={link.href}>
-                  <a className={styles.footerLink} href={link.href}>
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+        <div className={styles.footerBottom}>
+          <p className={styles.footerCopy}>
+            © {year} Designer Inox Brasil · Soluções industriais em aço inox
+          </p>
 
-            {footer.social.length > 0 ? (
-              <>
-                <h2 className={styles.footerHeading}>Redes</h2>
-                <ul className={styles.footerList}>
-                  {footer.social.map((link) => (
-                    <li key={link.href}>
-                      <a
-                        className={styles.footerLink}
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </>
+          <nav aria-label="Documentos legais" className={styles.footerMeta}>
+            {hasLegal ? (
+              <ul className={styles.footerMetaList}>
+                {footer.legal.map((link) => (
+                  <li key={link.href}>
+                    <a className={styles.footerLink} href={link.href}>
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+
+            {hasSocial ? (
+              <ul className={styles.footerMetaList}>
+                {footer.social.map((link) => (
+                  <li key={link.href}>
+                    <a
+                      className={styles.footerLink}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             ) : null}
           </nav>
         </div>
-
-        <p className={styles.footerBottom}>Designer Inox Brasil</p>
       </Container>
     </footer>
   )

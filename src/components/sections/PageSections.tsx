@@ -4,6 +4,7 @@ import type { ReactElement, ReactNode } from 'react'
 import { WhatsAppLink } from '@/components/conversion/WhatsAppLink'
 import { ButtonLink } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
+import { QUOTE_PATH, quoteCtaLabel } from '@/config/lead-form'
 import type {
   ProcessStep,
   PublicFaq,
@@ -126,14 +127,39 @@ export function FaqAccordion({ faqs }: { faqs: readonly PublicFaq[] }): ReactEle
   )
 }
 
+/**
+ * CTA secundário de orçamento — gated e ciente da rota atual.
+ *
+ * Não se renderiza quando já estamos em `/orcamento`: isso elimina o botão que
+ * recarregava a própria página. O rótulo e o destino vêm do gate único em
+ * `config/lead-form`, então o botão nunca promete um formulário fechado.
+ */
+export function QuoteCta({
+  currentPath,
+  size = 'lg',
+}: {
+  currentPath?: string
+  size?: 'sm' | 'md' | 'lg'
+}): ReactElement | null {
+  if (currentPath === QUOTE_PATH) return null
+
+  return (
+    <ButtonLink href={QUOTE_PATH} variant="secondary" size={size}>
+      {quoteCtaLabel}
+    </ButtonLink>
+  )
+}
+
 export function FinalCta({
   heading,
   body,
   whatsappContext,
+  currentPath,
 }: {
   heading: string
   body: string
   whatsappContext: WhatsAppContext
+  currentPath?: string
 }): ReactElement {
   return (
     <Container as="section" className={styles.section}>
@@ -142,9 +168,7 @@ export function FinalCta({
         <p className={styles.finalCtaBody}>{body}</p>
         <div className={styles.finalCtaActions}>
           <WhatsAppLink context={whatsappContext} size="lg" />
-          <ButtonLink href="/orcamento" variant="secondary" size="lg">
-            Enviar formulário detalhado
-          </ButtonLink>
+          <QuoteCta currentPath={currentPath} />
         </div>
       </div>
     </Container>
@@ -157,6 +181,8 @@ export type PageSectionsProps = {
   blocks: readonly PublicPageBlock[]
   services: readonly PublicService[]
   segments: readonly PublicSegment[]
+  /** Rota canônica da página atual, usada para gating do CTA de orçamento. */
+  currentPath?: string
 }
 
 /**
@@ -166,7 +192,12 @@ export type PageSectionsProps = {
  * de seção, nem estado vazio. Um cabeçalho "Nossos clientes" sem clientes
  * comunicaria ausência de prova social de forma pior do que a omissão.
  */
-export function PageSections({ blocks, services, segments }: PageSectionsProps): ReactElement {
+export function PageSections({
+  blocks,
+  services,
+  segments,
+  currentPath,
+}: PageSectionsProps): ReactElement {
   const serviceBySlug = new Map(services.map((service) => [service.slug, service]))
   const segmentBySlug = new Map(segments.map((segment) => [segment.slug, segment]))
 
@@ -267,6 +298,7 @@ export function PageSections({ blocks, services, segments }: PageSectionsProps):
                 heading={block.heading}
                 body={block.body}
                 whatsappContext={block.whatsappContext}
+                currentPath={currentPath}
               />
             )
 

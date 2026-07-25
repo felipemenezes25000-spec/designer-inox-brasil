@@ -225,7 +225,8 @@
 
 @media (min-width: 768px) {
   .footerGrid {
-    grid-template-columns: minmax(0, 1.2fr) repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: var(--space-2xl);
   }
 }
 
@@ -270,16 +271,37 @@
 
 .footerTagline {
   max-width: 42ch;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.footerCapabilities {
+  max-width: 46ch;
   color: var(--text-muted);
   font-size: 0.9375rem;
 }
 
 .footerBottom {
-  margin-block-start: var(--space-xl);
-  padding-block-start: var(--space-md);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm) var(--space-lg);
+  margin-block-start: var(--space-2xl);
+  padding-block-start: var(--space-lg);
   border-block-start: 1px solid var(--border-subtle);
+}
+
+.footerCopy {
   color: var(--text-muted);
   font-size: 0.875rem;
+}
+
+.footerMeta,
+.footerMetaList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
 }
 
 /* --------------------------------------------------------- WhatsApp flutuante */

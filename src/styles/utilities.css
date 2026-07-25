@@ -20,16 +20,19 @@
 /* Escala tipográfica fluida entre 320 px e a largura máxima de conteúdo. */
 .text-display {
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 1.35rem + 3.25vw, 3.5rem);
+  font-size: clamp(2.25rem, 1.55rem + 3.4vw, 4rem);
   line-height: var(--line-height-tight);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.028em;
+  font-weight: 700;
+  text-wrap: balance;
 }
 
 .text-title {
   font-family: var(--font-heading);
-  font-size: clamp(1.5rem, 1.15rem + 1.75vw, 2.25rem);
+  font-size: clamp(1.625rem, 1.2rem + 2.1vw, 2.5rem);
   line-height: var(--line-height-heading);
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 .text-lead {
