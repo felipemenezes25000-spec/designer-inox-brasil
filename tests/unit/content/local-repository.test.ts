@@ -47,11 +47,14 @@ describe('guardas de ambiente', () => {
     vi.stubEnv('NODE_ENV', 'production')
 
     for (const method of PUBLIC_CONTENT_METHODS) {
-      const call = (repository as unknown as Record<string, () => Promise<unknown>>)[method]
-      await expect(
-        call.call(repository, { kind: 'global' } as never),
-        `${method} deveria recusar em produção`,
-      ).rejects.toThrow(LOCAL_CONTENT_FORBIDDEN_IN_PRODUCTION)
+      const call = (repository as unknown as Record<string, (arg?: unknown) => Promise<unknown>>)[
+        method
+      ]
+      // O argumento serve aos métodos que recebem escopo ou slug; os demais
+      // simplesmente o ignoram.
+      await expect(call.call(repository, { kind: 'global' })).rejects.toThrow(
+        LOCAL_CONTENT_FORBIDDEN_IN_PRODUCTION,
+      )
     }
   })
 
