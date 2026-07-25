@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import type { ReactElement } from 'react'
 
 export type BrandTone = 'positive' | 'negative'
@@ -26,21 +25,70 @@ const SYMBOL_SIZE = 512
 const LOCKUP_WIDTH = 1200
 const LOCKUP_HEIGHT = 320
 
+type PictureProps = {
+  base: string
+  alt: string
+  width: number
+  height: number
+  priority: boolean
+  className?: string
+  sizes: string
+}
+
 /**
- * Símbolo isolado (engrenagem e floco), sem o nome da empresa.
+ * `<picture>` puro, deliberadamente fora do `next/image`.
  *
- * As dimensões são declaradas para reservar espaço no layout e evitar
- * deslocamento cumulativo (CLS) enquanto a imagem carrega.
+ * Os ativos da marca já saem de `scripts/brand/generate-logo-assets.mjs` em
+ * AVIF, WebP e PNG, em tamanho fixo e conhecido. Passá-los pelo otimizador
+ * faria o servidor **decodificar AVIF e reencodar AVIF** a cada variante —
+ * encoding AVIF é das operações mais caras em CPU, e sob carga paralela isso
+ * saturou o servidor a ponto de as navegações estourarem o timeout.
+ *
+ * Servindo o arquivo estático diretamente: zero custo de servidor, cache
+ * imutável da CDN e o melhor LCP possível para o elemento do cabeçalho.
+ *
+ * `width` e `height` continuam declarados para reservar espaço e evitar
+ * deslocamento cumulativo de layout.
  */
+function BrandPicture({
+  base,
+  alt,
+  width,
+  height,
+  priority,
+  className,
+  sizes,
+}: PictureProps): ReactElement {
+  return (
+    <picture>
+      <source srcSet={`${base}.avif`} type="image/avif" sizes={sizes} />
+      <source srcSet={`${base}.webp`} type="image/webp" sizes={sizes} />
+      <img
+        className={className}
+        src={`${base}.png`}
+        alt={alt}
+        width={width}
+        height={height}
+        decoding={priority ? 'sync' : 'async'}
+        loading={priority ? 'eager' : 'lazy'}
+        // `fetchPriority` sobe o lockup do cabeçalho na fila de rede: ele é o
+        // candidato a LCP em telas pequenas.
+        fetchPriority={priority ? 'high' : 'auto'}
+      />
+    </picture>
+  )
+}
+
+/** Símbolo isolado (engrenagem e floco), sem o nome da empresa. */
 export function BrandMark({ tone, priority = false, className }: BrandProps): ReactElement {
   return (
-    <Image
-      className={className}
-      src={`/brand/symbol-${tone}.avif`}
+    <BrandPicture
+      base={`/brand/symbol-${tone}`}
       alt={BRAND_NAME}
       width={SYMBOL_SIZE}
       height={SYMBOL_SIZE}
       priority={priority}
+      className={className}
       sizes="(min-width: 1024px) 48px, 40px"
     />
   )
@@ -54,13 +102,13 @@ export function BrandMark({ tone, priority = false, className }: BrandProps): Re
  */
 export function BrandLockup({ tone, priority = false, className }: BrandProps): ReactElement {
   return (
-    <Image
-      className={className}
-      src={`/brand/lockup-${tone}.avif`}
+    <BrandPicture
+      base={`/brand/lockup-${tone}`}
       alt={BRAND_NAME}
       width={LOCKUP_WIDTH}
       height={LOCKUP_HEIGHT}
       priority={priority}
+      className={className}
       sizes="(min-width: 1024px) 232px, 176px"
     />
   )

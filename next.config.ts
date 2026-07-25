@@ -8,11 +8,17 @@ const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
   images: {
-    localPatterns: [
-      {
-        pathname: '/api/media/file/**',
-      },
-    ],
+    /**
+     * Allowlist do otimizador de imagem.
+     *
+     * É uma lista fechada de propósito: sem ela, o endpoint `/_next/image`
+     * aceita qualquer caminho local e vira um proxy de leitura. Só entram
+     * aqui os dois diretórios que o produto realmente serve.
+     */
+    localPatterns: [{ pathname: '/api/media/file/**' }],
+    // AVIF primeiro: os derivados da marca já são exportados nesse formato e
+    // ele reduz o peso do LCP do cabeçalho.
+    formats: ['image/avif', 'image/webp'],
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {

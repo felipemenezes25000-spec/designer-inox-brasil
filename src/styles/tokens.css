@@ -19,6 +19,9 @@
 
   /* Texto sobre verde WhatsApp: grafite, nunca branco (branco fica em 1,8:1). */
   --color-whatsapp-ink: var(--color-graphite-deep);
+  /* Texto sobre a ação primária: preto industrial. Branco sobre #168DC3 fica
+     em 3,58:1, reprovado para texto normal. */
+  --color-primary-ink: var(--color-black-industrial);
 
   /* Papéis de superfície e texto */
   --surface-base: var(--color-graphite-deep);

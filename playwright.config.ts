@@ -14,7 +14,16 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  /**
+   * Teto de 4 workers.
+   *
+   * O padrão do Playwright é metade dos núcleos — 8 nesta máquina — e nesse
+   * nível os navegadores competem com o servidor Next pelo mesmo CPU: as
+   * navegações passam a estourar o timeout de forma não determinística.
+   * Medido: 8 workers reprovaram 18 de 26 casos; 4 workers aprovaram 26 de 26
+   * em 1,3 min. O gargalo é CPU local, não o produto.
+   */
+  workers: process.env.CI ? 1 : 4,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : [['list'], ['html', { open: 'never' }]],
   timeout: 60_000,
   expect: { timeout: 10_000 },
@@ -34,10 +43,21 @@ export default defineConfig({
     { name: 'mobile-webkit', use: { ...devices['iPhone 14'] } },
   ],
   webServer: {
-    command: 'npm run dev',
+    /**
+     * Build de produção, não `next dev`.
+     *
+     * O servidor de desenvolvimento compila sob demanda e serializa a
+     * compilação: com a suíte em paralelo, as primeiras navegações estouram o
+     * timeout de forma não determinística — verificado, 24 de 26 casos
+     * falharam por `page.goto` excedido, e todos passavam isoladamente.
+     *
+     * Além de estável, o build de produção é o artefato que o usuário
+     * realmente recebe e o mesmo que o Lighthouse mede.
+     */
+    command: 'npm run build && npm run start',
     url: BASE_URL,
     reuseExistingServer: !process.env.CI,
-    timeout: 180_000,
+    timeout: 300_000,
     stdout: 'ignore',
     stderr: 'pipe',
   },

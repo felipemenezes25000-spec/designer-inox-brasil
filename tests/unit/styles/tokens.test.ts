@@ -11,6 +11,7 @@ import {
   layout,
   minimumTouchTarget,
   motion,
+  primaryInk,
   radii,
   spacing,
   whatsappInk,
@@ -107,9 +108,23 @@ describe('contraste WCAG 2.2 AA', () => {
     }
   })
 
-  test('a ação primária mantém contraste de texto', () => {
-    expect(contrastRatio(colors.whiteTechnical, colors.blueIndustrial)).toBeGreaterThanOrEqual(3)
-    expect(contrastRatio(colors.whiteTechnical, colors.blueDeep)).toBeGreaterThanOrEqual(4.5)
+  test('a ação primária atende texto NORMAL, não apenas texto grande', () => {
+    // O rótulo de botão é texto normal: o mínimo é 4,5:1, não 3:1.
+    expect(contrastRatio(primaryInk, colors.blueIndustrial)).toBeGreaterThanOrEqual(
+      contrastMinimums.normalText,
+    )
+    // O hover clareia o fundo; a tinta continua a mesma e o contraste sobe.
+    expect(contrastRatio(primaryInk, colors.blueIce)).toBeGreaterThanOrEqual(
+      contrastMinimums.normalText,
+    )
+  })
+
+  test('branco sobre a ação primária seria reprovado — por isso a tinta é escura', () => {
+    // Medido pelo axe em navegador antes da correção: 3,58:1.
+    const ratio = contrastRatio(colors.whiteTechnical, colors.blueIndustrial)
+    expect(ratio).toBeGreaterThan(contrastMinimums.largeText)
+    expect(ratio).toBeLessThan(contrastMinimums.normalText)
+    expect(primaryInk).toBe(colors.blackIndustrial)
   })
 })
 

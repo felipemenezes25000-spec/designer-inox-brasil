@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactElement } from 'react'
 
 import styles from './Button.module.css'
@@ -81,9 +82,13 @@ export type ButtonLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> &
 /**
  * Link com aparência de botão.
  *
- * É um `<a>`, não um `<button>` com navegação programática: leitores de tela
- * anunciam o papel correto e o usuário mantém abrir em nova aba, copiar
+ * É uma âncora, não um `<button>` com navegação programática: leitores de
+ * tela anunciam o papel correto e o usuário mantém abrir em nova aba, copiar
  * endereço e voltar.
+ *
+ * Rotas internas passam por `next/link` para navegação no cliente e prefetch;
+ * destinos externos e âncoras de fragmento usam `<a>` puro, onde o roteador
+ * não tem o que fazer.
  */
 export function ButtonLink({
   variant = 'primary',
@@ -95,11 +100,22 @@ export function ButtonLink({
   href,
   ...rest
 }: ButtonLinkProps): ReactElement {
+  const classes = classesFor({ variant, size, block }, className)
+  const isInternal = !external && href.startsWith('/')
+
+  if (isInternal) {
+    return (
+      <Link {...rest} href={href} className={classes}>
+        {children}
+      </Link>
+    )
+  }
+
   return (
     <a
       {...rest}
       href={href}
-      className={classesFor({ variant, size, block }, className)}
+      className={classes}
       // `noopener` evita que o destino acesse `window.opener`; `noreferrer`
       // impede o vazamento da URL de origem.
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}

@@ -1,59 +1,47 @@
-import { headers as getHeaders } from 'next/headers.js'
-import Image from 'next/image'
-import { getPayload } from 'payload'
-import React from 'react'
-import { fileURLToPath } from 'url'
+import type { ReactElement } from 'react'
 
-import config from '@/payload.config'
-import './styles.css'
+import { ButtonLink } from '@/components/ui/Button'
+import { Container } from '@/components/ui/Container'
+import { FOUNDATION_NAVIGATION } from '@/config/foundation-navigation'
+import styles from './page.module.css'
 
-export default async function HomePage() {
-  const headers = await getHeaders()
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
-
-  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
-
+/**
+ * Página de fundação.
+ *
+ * Publica exclusivamente conteúdo já aprovado na especificação: identificação,
+ * H1, subtítulo, microtexto e os CTAs vindos da navegação. Nenhum cliente,
+ * número, certificação, endereço ou projeto aparece aqui — eles dependem de
+ * comprovação que ainda não existe.
+ *
+ * O CTA secundário aponta para o hub de soluções, e não para "Ver projetos
+ * realizados", porque ainda não há projeto aprovado (especificação §8.1).
+ */
+export default function HomePage(): ReactElement {
   return (
-    <div className="home">
-      <div className="content">
-        <picture>
-          <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg" />
-          <Image
-            alt="Payload Logo"
-            height={65}
-            src="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg"
-            width={65}
-          />
-        </picture>
-        {!user && <h1>Welcome to your new project.</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
-          <a
-            className="admin"
-            href={payloadConfig.routes.admin}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Go to admin panel
-          </a>
-          <a
-            className="docs"
-            href="https://payloadcms.com/docs"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Documentation
-          </a>
-        </div>
+    <Container as="section" className={styles.hero}>
+      <span className={`text-eyebrow ${styles.eyebrow}`}>Designer Inox Brasil</span>
+
+      <h1 className={`text-display ${styles.title}`}>
+        Soluções industriais completas em aço inox, do espaço vazio à operação pronta.
+      </h1>
+
+      <p className={`text-lead ${styles.subtitle}`}>
+        Projetamos, fabricamos, instalamos e mantemos cozinhas industriais, equipamentos,
+        mobiliários, coifas, estruturas e sistemas integrados para operações profissionais.
+      </p>
+
+      <div className={styles.actions}>
+        <ButtonLink href={FOUNDATION_NAVIGATION.cta.href} variant="primary" size="lg">
+          {FOUNDATION_NAVIGATION.cta.label}
+        </ButtonLink>
+        <ButtonLink href="/solucoes-em-inox" variant="secondary" size="lg">
+          Conhecer nossas soluções
+        </ButtonLink>
       </div>
-      <div className="footer">
-        <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
-          <code>app/(frontend)/page.tsx</code>
-        </a>
-      </div>
-    </div>
+
+      <p className={styles.microcopy}>
+        Envie fotos, medidas ou plantas. Projetos complexos podem exigir levantamento técnico.
+      </p>
+    </Container>
   )
 }

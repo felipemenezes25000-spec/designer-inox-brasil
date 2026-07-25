@@ -51,13 +51,21 @@
 }
 
 /* Variantes */
+/**
+ * Ação primária.
+ *
+ * Tinta escura sobre azul, e o hover CLAREIA o fundo em vez de escurecer.
+ * Branco sobre `#168DC3` fica em 3,58:1 — reprovado para texto normal — e
+ * escurecer o fundo no hover obrigaria a inverter a cor do texto no meio da
+ * interação, o que produz um piscar desagradável.
+ */
 .primary {
   background-color: var(--color-blue-industrial);
-  color: var(--color-white-technical);
+  color: var(--color-primary-ink);
 }
 
 .primary:not(:disabled):not([aria-disabled='true']):hover {
-  background-color: var(--color-blue-deep);
+  background-color: var(--color-blue-ice);
 }
 
 .secondary {

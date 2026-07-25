@@ -43,6 +43,15 @@ export type ColorToken = keyof typeof colors
  */
 export const whatsappInk = colors.graphiteDeep
 
+/**
+ * Cor de texto sobre a ação primária.
+ *
+ * Preto industrial, não branco: `#F8FAFC` sobre `#168DC3` fica em 3,58:1 —
+ * suficiente para texto grande, reprovado para texto normal, que é o tamanho
+ * real do rótulo dos botões. Medido pelo axe em navegador, não estimado.
+ */
+export const primaryInk = colors.blackIndustrial
+
 export const spacing = {
   '3xs': 4,
   '2xs': 8,
