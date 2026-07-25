@@ -10,7 +10,12 @@ import { expect, type Page } from '@playwright/test'
  * aponte a regra e o seletor sem exigir nova execução.
  */
 export async function expectNoA11yViolations(page: Page): Promise<void> {
-  const results = await new AxeBuilder({ page })
+  // `@axe-core/playwright` tipa `page` contra sua própria cópia de
+  // `playwright-core`. É o mesmo objeto em runtime; o cast evita arrastar uma
+  // segunda versão de tipos só para satisfazer a checagem estrutural.
+  type AxePage = ConstructorParameters<typeof AxeBuilder>[0]['page']
+
+  const results = await new AxeBuilder({ page: page as unknown as AxePage })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
     .analyze()
 

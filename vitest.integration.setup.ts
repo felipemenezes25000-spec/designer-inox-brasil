@@ -8,7 +8,7 @@ import { config as loadEnvFile } from 'dotenv'
  */
 const envPath = process.env.DOTENV_CONFIG_PATH ?? '.env.test'
 
-loadEnvFile({ path: envPath, override: true, quiet: true })
+loadEnvFile({ path: envPath, override: true })
 
 if (!process.env.DATABASE_URL) {
   throw new Error(`INTEGRATION_ENV_NOT_LOADED: ${envPath} não definiu DATABASE_URL`)

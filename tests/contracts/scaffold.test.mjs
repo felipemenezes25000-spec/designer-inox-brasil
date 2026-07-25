@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
@@ -65,4 +66,50 @@ test('the repository is npm-only', () => {
 
   const npmrc = readText('.npmrc')
   assert.doesNotMatch(npmrc, /legacy-peer-deps\s*=\s*true/)
+})
+
+test('nenhum arquivo local de ambiente está rastreado pelo Git', () => {
+  const tracked = execFileSync('git', ['ls-files'], { cwd: repoRoot, encoding: 'utf8' })
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+
+  const envFiles = tracked.filter((file) => path.basename(file).startsWith('.env'))
+
+  assert.deepEqual(
+    envFiles.sort(),
+    ['.env.example', '.env.test.example'],
+    'somente os dois modelos de ambiente podem ser versionados',
+  )
+})
+
+test('os modelos de ambiente não contêm credenciais reais', () => {
+  for (const file of ['.env.example', '.env.test.example']) {
+    const contents = readText(file)
+
+    // Hosts de produção, chaves de nuvem e tokens jamais entram nos modelos.
+    assert.doesNotMatch(contents, /amazonaws\.com|supabase\.co|neon\.tech|render\.com/i)
+    assert.doesNotMatch(contents, /\b(AKIA|ASIA)[A-Z0-9]{16}\b/)
+    assert.doesNotMatch(contents, /\bsk-[A-Za-z0-9]{20,}\b/)
+    assert.match(
+      contents,
+      /DATABASE_URL=postgres:\/\/[^@]+@127\.0\.0\.1:/,
+      `${file} deve apontar apenas para a stack local`,
+    )
+  }
+})
+
+test('a migração da fundação usa o nome canônico do roadmap', () => {
+  const index = readText('src/migrations/index.ts')
+  assert.match(index, /20260725_000001_foundation/)
+
+  const tracked = execFileSync('git', ['ls-files', 'src/migrations'], {
+    cwd: repoRoot,
+    encoding: 'utf8',
+  })
+  assert.doesNotMatch(
+    tracked,
+    /20260725_2\d{5}_/,
+    'a migração gerada com carimbo de hora precisa ser renomeada para o nome canônico',
+  )
 })

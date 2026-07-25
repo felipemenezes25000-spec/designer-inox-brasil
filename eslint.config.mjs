@@ -50,6 +50,15 @@ const eslintConfig = [
       'no-console': 'off',
     },
   },
+  {
+    // Migrações são geradas pelo `payload migrate:create` com uma assinatura
+    // fixa (`{ db, payload, req }`). Nem toda migração usa os três, e renomear
+    // parâmetros de arquivo gerado quebraria a próxima regeneração.
+    files: ['src/migrations/**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+    },
+  },
 ]
 
 export default eslintConfig

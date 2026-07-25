@@ -1,0 +1,49 @@
+# Bancos locais descartáveis.
+#
+# `db` e `db-test` são instâncias separadas, não schemas da mesma instância.
+# A suíte de integração recria o schema do banco de teste a cada execução; se
+# ela compartilhasse a instância de desenvolvimento, uma execução de teste
+# apagaria o conteúdo em edição.
+#
+# Produção usa PostgreSQL gerenciado; este arquivo nunca é usado lá.
+
+services:
+  db:
+    image: postgres:17.6-alpine
+    container_name: designer-inox-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: designer_inox
+      POSTGRES_PASSWORD: desenvolvimento_local
+      POSTGRES_DB: designer_inox
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U designer_inox -d designer_inox']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  db-test:
+    image: postgres:17.6-alpine
+    container_name: designer-inox-db-test
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: designer_inox
+      POSTGRES_PASSWORD: desenvolvimento_local
+      POSTGRES_DB: designer_inox_test
+    ports:
+      - '5433:5432'
+    # Sem volume nomeado: o banco de teste é intencionalmente efêmero.
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U designer_inox -d designer_inox_test']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  db-data:
