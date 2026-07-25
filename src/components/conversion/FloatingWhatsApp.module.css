@@ -1,0 +1,21 @@
+.floating {
+  position: fixed;
+  inset-block-end: var(--space-sm);
+  inset-inline-end: var(--space-sm);
+  z-index: 15;
+  /* Respeita a barra de gestos do iOS para não cobrir controles do sistema. */
+  margin-block-end: env(safe-area-inset-bottom, 0px);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-black-industrial) 60%, transparent);
+}
+
+/* No mobile o botão exibe apenas o ícone; o nome acessível vem do aria-label.
+   O alvo continua com 44 px por causa do mínimo herdado de `.base`. */
+.label {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .label {
+    display: inline;
+  }
+}

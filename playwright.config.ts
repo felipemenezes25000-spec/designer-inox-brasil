@@ -60,5 +60,12 @@ export default defineConfig({
     timeout: 300_000,
     stdout: 'ignore',
     stderr: 'pipe',
+    env: {
+      // `npm run start` roda em NODE_ENV=production, onde o repositório local
+      // recusa servir por contrato. O opt-in explícito libera o conteúdo
+      // semeado e continua proibindo indexação.
+      CONTENT_SOURCE: 'seed',
+      INDEX_PUBLIC_SITE: 'false',
+    },
   },
 })

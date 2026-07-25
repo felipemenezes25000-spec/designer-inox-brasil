@@ -1,0 +1,47 @@
+{
+  "$comment": "Proveniência das imagens ilustrativas. Toda imagem externa exibe a legenda \"Imagem ilustrativa\", nunca aparece em projetos e nunca é apresentada como trabalho, equipe, fábrica ou cliente da Designer Inox Brasil.",
+  "media": [
+    {
+      "file": "kitchen.jpg",
+      "alt": "Cozinha profissional com bancadas e equipamentos em aço inoxidável",
+      "credit": "Bruno Makori",
+      "sourceUrl": "https://www.pexels.com/photo/commercial-kitchen-with-stainless-steel-equipment-28704740/",
+      "downloadUrl": "https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=2000",
+      "licenseName": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "licenseCheckedAt": "2026-07-25",
+      "bytes": 425178,
+      "width": 2000,
+      "height": 1333,
+      "sha256": "B3AA3D38FDBCCB3EB51F8570662E3D8D1638ECFECA13BB66DC2581532090FC09"
+    },
+    {
+      "file": "welding.jpg",
+      "alt": "Profissional executando soldagem em estrutura metálica industrial",
+      "credit": "JL Photographie",
+      "sourceUrl": "https://www.pexels.com/photo/welder-at-work-5650006/",
+      "downloadUrl": "https://images.pexels.com/photos/5650006/pexels-photo-5650006.jpeg?auto=compress&cs=tinysrgb&w=2000",
+      "licenseName": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "licenseCheckedAt": "2026-07-25",
+      "bytes": 253285,
+      "width": 2000,
+      "height": 1333,
+      "sha256": "E91368B12A63E8614B9B650A72F0009BD631B6E2592992F5A5217FFB17055683"
+    },
+    {
+      "file": "plasma.jpg",
+      "alt": "Corte de chapa metálica por plasma em ambiente fabril",
+      "credit": "Ana Victoria Valverde",
+      "sourceUrl": "https://www.pexels.com/photo/plasma-cutting-in-factory-17180807/",
+      "downloadUrl": "https://images.pexels.com/photos/17180807/pexels-photo-17180807.jpeg?auto=compress&cs=tinysrgb&w=2000",
+      "licenseName": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "licenseCheckedAt": "2026-07-25",
+      "bytes": 138016,
+      "width": 2000,
+      "height": 1333,
+      "sha256": "263A24191C845B9F693BBD3517B0B8B307132DB701D5843048383B18B1F4A64A"
+    }
+  ]
+}

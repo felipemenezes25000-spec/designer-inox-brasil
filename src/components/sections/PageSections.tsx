@@ -1,0 +1,286 @@
+import Link from 'next/link'
+import type { ReactElement, ReactNode } from 'react'
+
+import { WhatsAppLink } from '@/components/conversion/WhatsAppLink'
+import { ButtonLink } from '@/components/ui/Button'
+import { Container } from '@/components/ui/Container'
+import type {
+  ProcessStep,
+  PublicFaq,
+  PublicPageBlock,
+  PublicSegment,
+  PublicService,
+} from '@/modules/content/public/types'
+import type { WhatsAppContext } from '@/modules/whatsapp/contexts'
+import styles from './sections.module.css'
+
+/* ------------------------------------------------------------------ shell */
+
+export function Section({
+  title,
+  body,
+  children,
+  headingLevel = 2,
+}: {
+  title?: string
+  body?: string
+  children: ReactNode
+  headingLevel?: 2 | 3
+}): ReactElement {
+  const Heading = `h${headingLevel}` as 'h2' | 'h3'
+
+  return (
+    <Container as="section" className={styles.section}>
+      {title ? (
+        <div className={styles.sectionHead}>
+          <Heading className={`text-title ${styles.sectionTitle}`}>{title}</Heading>
+          {body ? <p className={styles.sectionBody}>{body}</p> : null}
+        </div>
+      ) : null}
+      {children}
+    </Container>
+  )
+}
+
+/* --------------------------------------------------------------- listagens */
+
+export function CheckList({ items }: { items: readonly string[] }): ReactElement {
+  return (
+    <ul className={styles.checkList}>
+      {items.map((item) => (
+        <li key={item} className={styles.checkItem}>
+          {item}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+export function ServiceGrid({ services }: { services: readonly PublicService[] }): ReactElement {
+  return (
+    <ul className={styles.cardGrid}>
+      {services.map((service) => (
+        <li key={service.slug}>
+          <Link className={styles.card} href={`/${service.slug}`}>
+            <span className={styles.cardEyebrow}>{service.eyebrow}</span>
+            <h3 className={styles.cardTitle}>{service.title}</h3>
+            <p className={styles.cardBody}>{service.summary}</p>
+            <span className={styles.cardCue} aria-hidden="true">
+              Ver solução →
+            </span>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+export function SegmentGrid({ segments }: { segments: readonly PublicSegment[] }): ReactElement {
+  return (
+    <ul className={styles.cardGrid}>
+      {segments.map((segment) => (
+        <li key={segment.slug}>
+          <Link className={styles.card} href={`/segmentos/${segment.slug}`}>
+            <h3 className={styles.cardTitle}>{segment.title}</h3>
+            <p className={styles.cardBody}>{segment.summary}</p>
+            <span className={styles.cardCue} aria-hidden="true">
+              Ver segmento →
+            </span>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+export function ProcessTimeline({ steps }: { steps: readonly ProcessStep[] }): ReactElement {
+  return (
+    <ol className={styles.processList}>
+      {steps.map((step) => (
+        <li key={step.id} className={styles.processStep}>
+          <h3 className={styles.processTitle}>{step.title}</h3>
+          <p className={styles.cardBody}>{step.description}</p>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
+/**
+ * FAQ em `<details>` nativo.
+ *
+ * Expansão, foco e teclado vêm da plataforma. Reimplementar acordeão com
+ * `div` e `onClick` custaria `aria-expanded`, `aria-controls`, gestão de foco
+ * e suporte a busca no navegador — tudo já resolvido pelo elemento nativo.
+ */
+export function FaqAccordion({ faqs }: { faqs: readonly PublicFaq[] }): ReactElement {
+  return (
+    <div className={styles.faqList}>
+      {faqs.map((faq) => (
+        <details key={faq.id} className={styles.faqItem} name="faq">
+          <summary className={styles.faqSummary}>{faq.question}</summary>
+          <p className={styles.faqAnswer}>{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  )
+}
+
+export function FinalCta({
+  heading,
+  body,
+  whatsappContext,
+}: {
+  heading: string
+  body: string
+  whatsappContext: WhatsAppContext
+}): ReactElement {
+  return (
+    <Container as="section" className={styles.section}>
+      <div className={styles.finalCta}>
+        <h2 className="text-title">{heading}</h2>
+        <p className={styles.finalCtaBody}>{body}</p>
+        <div className={styles.finalCtaActions}>
+          <WhatsAppLink context={whatsappContext} size="lg" />
+          <ButtonLink href="/orcamento" variant="secondary" size="lg">
+            Enviar formulário detalhado
+          </ButtonLink>
+        </div>
+      </div>
+    </Container>
+  )
+}
+
+/* --------------------------------------------------------- renderizador */
+
+export type PageSectionsProps = {
+  blocks: readonly PublicPageBlock[]
+  services: readonly PublicService[]
+  segments: readonly PublicSegment[]
+}
+
+/**
+ * Traduz blocos de conteúdo em seções.
+ *
+ * Blocos que referenciam coleções vazias **não renderizam nada** — nem título
+ * de seção, nem estado vazio. Um cabeçalho "Nossos clientes" sem clientes
+ * comunicaria ausência de prova social de forma pior do que a omissão.
+ */
+export function PageSections({ blocks, services, segments }: PageSectionsProps): ReactElement {
+  const serviceBySlug = new Map(services.map((service) => [service.slug, service]))
+  const segmentBySlug = new Map(segments.map((segment) => [segment.slug, segment]))
+
+  return (
+    <>
+      {blocks.map((block, index) => {
+        const key = `${block.type}-${index}`
+
+        switch (block.type) {
+          case 'richText':
+            return (
+              <Section key={key} title={block.heading}>
+                <div className={styles.sectionBody} style={{ maxWidth: '72ch' }}>
+                  {block.paragraphs.map((paragraph) => (
+                    <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+                  ))}
+                </div>
+              </Section>
+            )
+
+          case 'journeyRouter':
+            return (
+              <Section key={key} title="Por onde a sua operação começa">
+                <ul className={styles.cardGrid}>
+                  {block.items.map((item) => (
+                    <li key={item.href}>
+                      <Link className={styles.card} href={item.href}>
+                        <h3 className={styles.cardTitle}>{item.title}</h3>
+                        <p className={styles.cardBody}>{item.body}</p>
+                        <span className={styles.cardCue} aria-hidden="true">
+                          Ver caminho →
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </Section>
+            )
+
+          case 'process':
+            return (
+              <Section
+                key={key}
+                title="Como o trabalho acontece"
+                body="Seis etapas que organizam o escopo, do primeiro contato ao acompanhamento posterior."
+              >
+                <ProcessTimeline steps={block.steps} />
+              </Section>
+            )
+
+          case 'services': {
+            const items = block.serviceSlugs
+              .map((slug) => serviceBySlug.get(slug))
+              .filter((service): service is PublicService => Boolean(service))
+            if (items.length === 0) return null
+
+            return (
+              <Section
+                key={key}
+                title="Soluções em aço inox"
+                body="Escolha pela necessidade da operação."
+              >
+                <ServiceGrid services={items} />
+              </Section>
+            )
+          }
+
+          case 'segments': {
+            const items = block.segmentSlugs
+              .map((slug) => segmentBySlug.get(slug))
+              .filter((segment): segment is PublicSegment => Boolean(segment))
+            if (items.length === 0) return null
+
+            return (
+              <Section
+                key={key}
+                title="Segmentos atendidos"
+                body="Cada operação combina espaço, fluxo, temperatura, limpeza e carga de forma diferente."
+              >
+                <SegmentGrid segments={items} />
+              </Section>
+            )
+          }
+
+          case 'faq': {
+            if (block.faqs.length === 0) return null
+            return (
+              <Section key={key} title="Perguntas frequentes">
+                <FaqAccordion faqs={block.faqs} />
+              </Section>
+            )
+          }
+
+          case 'finalCta':
+            return (
+              <FinalCta
+                key={key}
+                heading={block.heading}
+                body={block.body}
+                whatsappContext={block.whatsappContext}
+              />
+            )
+
+          // Clientes, depoimentos e artigos só existem com material aprovado.
+          // Sem ele, a seção inteira é omitida.
+          case 'clients':
+          case 'testimonials':
+          case 'latestArticles':
+            return null
+
+          default:
+            return null
+        }
+      })}
+    </>
+  )
+}
