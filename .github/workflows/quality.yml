@@ -1,0 +1,113 @@
+name: Qualidade
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Lint, tipos, testes, build, E2E e Lighthouse
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # Gate de supply chain ANTES de qualquer instalação: nenhum lifecycle
+      # script roda até a auditoria aprovar o lockfile.
+      - name: Gate de supply chain (pré-instalação)
+        run: npm run security:audit
+
+      - name: Instalar dependências sem lifecycle scripts
+        run: npm ci --ignore-scripts
+
+      - name: Gate de supply chain (pós-instalação)
+        run: npm run security:audit
+
+      - name: Verificar assinaturas do registro
+        run: npm run security:signatures
+
+      - name: Reconstruir apenas os módulos nativos autorizados
+        run: npm rebuild sharp esbuild
+
+      - name: Preparar variáveis de ambiente
+        run: |
+          cp .env.example .env
+          cp .env.test.example .env.test
+
+      - name: Subir PostgreSQL de desenvolvimento e de teste
+        run: docker compose up -d db db-test
+
+      - name: Aguardar PostgreSQL
+        run: |
+          for attempt in $(seq 1 30); do
+            if docker compose exec -T db-test pg_isready -U designer_inox; then exit 0; fi
+            sleep 2
+          done
+          echo "PostgreSQL de teste não ficou pronto"; exit 1
+
+      - name: Aplicar migrações no banco de teste
+        run: npm run migrate:test
+
+      - name: Gerar tipos do Payload
+        run: npm run generate:types
+
+      - name: Confirmar que os tipos gerados estão versionados e atualizados
+        run: git diff --exit-code src/payload-types.ts
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Checagem de tipos
+        run: npm run typecheck
+
+      - name: Testes de contrato
+        run: npm run test:contracts
+
+      - name: Testes unitários
+        run: npm run test:unit
+
+      - name: Testes de integração
+        run: npm run test:int
+
+      - name: Build de produção
+        run: npm run build
+
+      - name: Instalar navegadores do Playwright
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Testes ponta a ponta
+        run: npm run test:e2e
+
+      - name: Lighthouse
+        run: npm run lighthouse
+
+      - name: Confirmar que o lockfile não mudou
+        run: git diff --exit-code package-lock.json
+
+      - name: Publicar relatórios
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorios-qualidade
+          path: |
+            playwright-report/
+            .lighthouseci/
+          retention-days: 7
+          if-no-files-found: ignore

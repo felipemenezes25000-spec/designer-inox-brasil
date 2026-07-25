@@ -1,4 +1,14 @@
-// Any setup scripts you might need go here
+import '@testing-library/jest-dom/vitest'
 
-// Load .env files
-import 'dotenv/config'
+import { cleanup } from '@testing-library/react'
+import { afterEach, vi } from 'vitest'
+
+/**
+ * O DOM é desmontado e os mocks são restaurados após cada teste para que
+ * nenhum caso dependa de resíduo do anterior. `cleanup` é seguro no projeto
+ * Node: sem container montado ele não faz nada.
+ */
+afterEach(() => {
+  cleanup()
+  vi.restoreAllMocks()
+})
