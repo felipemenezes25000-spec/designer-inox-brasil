@@ -1,0 +1,39 @@
+# Dependências
+/node_modules
+node_modules/
+
+# Build
+/.next/
+/out/
+/build
+*.tsbuildinfo
+next-env.d.ts
+
+# Ambiente — nenhum arquivo local de ambiente é versionado.
+# Somente os dois modelos abaixo entram no repositório.
+.env
+.env.*
+!.env.example
+!.env.test.example
+
+# Testes e relatórios
+/coverage
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/.lighthouseci/
+
+# Mídia local do Payload
+/media
+
+# Ferramentas e sistema operacional
+.DS_Store
+*.pem
+npm-debug.log*
+/.idea/*
+!/.idea/runConfigurations
+/.vercel
+
+# Diretório temporário do scaffold oficial
+/.payload-template
