@@ -173,7 +173,7 @@ export type PublicNavigation = {
   projectsLabel: string
   articlesLabel: string
   segmentsLabel: string
-  maintenanceLabel: string
+  maintenanceLabel: string | null
   companyLabel: string
   quoteLabel: string
 }
@@ -182,7 +182,7 @@ export type PublicFooter = {
   primary: readonly PublicLink[]
   legal: readonly PublicLink[]
   social: readonly PublicLink[]
-  cookiePreferencesLabel: 'Preferências de cookies'
+  cookiePreferencesLabel: 'Preferências de cookies' | null
 }
 
 export type PublicArticle = {

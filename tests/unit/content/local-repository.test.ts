@@ -26,7 +26,7 @@ describe('leituras', () => {
     expect(await repository.getServiceBySlug('protecao-contra-incendio')).toBeNull()
     expect(await repository.getSegmentBySlug('inexistente')).toBeNull()
     expect(await repository.getProjectBySlug('qualquer')).toBeNull()
-    expect(await repository.getLegalDocument('privacy')).toBeNull()
+    expect(await repository.getLegalDocument('privacy')).not.toBeNull()
   })
 
   test('escopos de FAQ retornam os conjuntos corretos', async () => {

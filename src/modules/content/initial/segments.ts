@@ -1,7 +1,7 @@
 import type { PublicSegment } from '@/modules/content/public/types'
 
 import { segmentFaqs } from './faqs'
-import { MEDIA_KITCHEN } from './media'
+import { MEDIA_BUFFET, MEDIA_FOOD_FACTORY, MEDIA_KITCHEN } from './media'
 
 /**
  * Os três segmentos iniciais.
@@ -63,7 +63,7 @@ const seeds: readonly SegmentSeed[] = [
       'reformas-e-modernizacoes',
       'manutencao',
     ],
-    heroMedia: MEDIA_KITCHEN,
+    heroMedia: MEDIA_BUFFET,
     seoTitle: 'Inox para hotelaria e alimentação coletiva | Designer Inox',
   },
   {
@@ -86,7 +86,7 @@ const seeds: readonly SegmentSeed[] = [
       'reformas-e-modernizacoes',
       'manutencao',
     ],
-    heroMedia: MEDIA_KITCHEN,
+    heroMedia: MEDIA_FOOD_FACTORY,
     seoTitle: 'Inox para produção e varejo de alimentos | Designer Inox',
   },
 ]

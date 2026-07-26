@@ -53,6 +53,62 @@ export const APPROVED_MEDIA = [
     downloadUrl:
       'https://images.pexels.com/photos/17180807/pexels-photo-17180807.jpeg?auto=compress&cs=tinysrgb&w=2000',
   },
+  {
+    file: 'hood.jpg',
+    alt: 'Cozinha comercial vazia com superfícies e equipamentos em aço inoxidável',
+    credit: 'Skylar Kang',
+    sourceUrl: 'https://www.pexels.com/photo/6375553/',
+    downloadUrl:
+      'https://images.pexels.com/photos/6375553/pexels-photo-6375553.jpeg?auto=compress&cs=tinysrgb&w=2000',
+  },
+  {
+    file: 'equipment.jpg',
+    alt: 'Cozinha industrial equipada com panelas e utensílios em aço inoxidável',
+    credit: 'Özkan Keklik',
+    sourceUrl: 'https://www.pexels.com/photo/34276646/',
+    downloadUrl:
+      'https://images.pexels.com/photos/34276646/pexels-photo-34276646.jpeg?auto=compress&cs=tinysrgb&w=2000',
+  },
+  {
+    file: 'buffet.jpg',
+    alt: 'Buffet de hotel com iluminação moderna e montagem gastronômica',
+    credit: 'Hongyue Stone-Jon Lee',
+    sourceUrl: 'https://www.pexels.com/photo/16199068/',
+    downloadUrl:
+      'https://images.pexels.com/photos/16199068/pexels-photo-16199068.jpeg?auto=compress&cs=tinysrgb&w=2000',
+  },
+  {
+    file: 'food-factory.jpg',
+    alt: 'Interior de planta moderna de produção de alimentos com maquinário industrial',
+    credit: 'Adrien Olichon',
+    sourceUrl: 'https://www.pexels.com/photo/36823725/',
+    downloadUrl:
+      'https://images.pexels.com/photos/36823725/pexels-photo-36823725.jpeg?auto=compress&cs=tinysrgb&w=2000',
+  },
+  {
+    file: 'workshop.jpg',
+    alt: 'Artesão utilizando esmerilhadeira com faíscas em oficina metalúrgica',
+    credit: 'Swastik Arora',
+    sourceUrl: 'https://www.pexels.com/photo/13296065/',
+    downloadUrl:
+      'https://images.pexels.com/photos/13296065/pexels-photo-13296065.jpeg?auto=compress&cs=tinysrgb&w=2000',
+  },
+  {
+    file: 'modern-kitchen.jpg',
+    alt: 'Interior de cozinha industrial moderna com equipamentos em aço inoxidável',
+    credit: 'Alina Okan',
+    sourceUrl: 'https://www.pexels.com/photo/32239874/',
+    downloadUrl:
+      'https://images.pexels.com/photos/32239874/pexels-photo-32239874.jpeg?auto=compress&cs=tinysrgb&w=2000',
+  },
+  {
+    file: 'industrial-kitchen.jpg',
+    alt: 'Cozinha industrial bem equipada com panelas suspensas e utensílios de cozinha',
+    credit: 'Elif',
+    sourceUrl: 'https://www.pexels.com/photo/18177444/',
+    downloadUrl:
+      'https://images.pexels.com/photos/18177444/pexels-photo-18177444.jpeg?auto=compress&cs=tinysrgb&w=2000',
+  },
 ]
 
 export const LICENSE_NAME = 'Pexels License'

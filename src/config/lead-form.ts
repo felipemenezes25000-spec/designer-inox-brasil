@@ -24,4 +24,4 @@ export const QUOTE_PATH = '/orcamento'
  */
 export const quoteCtaLabel = LEAD_FORM_ENABLED
   ? 'Enviar formulário detalhado'
-  : 'Como solicitar orçamento'
+  : 'Ver como funciona'

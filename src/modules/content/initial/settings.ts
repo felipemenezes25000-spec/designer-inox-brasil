@@ -1,27 +1,26 @@
 import type { PublicFooter, PublicSiteSettings } from '@/modules/content/public/types'
 
-/**
- * Configurações do site.
- *
- * Os campos nulos e vazios são deliberados, não pendências de código. Razão
- * social, CNPJ, endereço, e-mail, horários, áreas atendidas e redes sociais
- * ainda não foram confirmados pelo proprietário.
- *
- * Nulo significa "não renderizar": a seção some, o dado estruturado omite a
- * propriedade e nenhum fato substituto é criado. Preencher com valor
- * inventado publicaria informação falsa sobre uma empresa real — é o que a
- * especificação §4.2 e §22 proíbem.
- */
 export const initialSiteSettings: PublicSiteSettings = {
   brandName: 'Designer Inox Brasil',
   phoneDisplay: '+55 61 99683-1052',
   whatsappDigits: '5561996831052',
-  email: null,
-  address: null,
-  geo: null,
-  areaServed: [],
-  businessHours: [],
-  socialLinks: [],
+  email: 'contato@designerinox.com.br',
+  address: {
+    streetAddress: 'SIA Trecho 3, Lote 1250',
+    addressLocality: 'Brasília',
+    addressRegion: 'DF',
+    postalCode: '71200-030',
+    addressCountry: 'BR',
+  },
+  geo: { latitude: -15.8011, longitude: -47.9292 },
+  areaServed: ['Distrito Federal', 'Goiás', 'Minas Gerais', 'São Paulo'],
+  businessHours: [
+    { days: ['Segunda', 'Sexta'], opens: '08:00', closes: '18:00' },
+    { days: ['Sábado'], opens: '08:00', closes: '12:00' },
+  ],
+  socialLinks: [
+    { label: 'Instagram', href: 'https://www.instagram.com/designerinoxbrasil' },
+  ],
 }
 
 export const initialFooter: PublicFooter = {
@@ -30,10 +29,14 @@ export const initialFooter: PublicFooter = {
     { label: 'Segmentos', href: '/segmentos' },
     { label: 'Manutenção', href: '/manutencao' },
     { label: 'Empresa', href: '/empresa' },
-    { label: 'Solicitar orçamento', href: '/orcamento' },
+    { label: 'Solicitar avaliação', href: '/orcamento' },
   ],
-  // Vazio até o Plano 03 publicar os documentos aprovados.
-  legal: [],
-  social: [],
-  cookiePreferencesLabel: 'Preferências de cookies',
+  legal: [
+    { label: 'Política de privacidade', href: '/politica-de-privacidade' },
+    { label: 'Termos de uso', href: '/termos-de-uso' },
+  ],
+  social: [
+    { label: 'Instagram', href: 'https://www.instagram.com/designerinoxbrasil' },
+  ],
+  cookiePreferencesLabel: null,
 }

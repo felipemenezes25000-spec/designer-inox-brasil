@@ -7,10 +7,12 @@ import { Container } from '@/components/ui/Container'
 import { QUOTE_PATH, quoteCtaLabel } from '@/config/lead-form'
 import type {
   ProcessStep,
+  PublicClient,
   PublicFaq,
   PublicPageBlock,
   PublicSegment,
   PublicService,
+  PublicTestimonial,
 } from '@/modules/content/public/types'
 import type { WhatsAppContext } from '@/modules/whatsapp/contexts'
 import styles from './sections.module.css'
@@ -18,11 +20,13 @@ import styles from './sections.module.css'
 /* ------------------------------------------------------------------ shell */
 
 export function Section({
+  id,
   title,
   body,
   children,
   headingLevel = 2,
 }: {
+  id?: string
   title?: string
   body?: string
   children: ReactNode
@@ -31,7 +35,7 @@ export function Section({
   const Heading = `h${headingLevel}` as 'h2' | 'h3'
 
   return (
-    <Container as="section" className={styles.section}>
+    <Container as="section" id={id} className={styles.section}>
       {title ? (
         <div className={styles.sectionHead}>
           <Heading className={`text-title ${styles.sectionTitle}`}>{title}</Heading>
@@ -60,18 +64,21 @@ export function CheckList({ items }: { items: readonly string[] }): ReactElement
 export function ServiceGrid({ services }: { services: readonly PublicService[] }): ReactElement {
   return (
     <ul className={styles.cardGrid}>
-      {services.map((service) => (
-        <li key={service.slug}>
-          <Link className={styles.card} href={`/${service.slug}`}>
-            <span className={styles.cardEyebrow}>{service.eyebrow}</span>
-            <h3 className={styles.cardTitle}>{service.title}</h3>
-            <p className={styles.cardBody}>{service.summary}</p>
-            <span className={styles.cardCue} aria-hidden="true">
-              Ver solução →
-            </span>
-          </Link>
-        </li>
-      ))}
+      {services.map((service) => {
+        const titleId = `card-title-${service.slug}`
+        return (
+          <li key={service.slug}>
+            <Link className={styles.card} href={`/${service.slug}`} aria-labelledby={titleId}>
+              <span className={styles.cardEyebrow} aria-hidden="true">{service.eyebrow}</span>
+              <h3 className={styles.cardTitle} id={titleId}>{service.title}</h3>
+              <p className={styles.cardBody}>{service.summary}</p>
+              <span className={styles.cardCue} aria-hidden="true">
+                Ver solução →
+              </span>
+            </Link>
+          </li>
+        )
+      })}
     </ul>
   )
 }
@@ -104,6 +111,45 @@ export function ProcessTimeline({ steps }: { steps: readonly ProcessStep[] }): R
         </li>
       ))}
     </ol>
+  )
+}
+
+export function ClientBar({ clients }: { clients: readonly PublicClient[] }): ReactElement {
+  return (
+    <ul className={styles.clientGrid}>
+      {clients.map((client) => (
+        <li key={client.slug} className={styles.clientItem}>
+          <span className={styles.clientName}>{client.name}</span>
+          {client.summary ? <span className={styles.clientSummary}>{client.summary}</span> : null}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+export function TestimonialGrid({
+  testimonials,
+}: {
+  testimonials: readonly PublicTestimonial[]
+}): ReactElement {
+  return (
+    <ul className={styles.testimonialGrid}>
+      {testimonials.map((testimonial) => (
+        <li key={testimonial.id} className={styles.testimonialCard}>
+          <blockquote className={styles.testimonialQuote}>
+            <p>{testimonial.text}</p>
+          </blockquote>
+          <div className={styles.testimonialAuthor}>
+            <span className={styles.testimonialName}>{testimonial.name}</span>
+            {testimonial.role || testimonial.client ? (
+              <span className={styles.testimonialRole}>
+                {[testimonial.role, testimonial.client?.name].filter(Boolean).join(' — ')}
+              </span>
+            ) : null}
+          </div>
+        </li>
+      ))}
+    </ul>
   )
 }
 
@@ -181,6 +227,8 @@ export type PageSectionsProps = {
   blocks: readonly PublicPageBlock[]
   services: readonly PublicService[]
   segments: readonly PublicSegment[]
+  clients: readonly PublicClient[]
+  testimonials: readonly PublicTestimonial[]
   /** Rota canônica da página atual, usada para gating do CTA de orçamento. */
   currentPath?: string
 }
@@ -196,6 +244,8 @@ export function PageSections({
   blocks,
   services,
   segments,
+  clients,
+  testimonials,
   currentPath,
 }: PageSectionsProps): ReactElement {
   const serviceBySlug = new Map(services.map((service) => [service.slug, service]))
@@ -257,6 +307,7 @@ export function PageSections({
             return (
               <Section
                 key={key}
+                id="solucoes"
                 title="Soluções em aço inox"
                 body="Escolha pela necessidade da operação."
               >
@@ -275,7 +326,7 @@ export function PageSections({
               <Section
                 key={key}
                 title="Segmentos atendidos"
-                body="Cada operação combina espaço, fluxo, temperatura, limpeza e carga de forma diferente."
+                body="Conheça os perfis operacionais que orientam a definição das soluções."
               >
                 <SegmentGrid segments={items} />
               </Section>
@@ -302,10 +353,32 @@ export function PageSections({
               />
             )
 
-          // Clientes, depoimentos e artigos só existem com material aprovado.
-          // Sem ele, a seção inteira é omitida.
-          case 'clients':
-          case 'testimonials':
+          case 'clients': {
+            if (clients.length === 0) return null
+            return (
+              <Section
+                key={key}
+                title="Clientes que confiam na Designer Inox"
+                body="Operações de diferentes portes e segmentos."
+              >
+                <ClientBar clients={clients} />
+              </Section>
+            )
+          }
+
+          case 'testimonials': {
+            if (testimonials.length === 0) return null
+            return (
+              <Section
+                key={key}
+                title="O que nossos clientes dizem"
+                body="Depoimentos de quem já trabalhou com a gente."
+              >
+                <TestimonialGrid testimonials={testimonials} />
+              </Section>
+            )
+          }
+
           case 'latestArticles':
             return null
 

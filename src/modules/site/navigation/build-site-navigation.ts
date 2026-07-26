@@ -52,7 +52,9 @@ export function buildSiteNavigation({
         ? [{ kind: 'link' as const, label: navigation.projectsLabel, href: '/projetos' }]
         : []),
       { kind: 'link', label: navigation.segmentsLabel, href: '/segmentos' },
-      { kind: 'link', label: navigation.maintenanceLabel, href: '/manutencao' },
+      ...(navigation.maintenanceLabel
+        ? [{ kind: 'link' as const, label: navigation.maintenanceLabel, href: '/manutencao' }]
+        : []),
       ...(hasArticles
         ? [{ kind: 'link' as const, label: navigation.articlesLabel, href: '/conteudos' }]
         : []),

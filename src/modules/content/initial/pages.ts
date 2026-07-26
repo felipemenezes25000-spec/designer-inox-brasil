@@ -1,7 +1,7 @@
 import type { PublicPage } from '@/modules/content/public/types'
 
 import { globalFaqs } from './faqs'
-import { MEDIA_KITCHEN, MEDIA_WELDING } from './media'
+import { MEDIA_EQUIPMENT, MEDIA_INDUSTRIAL_KITCHEN, MEDIA_KITCHEN, MEDIA_WELDING } from './media'
 import { commonProcess } from './process'
 
 const UPDATED_AT = '2026-07-25T00:00:00.000Z'
@@ -36,12 +36,12 @@ export const initialPages: readonly PublicPage[] = [
     slug: 'home',
     kind: 'home',
     title: 'Início',
-    heading: 'Soluções industriais completas em aço inox, do espaço vazio à operação pronta.',
+    heading: 'Soluções industriais completas em aço inox, do projeto à instalação.',
     intro:
       'Projetamos, fabricamos, instalamos e mantemos cozinhas industriais, equipamentos, mobiliários, coifas, estruturas e sistemas integrados para operações profissionais.',
     hero: {
       eyebrow: 'Designer Inox Brasil',
-      heading: 'Soluções industriais completas em aço inox, do espaço vazio à operação pronta.',
+      heading: 'Soluções industriais completas em aço inox, do projeto à instalação.',
       summary:
         'Projeto técnico, fabricação, instalação, refrigeração, ventilação, exaustão, aquecimento, automação, reformas e manutenção coordenados conforme a necessidade da operação.',
       microcopy:
@@ -72,6 +72,8 @@ export const initialPages: readonly PublicPage[] = [
       { type: 'services', serviceSlugs: ALL_SERVICE_SLUGS },
       { type: 'process', steps: commonProcess },
       { type: 'segments', segmentSlugs: ALL_SEGMENT_SLUGS },
+      { type: 'clients', clientSlugs: [] },
+      { type: 'testimonials', testimonialIds: [] },
       {
         type: 'richText',
         heading: 'Por que o aço inox exige decisão técnica',
@@ -148,7 +150,7 @@ export const initialPages: readonly PublicPage[] = [
       summary:
         'Escolha pela necessidade da operação e avance para uma avaliação inicial pelo WhatsApp.',
       microcopy: null,
-      media: null,
+      media: MEDIA_EQUIPMENT,
     },
     blocks: [
       { type: 'services', serviceSlugs: ALL_SERVICE_SLUGS },
@@ -174,14 +176,14 @@ export const initialPages: readonly PublicPage[] = [
     title: 'Segmentos',
     heading: 'Soluções em inox para diferentes operações profissionais.',
     intro:
-      'Cada operação combina espaço, fluxo, temperatura, limpeza, carga e continuidade de forma diferente.',
+      'Entenda como cada tipo de operação influencia a definição de estruturas, equipamentos e sistemas em inox.',
     hero: {
       eyebrow: 'Segmentos',
       heading: 'Soluções em inox para diferentes operações profissionais.',
       summary:
-        'Cada operação combina espaço, fluxo, temperatura, limpeza, carga e continuidade de forma diferente.',
+        'Entenda como cada tipo de operação influencia a definição de estruturas, equipamentos e sistemas em inox.',
       microcopy: null,
-      media: null,
+      media: MEDIA_INDUSTRIAL_KITCHEN,
     },
     blocks: [
       { type: 'segments', segmentSlugs: ALL_SEGMENT_SLUGS },
@@ -203,14 +205,14 @@ export const initialPages: readonly PublicPage[] = [
     id: 'page-orcamento',
     slug: 'orcamento',
     kind: 'quote',
-    title: 'Solicitar orçamento',
+    title: 'Solicitar avaliação',
     heading: 'Solicite uma avaliação inicial.',
-    intro: 'Enquanto o formulário estiver fechado, o WhatsApp é o canal disponível para a avaliação inicial.',
+    intro: 'O WhatsApp é o canal disponível para iniciar a avaliação. Descreva a necessidade e a equipe organiza os próximos passos.',
     hero: {
-      eyebrow: 'Orçamento',
+      eyebrow: 'Avaliação',
       heading: 'Solicite uma avaliação inicial.',
       summary:
-        'Enquanto o formulário estiver fechado, o WhatsApp é o canal disponível para a avaliação inicial.',
+        'O WhatsApp é o canal disponível para iniciar a avaliação. Descreva a necessidade e a equipe organiza os próximos passos.',
       microcopy:
         'Tenha em mãos cidade e UF, tipo de operação, descrição da necessidade e, se possível, fotos, medidas ou plantas.',
       media: null,
@@ -221,7 +223,7 @@ export const initialPages: readonly PublicPage[] = [
         heading: 'O que informar na primeira mensagem',
         paragraphs: [
           'Cidade e UF, tipo de operação, o que precisa ser feito e as condições já conhecidas. Fotos, medidas e plantas ajudam, mas não são obrigatórias para iniciar a conversa.',
-          'Nenhum prazo, valor ou visita é confirmado nesta etapa. O retorno inicial serve para entender a necessidade e definir quais levantamentos são precisos.',
+          'Nenhum prazo, valor ou visita é confirmado nesta etapa. O retorno inicial serve para entender a necessidade e definir quais levantamentos são necessários.',
         ],
       },
       {

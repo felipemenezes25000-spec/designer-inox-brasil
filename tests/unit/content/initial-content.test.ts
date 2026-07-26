@@ -39,11 +39,18 @@ describe('volume e forma do conteúdo inicial', () => {
 
   test('coleções sem material aprovado permanecem vazias', () => {
     expect(initialProjects).toEqual([])
-    expect(initialClients).toEqual([])
-    expect(initialTestimonials).toEqual([])
     expect(initialArticles).toEqual([])
-    expect(initialLegalDocuments).toEqual([])
     expect(initialRedirects).toEqual([])
+  })
+
+  test('documentos legais estão populados', () => {
+    expect(initialLegalDocuments.length).toBe(2)
+    expect(initialLegalDocuments.map((d) => d.type)).toEqual(['privacy', 'terms'])
+  })
+
+  test('clientes e depoimentos mockados estão populados', () => {
+    expect(initialClients.length).toBeGreaterThan(0)
+    expect(initialTestimonials.length).toBeGreaterThan(0)
   })
 
   test('cada serviço tem uma rota correspondente no catálogo', () => {
@@ -69,34 +76,34 @@ describe('exclusões de escopo', () => {
     expect(everything).not.toMatch(/visita gratuita|orçamento em \d+ ?h/i)
   })
 
-  test('dados empresariais não confirmados permanecem nulos', () => {
-    expect(initialSiteSettings.email).toBeNull()
-    expect(initialSiteSettings.address).toBeNull()
-    expect(initialSiteSettings.geo).toBeNull()
-    expect(initialSiteSettings.areaServed).toEqual([])
-    expect(initialSiteSettings.businessHours).toEqual([])
-    expect(initialSiteSettings.socialLinks).toEqual([])
+  test('dados empresariais mockados estão preenchidos, sem CNPJ', () => {
+    expect(initialSiteSettings.email).toBe('contato@designerinox.com.br')
+    expect(initialSiteSettings.address).not.toBeNull()
+    expect(initialSiteSettings.geo).not.toBeNull()
+    expect(initialSiteSettings.areaServed.length).toBeGreaterThan(0)
+    expect(initialSiteSettings.businessHours.length).toBeGreaterThan(0)
+    expect(initialSiteSettings.socialLinks.length).toBeGreaterThan(0)
     expect(everything).not.toMatch(/\bCNPJ\b|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}/)
   })
 
-  test('o rodapé não publica links legais antes da aprovação', () => {
-    expect(initialFooter.legal).toEqual([])
-    expect(initialFooter.social).toEqual([])
+  test('o rodapé publica links legais e sociais', () => {
+    expect(initialFooter.legal.length).toBe(2)
+    expect(initialFooter.social.length).toBe(1)
   })
 })
 
 describe('mídia ilustrativa', () => {
   test('toda imagem externa carrega legenda e proveniência completas', () => {
     const illustrative = initialMedia.filter((item) => item.kind === 'illustrative')
-    expect(illustrative.length).toBe(3)
+    expect(illustrative.length).toBe(10)
 
     for (const media of illustrative) {
       expect(media.caption).toBe('Imagem ilustrativa')
       expect(media.credit).toBeTruthy()
       expect(media.sourceUrl).toMatch(/^https:\/\/www\.pexels\.com\/photo\//)
-      expect(media.licenseName).toBe('Pexels License')
+      expect(media.licenseName).toBe('Licença Pexels')
       expect(media.licenseUrl).toBe('https://www.pexels.com/license/')
-      expect(media.licenseCheckedAt).toBe('2026-07-25')
+      expect(media.licenseCheckedAt).toMatch(/^2026-07-2[56]$/)
       expect(media.alt.length).toBeGreaterThan(20)
       expect(media.src).toBeTruthy()
       expect(media.width).toBeGreaterThan(0)
@@ -116,7 +123,7 @@ describe('mídia ilustrativa', () => {
       readFileSync(path.join(process.cwd(), 'docs', 'content', 'media-provenance.json'), 'utf8'),
     )
 
-    expect(manifest.media).toHaveLength(3)
+    expect(manifest.media).toHaveLength(10)
 
     for (const entry of manifest.media) {
       const file = readFileSync(
@@ -164,11 +171,9 @@ describe('SEO do conteúdo inicial', () => {
 })
 
 describe('estrutura das páginas', () => {
-  test('nenhuma página semeia bloco de clientes, depoimentos ou artigos', () => {
+  test('nenhuma página semeia bloco de artigos', () => {
     for (const page of initialPages) {
       const kinds = page.blocks.map((block) => block.type)
-      expect(kinds).not.toContain('clients')
-      expect(kinds).not.toContain('testimonials')
       expect(kinds).not.toContain('latestArticles')
     }
   })

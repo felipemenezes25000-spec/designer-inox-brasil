@@ -62,9 +62,9 @@ describe('SiteShell', () => {
     expect(new Set(names).size).toBe(names.length)
   })
 
-  test('o CTA de orçamento está presente', () => {
+  test('o CTA de avaliação está presente', () => {
     renderShell()
-    expect(screen.getAllByRole('link', { name: 'Solicitar orçamento' }).length).toBeGreaterThan(0)
+    expect(screen.getAllByRole('link', { name: 'Solicitar avaliação' }).length).toBeGreaterThan(0)
   })
 
   test('não renderiza Projetos quando a navegação não o fornece', () => {

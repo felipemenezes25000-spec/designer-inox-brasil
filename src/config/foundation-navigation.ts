@@ -32,13 +32,13 @@ export const FOUNDATION_NAVIGATION: SiteNavigation = {
           href: '/projeto-tecnico-e-fabricacao-cnc',
         },
         { kind: 'link', label: 'Reformas e modernizações', href: '/reformas-e-modernizacoes' },
+        { kind: 'link', label: 'Manutenção', href: '/manutencao' },
       ],
     },
     { kind: 'link', label: 'Segmentos', href: '/segmentos' },
-    { kind: 'link', label: 'Manutenção', href: '/manutencao' },
     { kind: 'link', label: 'Empresa', href: '/empresa' },
   ],
-  cta: { kind: 'link', label: 'Solicitar orçamento', href: '/orcamento' },
+  cta: { kind: 'link', label: 'Solicitar avaliação', href: '/orcamento' },
 }
 
 export const FOUNDATION_FOOTER: FooterNavigation = {
@@ -47,7 +47,7 @@ export const FOUNDATION_FOOTER: FooterNavigation = {
     { kind: 'link', label: 'Segmentos', href: '/segmentos' },
     { kind: 'link', label: 'Manutenção', href: '/manutencao' },
     { kind: 'link', label: 'Empresa', href: '/empresa' },
-    { kind: 'link', label: 'Solicitar orçamento', href: '/orcamento' },
+    { kind: 'link', label: 'Solicitar avaliação', href: '/orcamento' },
   ],
   legal: [
     { kind: 'link', label: 'Política de privacidade', href: '/politica-de-privacidade' },

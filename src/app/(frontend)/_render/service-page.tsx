@@ -81,16 +81,14 @@ export async function renderServicePage(slug: string): Promise<ReactElement> {
       />
 
       <Section title="Necessidades atendidas">
-        <div className={styles.twoColumn}>
-          <CheckList items={service.needs} />
-          <div>
-            <h3 className={styles.processTitle}>Entregáveis possíveis</h3>
-            <p className={styles.cardBody} style={{ marginBlockEnd: 'var(--space-sm)' }}>
-              Os itens abaixo entram no escopo quando descritos e aprovados na proposta.
-            </p>
-            <CheckList items={service.deliverables} />
-          </div>
-        </div>
+        <CheckList items={service.needs} />
+      </Section>
+
+      <Section title="Entregáveis possíveis">
+        <p className={styles.cardBody} style={{ marginBlockEnd: 'var(--space-sm)' }}>
+          Os itens abaixo entram no escopo quando descritos e aprovados na proposta.
+        </p>
+        <CheckList items={service.deliverables} />
       </Section>
 
       <Section

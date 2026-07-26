@@ -35,7 +35,7 @@ export function SiteFooter({ footer }: SiteFooterProps): ReactElement {
           <div className={styles.footerBrand}>
             <BrandLockup tone="negative" className={styles.footerLockup} />
             <p className={styles.footerTagline}>
-              Soluções industriais completas em aço inox, do espaço vazio à operação pronta.
+              Soluções coordenadas em aço inox, do projeto à instalação.
             </p>
             <p className={styles.footerCapabilities}>
               Projeto técnico, fabricação, instalação e manutenção coordenados conforme a operação.

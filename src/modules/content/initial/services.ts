@@ -2,8 +2,17 @@ import type { PublicService } from '@/modules/content/public/types'
 import type { ServiceWhatsAppContext } from '@/modules/whatsapp/contexts'
 
 import { serviceFaqs } from './faqs'
-import { MEDIA_KITCHEN, MEDIA_PLASMA, MEDIA_WELDING } from './media'
-import { commonProcess } from './process'
+import {
+  MEDIA_EQUIPMENT,
+  MEDIA_HOOD,
+  MEDIA_INDUSTRIAL_KITCHEN,
+  MEDIA_KITCHEN,
+  MEDIA_MODERN_KITCHEN,
+  MEDIA_PLASMA,
+  MEDIA_WELDING,
+  MEDIA_WORKSHOP,
+} from './media'
+import { processForService } from './process'
 
 /**
  * As sete soluções iniciais.
@@ -24,7 +33,7 @@ const seeds: readonly ServiceSeed[] = [
   {
     slug: 'cozinhas-industriais',
     title: 'Cozinhas industriais completas em aço inox',
-    eyebrow: 'Construir',
+    eyebrow: 'Cozinhas completas',
     summary:
       'Projeto aplicado, fabricação, instalação e integração de estruturas e equipamentos para cozinhas profissionais.',
     needs: [
@@ -54,7 +63,7 @@ const seeds: readonly ServiceSeed[] = [
   {
     slug: 'equipamentos-em-inox',
     title: 'Equipamentos e mobiliário em inox sob medida',
-    eyebrow: 'Fabricar',
+    eyebrow: 'Equipamentos sob medida',
     summary:
       'Fabricação dimensionada para o espaço, o fluxo de trabalho e o uso profissional informado pelo cliente.',
     needs: [
@@ -73,7 +82,7 @@ const seeds: readonly ServiceSeed[] = [
       'projeto-tecnico-e-fabricacao-cnc',
       'manutencao',
     ],
-    heroMedia: MEDIA_WELDING,
+    heroMedia: MEDIA_EQUIPMENT,
     whatsappContext: 'equipment',
     seo: {
       title: 'Equipamentos e mobiliário em inox sob medida | Designer Inox Brasil',
@@ -84,7 +93,7 @@ const seeds: readonly ServiceSeed[] = [
   {
     slug: 'coifas-ventilacao-e-exaustao',
     title: 'Coifas, ventilação e exaustão industrial',
-    eyebrow: 'Integrar',
+    eyebrow: 'Exaustão',
     summary:
       'Avaliação e integração de coifas, dutos, filtragem, captação e renovação de ar para ambientes profissionais.',
     needs: [
@@ -103,7 +112,7 @@ const seeds: readonly ServiceSeed[] = [
       'sistemas-integrados-em-inox',
       'manutencao',
     ],
-    heroMedia: MEDIA_KITCHEN,
+    heroMedia: MEDIA_HOOD,
     whatsappContext: 'ventilation',
     seo: {
       title: 'Coifas, ventilação e exaustão industrial | Designer Inox Brasil',
@@ -114,7 +123,7 @@ const seeds: readonly ServiceSeed[] = [
   {
     slug: 'sistemas-integrados-em-inox',
     title: 'Sistemas integrados a estruturas e equipamentos em inox',
-    eyebrow: 'Integrar',
+    eyebrow: 'Automação e sistemas',
     summary:
       'Refrigeração, aquecimento, sensores, comandos e automação incorporados ao escopo em aço inox.',
     needs: [
@@ -129,7 +138,7 @@ const seeds: readonly ServiceSeed[] = [
       'orientação operacional da entrega',
     ],
     relatedServiceSlugs: ['equipamentos-em-inox', 'cozinhas-industriais', 'manutencao'],
-    heroMedia: MEDIA_WELDING,
+    heroMedia: MEDIA_INDUSTRIAL_KITCHEN,
     whatsappContext: 'integrated-systems',
     seo: {
       title: 'Sistemas integrados a estruturas e equipamentos em inox | Designer Inox Brasil',
@@ -139,8 +148,8 @@ const seeds: readonly ServiceSeed[] = [
   },
   {
     slug: 'projeto-tecnico-e-fabricacao-cnc',
-    title: 'Projeto técnico aplicado e fabricação com corte plasma CNC',
-    eyebrow: 'Fabricar',
+    title: 'Projeto técnico aplicado e fabricação com corte a plasma CNC',
+    eyebrow: 'Projeto e corte CNC',
     summary:
       'Levantamento, desenvolvimento técnico, corte de chapas e fabricação associados à necessidade apresentada.',
     needs: [
@@ -151,7 +160,7 @@ const seeds: readonly ServiceSeed[] = [
     deliverables: [
       'conferência dos arquivos e requisitos recebidos',
       'detalhamento técnico dentro do escopo',
-      'corte plasma CNC',
+      'corte a plasma CNC',
       'acabamento e fabricação complementar quando contratados',
     ],
     relatedServiceSlugs: [
@@ -162,15 +171,15 @@ const seeds: readonly ServiceSeed[] = [
     heroMedia: MEDIA_PLASMA,
     whatsappContext: 'cnc',
     seo: {
-      title: 'Projeto técnico aplicado e fabricação com corte plasma CNC | Designer Inox Brasil',
+      title: 'Projeto técnico aplicado e fabricação com corte a plasma CNC | Designer Inox Brasil',
       description:
-        'Projeto técnico aplicado, detalhamento e corte plasma CNC para peças e conjuntos em inox, com fabricação complementar quando contratada.',
+        'Projeto técnico aplicado, detalhamento e corte a plasma CNC para peças e conjuntos em inox, com fabricação complementar quando contratada.',
     },
   },
   {
     slug: 'reformas-e-modernizacoes',
     title: 'Reformas e modernizações de estruturas industriais em inox',
-    eyebrow: 'Transformar',
+    eyebrow: 'Reformas',
     summary:
       'Recuperação, ampliação e reconfiguração de instalações e equipamentos existentes após avaliação.',
     needs: [
@@ -189,7 +198,7 @@ const seeds: readonly ServiceSeed[] = [
       'sistemas-integrados-em-inox',
       'manutencao',
     ],
-    heroMedia: MEDIA_WELDING,
+    heroMedia: MEDIA_MODERN_KITCHEN,
     whatsappContext: 'renovation',
     seo: {
       title: 'Reformas e modernizações de estruturas industriais em inox | Designer Inox Brasil',
@@ -200,7 +209,7 @@ const seeds: readonly ServiceSeed[] = [
   {
     slug: 'manutencao',
     title: 'Manutenção de estruturas e equipamentos industriais em inox',
-    eyebrow: 'Manter',
+    eyebrow: 'Manutenção',
     summary:
       'Atendimento preventivo, corretivo e contratos definidos conforme quantidade, condição e criticidade informadas.',
     needs: [
@@ -219,7 +228,7 @@ const seeds: readonly ServiceSeed[] = [
       'coifas-ventilacao-e-exaustao',
       'sistemas-integrados-em-inox',
     ],
-    heroMedia: MEDIA_KITCHEN,
+    heroMedia: MEDIA_WORKSHOP,
     whatsappContext: 'maintenance',
     seo: {
       title: 'Manutenção de estruturas e equipamentos industriais em inox | Designer Inox Brasil',
@@ -232,7 +241,7 @@ const seeds: readonly ServiceSeed[] = [
 export const initialServices: readonly PublicService[] = seeds.map((seed) => ({
   ...seed,
   id: `service-${seed.slug}`,
-  process: commonProcess,
+  process: processForService(seed.slug),
   faqs: serviceFaqs[seed.slug] ?? [],
   updatedAt: UPDATED_AT,
 }))

@@ -83,7 +83,7 @@ export const serviceFaqs: Record<string, readonly PublicFaq[]> = {
     faq(
       'faq-sistemas-2',
       'A automação é entregue separadamente?',
-      'A página trata da automação associada à estrutura ou ao equipamento em inox contratado, com interfaces definidas na proposta.',
+      'A automação é oferecida como parte da estrutura ou do equipamento em inox contratado. Componentes, comandos e interfaces são definidos separadamente na proposta.',
     ),
   ],
   'projeto-tecnico-e-fabricacao-cnc': [
@@ -119,7 +119,7 @@ export const serviceFaqs: Record<string, readonly PublicFaq[]> = {
     faq(
       'faq-manutencao-2',
       'Como informar uma operação parada?',
-      'Selecione a urgência correspondente e descreva o sintoma sem desmontar ou operar o equipamento fora das condições seguras.',
+      'Informe logo no início da mensagem que a operação está parada e descreva o sintoma observado. Não desmonte nem opere o equipamento fora das condições seguras.',
     ),
   ],
 }

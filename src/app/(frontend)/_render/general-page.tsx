@@ -46,10 +46,12 @@ export async function renderGeneralPage(slug: string): Promise<ReactElement> {
 
   if (!page) notFound()
 
-  const [services, segments, projects] = await Promise.all([
+  const [services, segments, projects, clients, testimonials] = await Promise.all([
     repository.listServices(),
     repository.listSegments(),
     repository.listProjects(),
+    repository.listClients(),
+    repository.listTestimonials(),
   ])
 
   const hasProjects = projects.length > 0
@@ -67,7 +69,7 @@ export async function renderGeneralPage(slug: string): Promise<ReactElement> {
         actions={
           <>
             <WhatsAppLink context="general" size="lg">
-              Solicitar orçamento
+              Solicitar avaliação pelo WhatsApp
             </WhatsAppLink>
             {isHome ? (
               <ButtonLink
@@ -76,6 +78,10 @@ export async function renderGeneralPage(slug: string): Promise<ReactElement> {
                 size="lg"
               >
                 {hasProjects ? 'Ver projetos realizados' : 'Conhecer nossas soluções'}
+              </ButtonLink>
+            ) : page.kind === 'solutionsHub' ? (
+              <ButtonLink href="#solucoes" variant="secondary" size="lg">
+                Ver soluções disponíveis
               </ButtonLink>
             ) : (
               <ButtonLink href="/solucoes-em-inox" variant="secondary" size="lg">
@@ -92,6 +98,8 @@ export async function renderGeneralPage(slug: string): Promise<ReactElement> {
         blocks={page.blocks}
         services={services}
         segments={segments}
+        clients={clients}
+        testimonials={testimonials}
         currentPath={currentPath}
       />
     </>
