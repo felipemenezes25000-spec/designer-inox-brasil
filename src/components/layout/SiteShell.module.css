@@ -35,6 +35,21 @@
   height: 32px;
 }
 
+.brandLogo {
+  width: auto;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  object-fit: contain;
+}
+
+.brandName {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
 .headerActions {
   display: flex;
   align-items: center;
@@ -74,6 +89,14 @@
 
   .brandLockup {
     height: 40px;
+  }
+
+  .brandLogo {
+    height: 48px;
+  }
+
+  .brandName {
+    font-size: 1.125rem;
   }
 
   .desktopNav {

@@ -7,3 +7,7 @@ blob-report
 .lighthouseci
 coverage
 docs/superpowers
+.env
+.env.*
+!.env.example
+!.env.test.example

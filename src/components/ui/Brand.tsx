@@ -94,6 +94,28 @@ export function BrandMark({ tone, priority = false, className }: BrandProps): Re
   )
 }
 
+/** Logo oficial com fundo original, exibida como badge contido. */
+export function OfficialLogo({
+  priority = false,
+  className,
+}: {
+  priority?: boolean
+  className?: string
+}): ReactElement {
+  return (
+    <img
+      className={className}
+      src="/brand/logo-official.png"
+      alt={BRAND_NAME}
+      width={900}
+      height={1350}
+      decoding={priority ? 'sync' : 'async'}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchPriority={priority ? 'high' : 'auto'}
+    />
+  )
+}
+
 /**
  * Lockup horizontal: símbolo mais "Designer Inox Brasil".
  *

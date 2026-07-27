@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type { ReactElement } from 'react'
 
-import { BrandLockup } from '@/components/ui/Brand'
+import { OfficialLogo } from '@/components/ui/Brand'
 import { ButtonLink } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { MobileNavigation } from './MobileNavigation'
@@ -25,7 +25,8 @@ export function SiteHeader({ navigation }: SiteHeaderProps): ReactElement {
     <header className={styles.header}>
       <Container className={styles.headerInner}>
         <Link className={styles.brandLink} href="/" aria-label="Designer Inox Brasil, página inicial">
-          <BrandLockup tone="negative" priority className={styles.brandLockup} />
+          <OfficialLogo priority className={styles.brandLogo} />
+          <span className={styles.brandName}>Designer Inox Brasil</span>
         </Link>
 
         <nav className={styles.desktopNav} aria-label="Navegação principal">
