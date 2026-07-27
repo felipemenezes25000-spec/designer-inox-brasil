@@ -40,6 +40,9 @@ export function SiteFooter({ footer }: SiteFooterProps): ReactElement {
             <p className={styles.footerCapabilities}>
               Projeto técnico, fabricação, instalação e manutenção coordenados conforme a operação.
             </p>
+            <p className={styles.footerCapabilities}>
+              Brasília/DF · Atendimento em Brasília, Distrito Federal e região.
+            </p>
           </div>
 
           <nav aria-label="Navegação do rodapé">

@@ -74,6 +74,14 @@ const CAPABILITIES: readonly Capability[] = [
   },
 ]
 
+type Stat = { value: number; label: string }
+
+const STATS: readonly Stat[] = [
+  { value: 7, label: 'frentes de solução' },
+  { value: 6, label: 'etapas coordenadas' },
+  { value: 3, label: 'pilares de entrega' },
+]
+
 export function TrustBar(): ReactElement {
   return (
     <section className={styles.trustBand} aria-label="O que a Designer Inox executa">
@@ -90,6 +98,15 @@ export function TrustBar(): ReactElement {
                 <p className={styles.trustItemTitle}>{capability.title}</p>
                 <p className={styles.trustItemBody}>{capability.body}</p>
               </div>
+            </li>
+          ))}
+        </ul>
+
+        <ul className={styles.trustStats} aria-label="A operação em números">
+          {STATS.map((stat) => (
+            <li key={stat.label} className={styles.trustStatItem}>
+              <strong className={styles.trustStatNumber}>{stat.value}</strong>
+              <span className={styles.trustStatLabel}>{stat.label}</span>
             </li>
           ))}
         </ul>

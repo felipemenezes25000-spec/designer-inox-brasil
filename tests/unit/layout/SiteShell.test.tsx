@@ -85,9 +85,7 @@ describe('SiteShell', () => {
   test('não inventa dado empresarial ausente no rodapé', () => {
     renderShell()
 
-    // CNPJ, endereço, telefone fixo, horários e Instagram ainda não foram
-    // confirmados: nada disso pode aparecer, nem como "em breve".
-    for (const forbidden of [/CNPJ/i, /instagram/i, /horário/i, /em breve/i]) {
+    for (const forbidden of [/CNPJ/i, /horário/i, /em breve/i]) {
       expect(screen.queryByText(forbidden)).toBeNull()
     }
   })

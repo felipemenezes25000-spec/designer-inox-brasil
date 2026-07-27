@@ -85,7 +85,7 @@ export const initialPages: readonly PublicPage[] = [
       {
         type: 'finalCta',
         heading: 'Vamos avaliar a sua operação',
-        body: 'Descreva a necessidade e receba uma avaliação inicial sobre escopo, etapas e caminhos possíveis.',
+        body: 'Descreva a necessidade e receba uma avaliação inicial sobre escopo, etapas e caminhos possíveis. Atendimento em Brasília, Distrito Federal e região.',
         whatsappContext: 'general',
       },
     ],
@@ -108,25 +108,43 @@ export const initialPages: readonly PublicPage[] = [
       eyebrow: 'Empresa',
       heading: 'Uma solução coordenada para operações profissionais em inox.',
       summary:
-        'Integramos levantamento, definição técnica, fabricação, instalação e acompanhamento dentro do escopo aprovado.',
+        'Empresa sediada em Brasília, especializada em projeto, fabricação e instalação de soluções em aço inox. Atendimento em Brasília, Distrito Federal e região.',
       microcopy: null,
       media: MEDIA_WELDING,
     },
     blocks: [
       {
         type: 'richText',
+        heading: 'Quem somos',
+        paragraphs: [
+          'A Designer Inox Brasil é uma empresa sediada em Brasília, especializada em projeto, fabricação e instalação de soluções em aço inox para operações profissionais. Nossa estrutura reúne desenvolvimento técnico, fabricação sob medida e equipes de instalação.',
+          'Atuamos em cozinhas industriais, equipamentos sob medida, coifas e sistemas de exaustão, estruturas integradas, corte CNC, reformas e manutenção — sete frentes de solução coordenadas conforme a necessidade de cada operação.',
+        ],
+      },
+      {
+        type: 'richText',
         heading: 'Como trabalhamos',
         paragraphs: [
-          'A Designer Inox Brasil reúne, em uma trajetória única, o entendimento da necessidade, o levantamento das condições reais, a definição técnica do escopo, a fabricação em aço inox, a instalação e o acompanhamento posterior.',
+          'Cada projeto segue seis etapas: entendimento da necessidade, levantamento das condições reais, definição técnica do escopo, fabricação em aço inox, instalação e acompanhamento posterior.',
           'Cada etapa tem limites explícitos. "Operação pronta" significa a solução em aço inox fabricada, instalada, integrada e testada dentro do escopo contratado — não inclui automaticamente obra civil, alimentação elétrica externa, gás, licenciamento, aprovações públicas ou serviços de terceiros não descritos na proposta.',
         ],
       },
       { type: 'process', steps: commonProcess },
+      {
+        type: 'richText',
+        heading: 'Onde estamos e onde atuamos',
+        paragraphs: [
+          'Endereço: SIA Trecho 3, Lote 1250 — Brasília/DF, CEP 71200-030.',
+          'Atendimento presencial e instalação em Brasília, Distrito Federal e entorno. Projetos em Goiás, Minas Gerais, São Paulo e outras localidades sujeitos à avaliação técnica de viabilidade.',
+          'Horário de funcionamento: segunda a sexta, das 8h às 18h; sábados, das 8h às 12h.',
+          'Telefone e WhatsApp: +55 61 99683-1052 · E-mail: contato@designerinox.com.br',
+        ],
+      },
       { type: 'services', serviceSlugs: ALL_SERVICE_SLUGS },
       {
         type: 'finalCta',
         heading: 'Converse com a equipe',
-        body: 'Apresente a operação e a necessidade para organizarmos os próximos passos.',
+        body: 'Apresente a operação e a necessidade para organizarmos os próximos passos. Atendimento em Brasília, DF e região.',
         whatsappContext: 'general',
       },
     ],
@@ -224,6 +242,7 @@ export const initialPages: readonly PublicPage[] = [
         paragraphs: [
           'Cidade e UF, tipo de operação, o que precisa ser feito e as condições já conhecidas. Fotos, medidas e plantas ajudam, mas não são obrigatórias para iniciar a conversa.',
           'Nenhum prazo, valor ou visita é confirmado nesta etapa. O retorno inicial serve para entender a necessidade e definir quais levantamentos são necessários.',
+          'As informações que você preencher são utilizadas apenas para montar a mensagem que será aberta no WhatsApp. Este site não armazena dados pessoais nem utiliza cookies de rastreamento.',
         ],
       },
       {

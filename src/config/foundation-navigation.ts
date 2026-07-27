@@ -53,9 +53,9 @@ export const FOUNDATION_FOOTER: FooterNavigation = {
     { kind: 'link', label: 'Política de privacidade', href: '/politica-de-privacidade' },
     { kind: 'link', label: 'Termos de uso', href: '/termos-de-uso' },
   ],
-  // Vazio de propósito: o usuário oficial do Instagram ainda não foi
-  // confirmado, e a especificação proíbe publicar um perfil inventado.
-  social: [],
+  social: [
+    { kind: 'link', label: 'Instagram', href: 'https://www.instagram.com/designerinoxbrasil' },
+  ],
 }
 
 /** Número confirmado na especificação §10.1. */
