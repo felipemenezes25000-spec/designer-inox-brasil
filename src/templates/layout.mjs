@@ -133,7 +133,7 @@ const footer = () => `<footer class="footer">
 <a href="/segmentos/">Segmentos</a>
 <a href="/clientes/">Clientes</a>
 <a href="/empresa/">Empresa</a>
-<a href="/orcamento/">Solicitar avaliação</a>
+<a href="/orcamento/">Pedir orçamento</a>
 <a href="${attr(contact.instagramUrl)}" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a>
 <a href="${attr(whatsapp())}" target="_blank" rel="noopener noreferrer">WhatsApp <span aria-hidden="true">↗</span></a>
 </nav>

@@ -1065,7 +1065,8 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 }
 .hero-intents a:hover { padding-inline: 10px; background: #fff; color: var(--teal-ink) }
 .hero-intents a span { font-family: var(--font-mono); font-size: var(--fs-label); color: var(--teal-ink) }
-.hero-intents a b { font-weight: 500 }
+.hero-intents a b { font-weight: 500; display: inline-block; transition: transform .3s var(--ease) }
+.hero-intents a:hover b { transform: translate(2px, -2px) }
 .hero-quote-note { margin-top: 18px; font-size: var(--fs-xs); color: var(--muted); line-height: 1.5 }
 
 .hero-proof-strip { margin-top: 8px; background: rgba(4,9,12,.84); border-top: 1px solid rgba(191,220,230,.18); backdrop-filter: blur(14px) }
@@ -1084,7 +1085,7 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 .trust-band a { white-space: nowrap; font-weight: 700; font-size: var(--fs-xs); color: var(--teal-ink) }
 
 .solutions-section { background: var(--paper-2) }
-.solution-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px }
+.solution-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; grid-auto-rows: 1fr }
 .solution-card {
   background: var(--paper);
   border: 1px solid var(--line);
@@ -1108,11 +1109,13 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 .solution-card li { border-bottom: 1px solid var(--line) }
 .solution-card li a { min-height: 48px; display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: var(--fs-xs); color: var(--ink-soft); transition: color .2s, padding .2s }
 .solution-card li a:hover { color: var(--accent-text); padding-left: 4px }
-.solution-main-link { margin-top: auto; font-weight: 700; font-size: var(--fs-sm); color: var(--accent-text) }
+.solution-main-link { margin-top: auto; font-weight: 700; font-size: var(--fs-sm); color: var(--accent-text); transition: color .25s }
+.solution-card:hover .solution-main-link { color: var(--ink) }
 .section-action-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 32px }
-.text-cta { color: var(--teal-ink); font-weight: 700; font-size: var(--fs-sm); text-align: right }
+.text-cta { color: var(--teal-ink); font-weight: 700; font-size: var(--fs-sm); text-align: right; transition: color .25s }
+.text-cta:hover { color: var(--ice-ink); text-decoration: underline; text-underline-offset: 3px }
 
-.conversion-panel-section { padding: 0 0 clamp(72px, 8.5vw, 148px); background: var(--paper-2) }
+.conversion-panel-section { padding: clamp(12px, 1.5vw, 24px) 0 clamp(72px, 8.5vw, 148px); background: var(--paper-2) }
 .conversion-panel { background: var(--dark); color: var(--on-dark); padding: clamp(34px, 5vw, 70px); display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr); gap: clamp(32px, 6vw, 90px); align-items: end; position: relative; overflow: hidden }
 .conversion-panel::after { content: ""; position: absolute; width: 420px; height: 420px; border-radius: 50%; right: -190px; top: -210px; border: 70px solid rgba(79,195,220,.08) }
 .conversion-panel .fine { color: var(--ice) }
@@ -1150,7 +1153,7 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 .form-benefits strong { font-family: var(--font-mono); color: var(--teal-ink); font-size: var(--fs-xs) }
 .form-benefits span { font-size: var(--fs-sm); font-weight: 600 }
 .quote-form { position: relative; overflow: hidden }
-.quote-form::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: linear-gradient(90deg, var(--ice), var(--mint), var(--volt)) }
+.quote-form::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: linear-gradient(90deg, var(--ice), var(--mint), var(--volt)) }
 .quote-form-head { margin-bottom: 30px; padding-bottom: 24px; border-bottom: 1px solid var(--line) }
 .quote-form-head h2 { font-size: var(--fs-display-sm); margin: 10px 0 8px }
 .quote-form-head p { color: var(--muted); font-size: var(--fs-xs) }

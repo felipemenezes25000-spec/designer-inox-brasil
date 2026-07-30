@@ -343,7 +343,7 @@ ${eyebrow('Catálogo completo')}
 <h1>${services.length} serviços. Um só interlocutor.</h1>
 <p class="page-lead">Projeto, fabricação, sistemas térmicos, elétrica, exaustão e manutenção. Quando o mesmo fornecedor responde por estrutura e sistema, some a discussão sobre de quem é a responsabilidade da interface.</p>
 <div class="hero-actions">
-<a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Solicitar avaliação <span class="arrow" aria-hidden="true">↗</span></a>
+<a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Pedir orçamento <span class="arrow" aria-hidden="true">↗</span></a>
 </div>
 </div>
 <div class="page-art">${picture('equipment', { sizes: '(max-width:1000px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
@@ -486,7 +486,7 @@ export function segmentsIndexPage() {
 ${eyebrow('Contextos de operação')}
 <h1>O mesmo aço. Exigências diferentes.</h1>
 <p class="page-lead">Volume, fluxo, calor, higiene, carga e continuidade mudam conforme o segmento. O material é o mesmo; o que muda é tudo o que decide o projeto.</p>
-<div class="hero-actions"><a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Solicitar avaliação <span class="arrow" aria-hidden="true">↗</span></a></div>
+<div class="hero-actions"><a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Pedir orçamento <span class="arrow" aria-hidden="true">↗</span></a></div>
 </div>
 <div class="page-art">${picture('modern-kitchen', { sizes: '(max-width:1000px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
 </div>
@@ -584,7 +584,7 @@ export function clientsPage() {
 ${eyebrow('Clientes')}
 <h1>${clientCount} operações que já nos chamaram.</h1>
 <p class="page-lead">Hospitais, embaixadas, redes de varejo, restaurantes, hotelaria e construtoras. Contextos diferentes com uma coisa em comum: não podem parar.</p>
-<div class="hero-actions"><a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Solicitar avaliação <span class="arrow" aria-hidden="true">↗</span></a></div>
+<div class="hero-actions"><a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Pedir orçamento <span class="arrow" aria-hidden="true">↗</span></a></div>
 </div>
 <div class="page-art">${picture('buffet', { sizes: '(max-width:1000px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
 </div>
@@ -788,7 +788,7 @@ ${eyebrow('Erro 404')}
 <div class="notfound-links">
 <a class="btn" href="/">Ir para a home</a>
 <a class="btn btn-outline" href="/servicos/">Ver os ${services.length} serviços</a>
-<a class="btn btn-outline" href="/orcamento/">Solicitar avaliação</a>
+<a class="btn btn-outline" href="/orcamento/">Pedir orçamento</a>
 <a class="btn btn-outline" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Falar no WhatsApp</a>
 </div>
 </div>

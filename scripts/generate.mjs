@@ -108,11 +108,11 @@ export function routes() {
       file: 'orcamento/index.html',
       priority: '0.9',
       html: page({
-        title: 'Solicitar avaliação',
+        title: 'Pedir orçamento',
         description:
           'Monte uma mensagem organizada com cidade, tipo de operação e necessidade, e abra o WhatsApp com o texto pronto.',
         path: '/orcamento/',
-        breadcrumbs: [HOME, { label: 'Solicitar avaliação', href: '/orcamento/' }],
+        breadcrumbs: [HOME, { label: 'Pedir orçamento', href: '/orcamento/' }],
         body: quotePage(),
         bodyClass: 'page-form',
       }),
