@@ -1,13 +1,26 @@
-.git
+# Nada aqui é servido ao público, mas tudo é necessário no repositório.
+#
+# assets/content guarda os JPEG originais (4,2 MB) dos quais os derivados em
+# assets/img/photos são gerados — a fonte fica versionada para o manifesto de
+# proveniência continuar verificável, mas quem visita o site nunca a baixa.
+# Mesma lógica para o master da marca: 2,1 MB que existem como referência.
+
 node_modules
-.next
-test-results
-playwright-report
-blob-report
-.lighthouseci
-coverage
-docs/superpowers
-.env
-.env.*
-!.env.example
-!.env.test.example
+src
+scripts
+docs
+.claude
+.vscode
+
+assets/content
+assets/brand/logo-official.png
+assets/brand/symbol-positive.png
+assets/brand/symbol-positive.webp
+assets/brand/symbol-positive.avif
+assets/brand/symbol-negative.png
+assets/brand/symbol-negative.webp
+assets/brand/symbol-negative.avif
+
+# package.json fica: o vercel.json já zera buildCommand e installCommand, e
+# remover o manifesto só aumentaria a chance de detecção de framework estranha.
+*.md
