@@ -16,13 +16,15 @@ const WHATS = whatsapp()
 
 const eyebrow = text => `<p class="eyebrow">${esc(text)}</p>`
 
-const ctaBlock = (heading, copy) => `<section class="cta">
+const ctaBlock = (heading, copy) => `<section class="cta cta-conversion">
 <div class="container cta-grid">
-<div class="cta-lead">${eyebrow('Próximo passo')}<h2>${esc(heading)}</h2></div>
+<div class="cta-lead">${eyebrow('Próximo passo')}<h2>${esc(heading)}</h2>
+<div class="cta-facts" aria-label="Informações do atendimento"><span>${esc(site.region)}</span><span>${esc(contact.hours)}</span></div></div>
 <div class="cta-actions">
 <p>${esc(copy)}</p>
-<a class="btn btn-light" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Falar no WhatsApp <span class="arrow" aria-hidden="true">↗</span></a>
-<a class="btn btn-ghost" href="/orcamento/">Preparar minha mensagem <span class="arrow" aria-hidden="true">→</span></a>
+<a class="btn btn-light" data-cta="cta-final-whatsapp" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Pedir orçamento no WhatsApp <span class="arrow" aria-hidden="true">↗</span></a>
+<a class="btn btn-ghost" data-cta="cta-final-formulario" href="/orcamento/">Organizar minha solicitação <span class="arrow" aria-hidden="true">→</span></a>
+<small>Você revisa a mensagem antes de enviar.</small>
 </div>
 </div>
 </section>`
@@ -95,26 +97,44 @@ ${illustrativeNote('Imagens ilustrativas de banco licenciado. Não representam o
 // ── Home ──────────────────────────────────────────────────────────────────
 
 export function homePage() {
-  const serviceRows = services
+  const categoryAccent = { fabricacao: 'steel', ar: 'ice', sistemas: 'volt', continuidade: 'mint' }
+  const categoryRoute = {
+    fabricacao: '/cozinhas-industriais/',
+    ar: '/coifas-ventilacao-e-exaustao/',
+    sistemas: '/sistemas-integrados-em-inox/',
+    continuidade: '/manutencao/',
+  }
+  const categoryLabel = {
+    fabricacao: 'Implantar e fabricar',
+    ar: 'Controlar ar e exaustão',
+    sistemas: 'Integrar frio, calor e comando',
+    continuidade: 'Reformar e manter',
+  }
+
+  const serviceGroups = servicesByCategory
     .map(
-      (service, index) => `<a class="service-row reveal accent-${attr(service.accent)}" href="/${attr(service.slug)}/">
-<span class="num">${String(index + 1).padStart(2, '0')}</span>
-<span class="service-name"><h3>${esc(service.title)}</h3></span>
-<p>${esc(service.short)}</p>
-<span class="go" aria-hidden="true">→</span>
-</a>`,
+      (category, index) => `<article class="solution-card reveal accent-${attr(categoryAccent[category.id] || 'steel')}">
+<div class="solution-card-head"><span class="num">0${index + 1}</span><span class="solution-count">${category.services.length} ${category.services.length === 1 ? 'serviço' : 'serviços'}</span></div>
+<h3>${esc(categoryLabel[category.id] || category.label)}</h3>
+<p>${esc(category.note)}</p>
+<ul>${category.services.map(service => `<li><a href="/${attr(service.slug)}/">${esc(service.navTitle || service.title)} <span aria-hidden="true">↗</span></a></li>`).join('')}</ul>
+<a class="solution-main-link" href="${attr(categoryRoute[category.id] || '/servicos/')}">Começar por esta frente <span class="arrow" aria-hidden="true">→</span></a>
+</article>`,
     )
     .join('\n')
 
-  const clientColumns = clientGroups
-    .map(
-      group => `<div class="client-group reveal accent-${attr(group.accent)}">
-<h3>${esc(group.sector)}</h3>
-<p class="client-note">${esc(group.note)}</p>
-<ul>${group.clients.map(name => `<li>${esc(name)}</li>`).join('')}</ul>
-</div>`,
-    )
-    .join('\n')
+  const proofNames = [
+    'McDonald’s',
+    'Hospital Anchieta',
+    'Embaixada dos Estados Unidos',
+    'Rede Santa Lúcia',
+    'Via Engenharia',
+    'Rede Big Box',
+    'Bali Park',
+    'JC Gontijo',
+  ]
+    .map(name => `<span>${esc(name)}</span>`)
+    .join('')
 
   const segmentCards = segments
     .map(
@@ -122,68 +142,86 @@ export function homePage() {
 <span class="fine">Segmento ${String(index + 1).padStart(2, '0')}</span>
 <h3>${esc(segment.title)}</h3>
 <p>${esc(segment.short)}</p>
-<span class="linkline">Ver contexto <span class="arrow" aria-hidden="true">→</span></span>
+<span class="linkline">Ver soluções para este segmento <span class="arrow" aria-hidden="true">→</span></span>
 </a>`,
     )
     .join('\n')
 
-  return `<section class="hero">
-<div class="container hero-grid">
-<div class="hero-copy">
-${eyebrow('Aço inox · engenharia aplicada')}
-<h1 class="hero-title">Inox que nasce da <span class="metal">operação.</span></h1>
-<p class="hero-lead">Projeto técnico, fabricação, instalação, exaustão, refrigeração, aquecimento, automação e manutenção — organizados a partir do espaço, do fluxo e do uso profissional.</p>
+  const implantWhats = whatsapp('Olá, encontrei a Designer Inox Brasil pelo site. Quero implantar ou ampliar uma cozinha/operação. Cidade/UF:')
+  const customWhats = whatsapp('Olá, encontrei a Designer Inox Brasil pelo site. Preciso fabricar um equipamento ou mobiliário em inox sob medida. Cidade/UF:')
+  const maintenanceWhats = whatsapp('Olá, encontrei a Designer Inox Brasil pelo site. Preciso de manutenção, reforma ou correção de uma falha. A operação está:')
+  const guidanceWhats = whatsapp('Olá, encontrei a Designer Inox Brasil pelo site. Ainda não sei qual serviço preciso e gostaria de orientação. Minha necessidade é:')
+
+  return `<section class="hero hero-conversion">
+<div class="hero-media" aria-hidden="true">${picture('industrial-kitchen', { sizes: '100vw', priority: true })}</div>
+<div class="hero-overlay" aria-hidden="true"></div>
+<div class="container hero-conversion-grid">
+<div class="hero-copy hero-copy-conversion">
+${eyebrow('Cozinhas industriais · equipamentos · sistemas')}
+<h1 class="hero-title">Engenharia em inox para a operação <span class="metal">funcionar de verdade.</span></h1>
+<p class="hero-lead">Projeto técnico, fabricação sob medida, instalação, exaustão, refrigeração, aquecimento, automação e manutenção em Brasília / DF e entorno.</p>
 <div class="hero-actions">
-<a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Solicitar avaliação <span class="arrow" aria-hidden="true">↗</span></a>
-<a class="btn btn-outline" href="/servicos/">Ver os ${services.length} serviços <span class="arrow" aria-hidden="true">↓</span></a>
+<a class="btn btn-hero" data-cta="hero-whatsapp" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Pedir orçamento no WhatsApp <span class="arrow" aria-hidden="true">↗</span></a>
+<a class="btn btn-hero-ghost" data-cta="hero-formulario" href="/orcamento/">Organizar minha solicitação <span class="arrow" aria-hidden="true">→</span></a>
 </div>
-<p class="hero-note">Envie cidade, fotos, medidas ou planta para começar</p>
-</div>
-<div class="hero-visual">
-${picture('industrial-kitchen', { sizes: '(max-width:1000px) 100vw, 48vw', priority: true })}
-<span class="art-tag">Imagem ilustrativa</span>
-<div class="hero-badge"><span>Projeto</span><span>até</span><span>manutenção</span></div>
+<div class="hero-reassurance" aria-label="Diferenciais do atendimento">
+<span>Sob medida para o espaço real</span><span>Do projeto à manutenção</span><span>Escopo definido antes da fabricação</span>
 </div>
 </div>
-<div class="capability-strip">
-<div class="container capability-grid">
-<div class="capability"><strong>Sob medida</strong><span>Dimensões e uso reais</span></div>
-<div class="capability"><strong>Projeto aplicado</strong><span>Escopo antes da fabricação</span></div>
-<div class="capability"><strong>Sistemas</strong><span>Frio, calor, gás e comando</span></div>
-<div class="capability"><strong>Continuidade</strong><span>Reforma e manutenção</span></div>
+<aside class="hero-quote-card" aria-label="Atalhos para solicitar avaliação">
+<p class="fine">Comece pela sua necessidade</p>
+<h2>O que precisa ser resolvido agora?</h2>
+<p>Escolha o cenário mais próximo. O WhatsApp já abre com a pergunta certa.</p>
+<div class="hero-intents">
+<a data-cta="hero-intencao-implantar" href="${attr(implantWhats)}" target="_blank" rel="noopener noreferrer"><span>01</span> Implantar ou ampliar uma operação <b aria-hidden="true">↗</b></a>
+<a data-cta="hero-intencao-sob-medida" href="${attr(customWhats)}" target="_blank" rel="noopener noreferrer"><span>02</span> Fabricar algo sob medida <b aria-hidden="true">↗</b></a>
+<a data-cta="hero-intencao-manutencao" href="${attr(maintenanceWhats)}" target="_blank" rel="noopener noreferrer"><span>03</span> Corrigir falha, reformar ou manter <b aria-hidden="true">↗</b></a>
+<a data-cta="hero-intencao-orientacao" href="${attr(guidanceWhats)}" target="_blank" rel="noopener noreferrer"><span>04</span> Preciso de orientação <b aria-hidden="true">↗</b></a>
+</div>
+<p class="hero-quote-note">Envie cidade, fotos, medidas ou planta. Atendimento ${esc(contact.hours.toLowerCase())}.</p>
+</aside>
+</div>
+<div class="hero-proof-strip">
+<div class="container hero-proof-grid">
+<div><strong>${services.length}</strong><span>frentes técnicas coordenáveis</span></div>
+<div><strong>${segments.length}</strong><span>segmentos de operação</span></div>
+<div><strong>${clientCount}</strong><span>organizações na lista de clientes</span></div>
+<div><strong>DF</strong><span>Brasília e entorno</span></div>
 </div>
 </div>
 </section>
 
-<section class="section">
+<section class="trust-band" aria-label="Experiência em operações exigentes">
+<div class="container trust-band-grid">
+<p><span>Confiança construída</span> Experiência informada em saúde, diplomacia, varejo, alimentação e construção.</p>
+<div class="trust-name-row">${proofNames}</div>
+<a href="/clientes/">Ver clientes <span aria-hidden="true">→</span></a>
+</div>
+</section>
+
+<section class="section solutions-section" id="servicos">
 <div class="container">
 <div class="section-head">
-<div>${eyebrow('Ponto de partida')}</div>
-<div><h2 class="section-title">Sua necessidade define o caminho.</h2><p class="section-copy">Sem pacote pronto. Primeiro entendemos o que a operação precisa sustentar; depois organizamos escopo, fabricação, sistemas e instalação.</p></div>
+<div>${eyebrow('Soluções por objetivo')}</div>
+<div><h2 class="section-title">Menos catálogo. Mais clareza sobre o que resolve.</h2><p class="section-copy">As ${services.length} frentes técnicas estão organizadas em quatro caminhos. Você pode contratar uma etapa isolada ou coordenar projeto, fabricação, sistemas e instalação.</p></div>
 </div>
-<div class="path-grid">
-<a class="path-card reveal" href="/cozinhas-industriais/"><span class="num">01 / IMPLANTAR</span><h3>Construir do zero.</h3><p>Planejar fluxo, estruturas, equipamentos e sistemas desde o início.</p><span class="linkline">Ver cozinhas completas <span class="arrow" aria-hidden="true">→</span></span></a>
-<a class="path-card reveal" href="/equipamentos-em-inox/"><span class="num">02 / FABRICAR</span><h3>Resolver sob medida.</h3><p>Criar peças que respeitam espaço, carga, uso e interferências.</p><span class="linkline">Ver equipamentos <span class="arrow" aria-hidden="true">→</span></span></a>
-<a class="path-card reveal" href="/manutencao/"><span class="num">03 / CONTINUAR</span><h3>Manter de pé.</h3><p>Avaliar o existente, corrigir o que falha e planejar a prevenção.</p><span class="linkline">Ver manutenção <span class="arrow" aria-hidden="true">→</span></span></a>
-</div>
+<div class="solution-grid">${serviceGroups}</div>
+<div class="section-action-row"><a class="btn btn-outline" href="/servicos/">Explorar os ${services.length} serviços <span class="arrow" aria-hidden="true">→</span></a><a class="text-cta" data-cta="servicos-whatsapp" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Não sabe por onde começar? Fale com a equipe <span aria-hidden="true">↗</span></a></div>
 </div>
 </section>
 
-<section class="section section-dark" id="servicos">
-<div class="container">
-<div class="section-head">
-<div>${eyebrow('Índice de serviços')}</div>
-<div><h2 class="section-title">Do desenho à operação.</h2><p class="section-copy">${services.length} frentes que podem trabalhar separadas ou fazer parte de uma entrega coordenada, sempre dentro do escopo aprovado.</p></div>
-</div>
-<div class="service-list">${serviceRows}</div>
+<section class="conversion-panel-section">
+<div class="container conversion-panel">
+<div><span class="fine">Avaliação inicial</span><h2>Uma boa proposta começa com o problema bem explicado.</h2></div>
+<div><p>Fotos, medidas e uma descrição curta ajudam a separar o que pode ser orçado à distância do que exige levantamento no local.</p><a class="btn" data-cta="painel-orcamento" href="/orcamento/">Preparar mensagem em poucos passos <span class="arrow" aria-hidden="true">→</span></a></div>
 </div>
 </section>
 
-<section class="section">
+<section class="section technical-section">
 <div class="container technical-grid">
-<div class="technical-art reveal">${picture('plasma', { sizes: '(max-width:1000px) 100vw, 46vw' })}<span class="art-tag">Imagem ilustrativa</span></div>
+<div class="technical-art reveal">${picture('plasma', { sizes: '(max-width:1000px) 100vw, 46vw' })}<span class="art-tag">Imagem ilustrativa</span><div class="technical-stamp"><strong>Projeto aplicado</strong><span>medida · carga · fluxo · interfaces</span></div></div>
 <div class="technical-copy reveal">
-${eyebrow('Precisão em movimento')}
+${eyebrow('Precisão antes da fabricação')}
 <h2>O inox é o resultado. A decisão começa antes.</h2>
 <p>Temperatura, umidade, limpeza, carga, circulação e interfaces com outros sistemas mudam o projeto. Por isso orçamento sério começa pela operação — não por uma lista genérica de equipamentos.</p>
 <div class="tech-points">
@@ -192,22 +230,26 @@ ${eyebrow('Precisão em movimento')}
 <div class="tech-point"><span>03 / PRODUZIR</span><strong>Corte, dobra e solda</strong></div>
 <div class="tech-point"><span>04 / ENTREGAR</span><strong>Instalação e testes</strong></div>
 </div>
+<a class="linkline technical-link" href="/empresa/">Conhecer a forma de trabalho <span class="arrow" aria-hidden="true">→</span></a>
 </div>
 </div>
 </section>
 
-<section class="section section-void" id="clientes">
-<div class="container">
-<div class="section-head">
-<div>${eyebrow('Confiança construída')}</div>
-<div><h2 class="section-title">Operações que já nos chamaram.</h2><p class="section-copy">Hospitais, embaixadas, redes de varejo, restaurantes e construtoras — contextos com exigência sanitária, acesso controlado e continuidade crítica.</p></div>
+<section class="section section-void proof-section" id="clientes">
+<div class="container proof-layout">
+<div class="proof-copy">
+${eyebrow('Confiança construída')}
+<h2 class="section-title">Operações exigentes não compram só uma peça.</h2>
+<p class="section-copy">Elas precisam de acesso coordenado, higiene, continuidade, instalação limpa e escopo explícito. A lista informada pela empresa reúne hospitais, embaixadas, redes, restaurantes e construtoras.</p>
+<a class="btn btn-dark-outline" href="/clientes/">Ver os ${clientCount} clientes listados <span class="arrow" aria-hidden="true">→</span></a>
 </div>
-<div class="client-columns">${clientColumns}</div>
-<div class="client-footnote"><a class="linkline" href="/clientes/">Ver a lista completa de clientes <span class="arrow" aria-hidden="true">→</span></a></div>
+<div class="proof-categories">
+${clientGroups.map(group => `<article class="proof-category reveal accent-${attr(group.accent)}"><span>${esc(group.sector)}</span><strong>${group.clients.length}</strong><p>${esc(group.note)}</p></article>`).join('')}
+</div>
 </div>
 </section>
 
-<section class="section">
+<section class="section process-section">
 <div class="container">
 <div class="section-head">
 <div>${eyebrow('Método')}</div>
@@ -225,12 +267,12 @@ ${eyebrow('Precisão em movimento')}
 </section>
 
 ${galleryBlock(
-  ['kitchen', 'welding', 'hood', 'food-factory', 'workshop', 'buffet'],
-  'O tipo de ambiente onde o inox trabalha.',
-  'Cozinha profissional, fabricação, exaustão, produção e distribuição — os contextos que definem material, acabamento e sistema.',
+  ['kitchen', 'welding', 'food-factory'],
+  'Ambientes profissionais pedem soluções diferentes.',
+  'Cozinha, fabricação e produção mudam carga, higiene, acabamento, ventilação e integração entre sistemas.',
 )}
 
-<section class="section">
+<section class="section segment-section">
 <div class="container">
 <div class="section-head">
 <div>${eyebrow('Contextos de operação')}</div>
@@ -255,11 +297,11 @@ ${faqBlock(
       a: 'Sim. O formato depende da quantidade de ativos, da dispersão das unidades, da criticidade e da frequência definida na proposta.',
     },
     {
-      q: 'Posso enviar desenho, medidas ou fotos?',
-      a: 'Sim. Esse material ajuda na avaliação inicial. Projetos complexos podem exigir levantamento técnico no local.',
+      q: 'O que devo enviar para receber uma avaliação melhor?',
+      a: 'Cidade, tipo de operação, fotos gerais e dos pontos críticos, medidas disponíveis e uma descrição do que precisa mudar. Projetos complexos podem exigir levantamento técnico no local.',
     },
   ],
-  'Antes de pedir preço, alinhe o problema.',
+  'Dúvidas antes de pedir orçamento.',
 )}
 
 ${ctaBlock(
@@ -636,34 +678,40 @@ ${ctaBlock('Comece pela operação.', 'Descreva o espaço, o uso e o que precisa
 export function quotePage() {
   const options = services.map(service => `<option value="${attr(service.title)}">${esc(service.title)}</option>`).join('')
 
-  return `<section class="section form-section">
+  return `<section class="section form-section quote-conversion-page">
 <div class="container form-layout">
 <div class="form-intro">
-${eyebrow('Solicitar avaliação')}
-<h1>Prepare a mensagem certa.</h1>
-<p>O formulário não envia e-mail: ele monta uma mensagem organizada e abre o WhatsApp com o texto pronto. Você revisa antes de enviar.</p>
+${eyebrow('Orçamento pelo WhatsApp')}
+<h1>Conte o que precisa ser resolvido.</h1>
+<p>O formulário organiza as informações e abre o WhatsApp com uma mensagem pronta. Você revisa tudo antes de enviar.</p>
+<div class="form-benefits" aria-label="Como funciona">
+<div><strong>01</strong><span>Você descreve a operação</span></div>
+<div><strong>02</strong><span>A mensagem fica organizada</span></div>
+<div><strong>03</strong><span>O WhatsApp abre para revisão</span></div>
+</div>
 <div class="checklist-mini">
-<div>Descreva a operação, não só o equipamento</div>
 <div>Informe cidade e tipo de ambiente</div>
+<div>Explique o problema ou objetivo principal</div>
 <div>Anexe fotos, medidas ou plantas na conversa</div>
-<div>Se a operação estiver parada, diga logo no início</div>
+<div>Se a operação estiver parada, marque como urgente</div>
 </div>
 <div class="form-direct">
-<p class="fine">Prefere ir direto?</p>
-<a class="btn btn-outline" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Abrir WhatsApp sem o formulário <span class="arrow" aria-hidden="true">↗</span></a>
+<p class="fine">Prefere escrever livremente?</p>
+<a class="btn btn-outline" data-cta="orcamento-direto-whatsapp" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Abrir WhatsApp direto <span class="arrow" aria-hidden="true">↗</span></a>
 </div>
 </div>
 <form class="quote-form" data-quote-form novalidate>
+<div class="quote-form-head"><span class="fine">Leva apenas as informações essenciais</span><h2>Prepare sua solicitação</h2><p>Nada é salvo neste site.</p></div>
 <div class="field-grid">
-<div class="field"><label for="nome">Nome</label><input id="nome" name="nome" type="text" autocomplete="name" placeholder="Como devemos chamar você"></div>
+<div class="field"><label for="nome">Seu nome</label><input id="nome" name="nome" type="text" autocomplete="name" placeholder="Como devemos chamar você"></div>
 <div class="field"><label for="cidade">Cidade / UF <span class="req" aria-hidden="true">*</span></label><input id="cidade" name="cidade" type="text" required autocomplete="address-level2" placeholder="Brasília / DF"></div>
-<div class="field field-full"><label for="operacao">Tipo de operação <span class="req" aria-hidden="true">*</span></label><input id="operacao" name="operacao" type="text" required placeholder="Restaurante, hospital, supermercado, hotel, indústria…"></div>
-<div class="field field-full"><label for="servico">Serviço de interesse</label><select id="servico" name="servico"><option value="">Ainda não sei / preciso de orientação</option>${options}</select></div>
-<div class="field field-full"><label for="necessidade">O que precisa ser resolvido <span class="req" aria-hidden="true">*</span></label><textarea id="necessidade" name="necessidade" required rows="6" placeholder="Descreva a situação, o que já existe no local e o que precisa mudar."></textarea></div>
-<div class="field field-full"><label for="prioridade">Prioridade</label><select id="prioridade" name="prioridade"><option value="">Não informada</option><option value="Operação parada — urgente">Operação parada — urgente</option><option value="Precisa resolver nas próximas semanas">Precisa resolver nas próximas semanas</option><option value="Planejamento / sem urgência">Planejamento / sem urgência</option></select></div>
+<div class="field field-full"><label for="operacao">Qual é a operação? <span class="req" aria-hidden="true">*</span></label><input id="operacao" name="operacao" type="text" required placeholder="Restaurante, hospital, supermercado, hotel, indústria…"></div>
+<div class="field field-full"><label for="servico">Frente de interesse</label><select id="servico" name="servico"><option value="">Ainda não sei / preciso de orientação</option>${options}</select></div>
+<div class="field field-full"><label for="necessidade">O que precisa ser resolvido? <span class="req" aria-hidden="true">*</span></label><textarea id="necessidade" name="necessidade" required rows="6" placeholder="Conte o que existe hoje, o problema percebido e o resultado esperado."></textarea></div>
+<div class="field field-full"><label for="prioridade">Qual é a prioridade?</label><select id="prioridade" name="prioridade"><option value="">Não informada</option><option value="Operação parada — urgente">Operação parada — urgente</option><option value="Precisa resolver nas próximas semanas">Precisa resolver nas próximas semanas</option><option value="Planejamento / sem urgência">Planejamento / sem urgência</option></select></div>
 </div>
-<p class="form-hint">Os campos marcados com <span aria-hidden="true">*</span> são obrigatórios. Nada é armazenado neste site — a mensagem é montada no seu navegador e enviada por você.</p>
-<button class="btn btn-full" type="submit">Montar mensagem e abrir o WhatsApp <span class="arrow" aria-hidden="true">↗</span></button>
+<div class="form-assurance"><span>✓ Você revisa antes de enviar</span><span>✓ Nada fica armazenado no site</span><span>✓ Fotos são anexadas no WhatsApp</span></div>
+<button class="btn btn-full" data-cta="orcamento-gerar-mensagem" type="submit">Gerar mensagem e falar no WhatsApp <span class="arrow" aria-hidden="true">↗</span></button>
 <p class="form-status" data-form-status role="status" aria-live="polite"></p>
 </form>
 </div>

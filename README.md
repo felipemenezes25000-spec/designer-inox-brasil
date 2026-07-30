@@ -103,3 +103,8 @@ Projeto de destino: **`designer-inox-cinematic`**.
 ## Contato configurado
 
 WhatsApp: `5561996831052` — (61) 99683-1052
+
+
+## Redesign de conversão — julho de 2026
+
+A home, os CTAs globais e a página de orçamento receberam uma revisão focada em clareza, prova de confiança, WhatsApp contextual e experiência mobile. O relatório completo está em `AUDITORIA-E-MELHORIAS.md`.

@@ -128,6 +128,33 @@
     })
   }
 
+
+
+  // ── Contexto e mensuração opcional de CTAs ─────────────────────────────
+  // Não carrega analytics. Apenas envia o evento se o projeto futuramente
+  // declarar um dataLayer (por exemplo, via Google Tag Manager).
+  document.addEventListener('click', event => {
+    const trigger = event.target.closest('[data-cta]')
+    if (!trigger || !Array.isArray(window.dataLayer)) return
+    window.dataLayer.push({
+      event: 'cta_click',
+      cta_name: trigger.dataset.cta,
+      page_path: window.location.pathname,
+      destination: trigger.getAttribute('href') || '',
+    })
+  })
+
+  // Permite abrir /orcamento/?servico=Nome%20do%20serviço a partir de
+  // campanhas ou páginas internas sem exigir que a pessoa selecione de novo.
+  const serviceSelect = document.querySelector('#servico')
+  if (serviceSelect) {
+    const requestedService = new URLSearchParams(window.location.search).get('servico')
+    if (requestedService) {
+      const option = Array.from(serviceSelect.options).find(item => item.value === requestedService)
+      if (option) serviceSelect.value = option.value
+    }
+  }
+
   // ── Ano corrente no rodapé ──────────────────────────────────────────────
   document.querySelectorAll('[data-year]').forEach(el => {
     el.textContent = String(new Date().getFullYear())
