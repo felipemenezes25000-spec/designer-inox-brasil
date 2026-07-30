@@ -309,8 +309,10 @@ a:hover .arrow { transform: translate(3px, -3px) }
 }
 .nav { height: 84px; display: flex; align-items: center; justify-content: space-between; gap: 28px }
 
-.brand { display: flex; align-items: center; flex: none }
-.brand img { width: auto; height: 40px; object-fit: contain }
+.brand { display: flex; align-items: center; gap: 12px; flex: none; text-decoration: none }
+.brand-symbol { width: 42px; height: 42px; flex: none }
+.brand-symbol img { width: 100%; height: 100%; object-fit: contain }
+.brand-name { font-family: var(--font-display); font-size: 1.18rem; font-weight: 700; letter-spacing: -.035em; color: var(--ink); line-height: 1.1 }
 
 .nav-links { display: flex; align-items: center; gap: 30px; font-size: var(--fs-sm); font-weight: 500 }
 .nav-links a:not(.btn) { position: relative; padding: 4px 0; color: var(--ink-soft); transition: color .25s }
@@ -823,7 +825,10 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 }
 .footer .container { position: relative }
 .footer-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, .8fr) minmax(0, .8fr); gap: clamp(32px, 5vw, 68px) }
-.footer-brand img { height: 46px; width: auto; object-fit: contain; margin-bottom: 22px }
+.footer-lockup { display: flex; align-items: center; gap: 14px; margin-bottom: 22px }
+.footer-lockup .brand-symbol { width: 48px; height: 48px; flex: none }
+.footer-lockup .brand-symbol img { width: 100%; height: 100%; object-fit: contain }
+.footer-lockup .brand-name { font-family: var(--font-display); font-size: 1.28rem; font-weight: 700; letter-spacing: -.035em; color: var(--on-dark); line-height: 1.1 }
 .footer-brand p { color: var(--on-dark-muted); max-width: 46ch; font-size: var(--fs-base) }
 .footer-contact { margin-top: 26px; display: grid; gap: 7px; font-size: var(--fs-sm); color: var(--on-dark-muted) }
 .footer-phone { font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 600; letter-spacing: -.04em; color: var(--ice) }
@@ -907,7 +912,8 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
   .topline { display: none }
   .nav { height: 72px }
   .nav-links { inset: 72px 0 auto; max-height: calc(100dvh - 72px) }
-  .brand img { height: 32px }
+  .brand-symbol { width: 34px; height: 34px }
+  .brand-name { font-size: 1.02rem }
 
   .hero { padding-top: 42px }
   .hero-title { font-size: clamp(2.6rem, 13vw, 4.2rem) }

@@ -85,11 +85,12 @@ const navMarkup = current =>
 const header = current => `<header class="site-header">
 <div class="container nav">
 <a class="brand" href="/" aria-label="${attr(`${site.name} — página inicial`)}">
-<picture>
-<source type="image/avif" srcset="/assets/brand/lockup-positive.avif">
-<source type="image/webp" srcset="/assets/brand/lockup-positive.webp">
-<img src="/assets/brand/lockup-positive.png" alt="${attr(site.name)}" width="1200" height="311" decoding="async">
+<picture class="brand-symbol">
+<source type="image/avif" srcset="/assets/brand/symbol-negative.avif">
+<source type="image/webp" srcset="/assets/brand/symbol-negative.webp">
+<img src="/assets/brand/symbol-negative.png" alt="" width="512" height="512" decoding="async">
 </picture>
+<span class="brand-name">${esc(site.name)}</span>
 </a>
 <button class="menu-button" type="button" aria-label="Abrir navegação" aria-expanded="false" aria-controls="navegacao" data-menu-button><span></span></button>
 <nav class="nav-links" id="navegacao" aria-label="Navegação principal" data-menu>
@@ -103,11 +104,14 @@ const footer = () => `<footer class="footer">
 <div class="container">
 <div class="footer-grid">
 <div class="footer-brand">
-<picture>
-<source type="image/avif" srcset="/assets/brand/lockup-negative.avif">
-<source type="image/webp" srcset="/assets/brand/lockup-negative.webp">
-<img src="/assets/brand/lockup-negative.png" alt="${attr(site.name)}" width="1200" height="311" loading="lazy" decoding="async">
+<div class="footer-lockup">
+<picture class="brand-symbol">
+<source type="image/avif" srcset="/assets/brand/symbol-negative.avif">
+<source type="image/webp" srcset="/assets/brand/symbol-negative.webp">
+<img src="/assets/brand/symbol-negative.png" alt="" width="512" height="512" loading="lazy" decoding="async">
 </picture>
+<span class="brand-name">${esc(site.name)}</span>
+</div>
 <p>Projeto técnico, fabricação, instalação, sistemas e manutenção em aço inox, coordenados conforme a necessidade real do espaço e do uso.</p>
 <div class="footer-contact">
 <a class="footer-phone" data-cta="footer-whatsapp" href="${attr(whatsapp())}" target="_blank" rel="noopener noreferrer">${esc(contact.whatsappDisplay)}</a>
