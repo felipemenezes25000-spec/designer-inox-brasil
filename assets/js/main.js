@@ -8,6 +8,20 @@
   'use strict'
   document.documentElement.classList.add('js')
 
+  // ── Header height variable ─────────────────────────────────────────────
+  const siteHeader = document.querySelector('.site-header')
+  if (siteHeader) {
+    const syncHeaderH = () => {
+      document.documentElement.style.setProperty('--header-h', siteHeader.offsetHeight + 'px')
+    }
+    syncHeaderH()
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(syncHeaderH).observe(siteHeader)
+    } else {
+      window.addEventListener('resize', syncHeaderH)
+    }
+  }
+
   // ── Menu mobile ─────────────────────────────────────────────────────────
   const menuButton = document.querySelector('[data-menu-button]')
   const menu = document.querySelector('[data-menu]')
@@ -107,6 +121,12 @@
 
       const servico = value('servico')
       if (servico) lines.push(`Serviço de interesse: ${servico}`)
+
+      const email = value('email')
+      if (email) lines.push(`E-mail: ${email}`)
+
+      const telefone = value('telefone')
+      if (telefone) lines.push(`Telefone: ${telefone}`)
 
       lines.push('', 'Necessidade:', value('necessidade'))
 

@@ -58,7 +58,7 @@ export function routes() {
       priority: '0.9',
       html: page({
         title: 'Serviços',
-        description: `Catálogo completo dos ${services.length} serviços: cozinhas industriais, equipamentos em inox, corte CNC, exaustão, refrigeração, aquecimento, CO₂, automação e manutenção.`,
+        description: `Os ${services.length} serviços da Designer Inox Brasil: cozinhas industriais, equipamentos em inox, corte CNC, exaustão, refrigeração, aquecimento, CO₂, automação e manutenção.`,
         path: '/servicos/',
         breadcrumbs: [HOME, { label: 'Serviços', href: '/servicos/' }],
         body: servicesIndexPage(),
@@ -135,6 +135,7 @@ export function routes() {
         accent: service.accent,
         breadcrumbs: [HOME, { label: 'Serviços', href: '/servicos/' }, { label: service.navTitle, href: `/${service.slug}/` }],
         body: servicePage(service),
+        activeNav: '/servicos/',
         ogImage: service.photo ? `/assets/img/photos/${service.photo}-1280.jpg` : '/assets/img/og-default.jpg',
       }),
     })

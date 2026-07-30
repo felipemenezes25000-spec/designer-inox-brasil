@@ -10,7 +10,7 @@
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 
-import { site, contact, nav, whatsapp, photos, legalNotice } from '../content/site.mjs'
+import { site, contact, company, nav, whatsapp, photos, legalNotice } from '../content/site.mjs'
 
 const placeholders = JSON.parse(
   readFileSync(new URL('../content/placeholders.json', import.meta.url), 'utf8'),
@@ -74,15 +74,18 @@ export function picture(key, { sizes = '100vw', className = '', loading = 'lazy'
 export const illustrativeNote = (text = 'Imagem ilustrativa') =>
   `<p class="illustrative-note">${esc(text)}</p>`
 
-const navMarkup = current =>
+const navMarkup = (current, { activeNav } = {}) =>
   nav
     .map(item => {
-      const active = current && current.startsWith(item.href) ? ' aria-current="page"' : ''
+      const match = activeNav
+        ? item.href === activeNav
+        : current && current.startsWith(item.href)
+      const active = match ? ' aria-current="page"' : ''
       return `<a href="${attr(item.href)}"${active}>${esc(item.label)}</a>`
     })
     .join('')
 
-const header = current => `<header class="site-header">
+const header = (current, opts) => `<header class="site-header">
 <div class="container nav">
 <a class="brand" href="/" aria-label="${attr(`${site.name} — página inicial`)}">
 <picture class="brand-symbol">
@@ -94,7 +97,7 @@ const header = current => `<header class="site-header">
 </a>
 <button class="menu-button" type="button" aria-label="Abrir navegação" aria-expanded="false" aria-controls="navegacao" data-menu-button><span></span></button>
 <nav class="nav-links" id="navegacao" aria-label="Navegação principal" data-menu>
-${navMarkup(current)}
+${navMarkup(current, opts)}
 <a class="btn btn-sm" data-cta="header-orcamento" href="/orcamento/">Pedir orçamento <span class="arrow" aria-hidden="true">→</span></a>
 </nav>
 </div>
@@ -115,8 +118,10 @@ const footer = () => `<footer class="footer">
 <p>Projeto técnico, fabricação, instalação, sistemas e manutenção em aço inox, coordenados conforme a necessidade real do espaço e do uso.</p>
 <div class="footer-contact">
 <a class="footer-phone" data-cta="footer-whatsapp" href="${attr(whatsapp())}" target="_blank" rel="noopener noreferrer">${esc(contact.whatsappDisplay)}</a>
+${contact.email ? `<a href="mailto:${attr(contact.email)}">${esc(contact.email)}</a>` : ''}
 <span>${esc(contact.hours)}</span>
 <span>${esc(site.region)}</span>
+${company.legalName ? `<span>${esc(company.legalName)}${company.cnpj ? ` · CNPJ ${esc(company.cnpj)}` : ''}</span>` : '<!-- TODO: razão social e CNPJ -->'}
 </div>
 </div>
 <div class="footer-col">
@@ -163,20 +168,26 @@ const whatsappFloat = () => `<a class="whatsapp-float" data-cta="whatsapp-flutua
  * dá ao Google o vocabulário para mostrar telefone, área atendida e catálogo —
  * coisas que o texto sozinho não comunica de forma legível por máquina.
  */
-function structuredData({ type, title, description, path, breadcrumbs }) {
+function structuredData({ type, title, description, path, breadcrumbs, faq }) {
   const graph = []
   const url = `${site.origin}${path}`
 
   if (type === 'home') {
-    graph.push({
+    const org = {
       '@type': ['Organization', 'LocalBusiness'],
       '@id': `${site.origin}/#organization`,
       name: site.name,
       description: site.description,
       url: site.origin,
-      logo: `${site.origin}/assets/brand/lockup-positive.png`,
+      logo: `${site.origin}/assets/brand/symbol-negative.png`,
       image: `${site.origin}/assets/img/og-default.jpg`,
       telephone: `+${contact.whatsappNumber}`,
+      openingHoursSpecification: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '08:00',
+        closes: '18:00',
+      },
       sameAs: [contact.instagramUrl],
       address: {
         '@type': 'PostalAddress',
@@ -185,6 +196,17 @@ function structuredData({ type, title, description, path, breadcrumbs }) {
         addressCountry: 'BR',
       },
       areaServed: { '@type': 'AdministrativeArea', name: site.region },
+    }
+    if (contact.email) org.email = contact.email
+    if (company.legalName) org.legalName = company.legalName
+    graph.push(org)
+
+    graph.push({
+      '@type': 'WebSite',
+      '@id': `${site.origin}/#website`,
+      url: site.origin,
+      name: site.name,
+      publisher: { '@id': `${site.origin}/#organization` },
     })
   }
 
@@ -208,6 +230,17 @@ function structuredData({ type, title, description, path, breadcrumbs }) {
         position: index + 1,
         name: crumb.label,
         item: `${site.origin}${crumb.href}`,
+      })),
+    })
+  }
+
+  if (faq?.length) {
+    graph.push({
+      '@type': 'FAQPage',
+      mainEntity: faq.map(item => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: item.a },
       })),
     })
   }
@@ -247,6 +280,8 @@ export function page({
   breadcrumbs = null,
   ogImage = '/assets/img/og-default.jpg',
   bodyClass = '',
+  activeNav = null,
+  faq = null,
 }) {
   const fullTitle = path === '/' ? title : `${title} | ${site.name}`
   const canonical = `${site.origin}${path}`
@@ -271,6 +306,7 @@ export function page({
 <meta property="og:image" content="${attr(site.origin + ogImage)}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${attr(fullTitle)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${attr(fullTitle)}">
 <meta name="twitter:description" content="${attr(description)}">
@@ -278,17 +314,18 @@ export function page({
 <link rel="icon" href="/assets/brand/icon-32.png" sizes="32x32">
 <link rel="icon" href="/assets/brand/icon-16.png" sizes="16x16">
 <link rel="apple-touch-icon" href="/assets/brand/icon-180.png">
+<link rel="manifest" href="/manifest.webmanifest">
 <link rel="preload" href="/assets/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${CSS_URL}">
-${structuredData({ type, title: fullTitle, description, path, breadcrumbs })}
+${structuredData({ type, title: fullTitle, description, path, breadcrumbs, faq })}
 </head>
 <body${cls ? ` class="${attr(cls)}"` : ''}>
 <a class="skip-link" href="#conteudo">Ir para o conteúdo principal</a>
 <div class="topline"><div class="container"><span>Projeto · Fabricação · Sistemas · Manutenção</span><span>${esc(site.region)}</span></div></div>
-${header(path)}
+${header(path, { activeNav })}
 ${breadcrumbMarkup(breadcrumbs)}
-<main id="conteudo">
+<main id="conteudo" tabindex="-1">
 ${body}
 </main>
 ${footer()}

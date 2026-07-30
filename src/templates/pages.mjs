@@ -6,7 +6,7 @@
  * tocar em nenhum destes construtores.
  */
 
-import { site, contact, whatsapp, clientGroups, clientCount, legalNotice } from '../content/site.mjs'
+import { site, contact, company, whatsapp, clientGroups, clientCount, legalNotice, photos } from '../content/site.mjs'
 import { services, servicesByCategory, serviceBySlug } from '../content/services.mjs'
 import { segments, segmentBySlug } from '../content/segments.mjs'
 import { illustrations } from './illustrations.mjs'
@@ -16,14 +16,14 @@ const WHATS = whatsapp()
 
 const eyebrow = text => `<p class="eyebrow">${esc(text)}</p>`
 
-const ctaBlock = (heading, copy) => `<section class="cta cta-conversion">
+const ctaBlock = (heading, copy, { whatsHref, formHref } = {}) => `<section class="cta cta-conversion">
 <div class="container cta-grid">
 <div class="cta-lead">${eyebrow('Próximo passo')}<h2>${esc(heading)}</h2>
 <div class="cta-facts" aria-label="Informações do atendimento"><span>${esc(site.region)}</span><span>${esc(contact.hours)}</span></div></div>
 <div class="cta-actions">
 <p>${esc(copy)}</p>
-<a class="btn btn-light" data-cta="cta-final-whatsapp" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Pedir orçamento no WhatsApp <span class="arrow" aria-hidden="true">↗</span></a>
-<a class="btn btn-ghost" data-cta="cta-final-formulario" href="/orcamento/">Organizar minha solicitação <span class="arrow" aria-hidden="true">→</span></a>
+<a class="btn btn-light" data-cta="cta-final-whatsapp" href="${attr(whatsHref || WHATS)}" target="_blank" rel="noopener noreferrer">Pedir orçamento no WhatsApp <span class="arrow" aria-hidden="true">↗</span></a>
+<a class="btn btn-ghost" data-cta="cta-final-formulario" href="${attr(formHref || '/orcamento/')}">Organizar minha solicitação <span class="arrow" aria-hidden="true">→</span></a>
 <small>Você revisa a mensagem antes de enviar.</small>
 </div>
 </div>
@@ -75,7 +75,7 @@ const relatedBlock = slugs => {
 
 const mediaFor = item =>
   item.photo
-    ? `${picture(item.photo, { sizes: '(max-width:1000px) 100vw, 46vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span>`
+    ? `${picture(item.photo, { sizes: '(max-width:1080px) 100vw, 46vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span>`
     : `<div class="art-svg">${illustrations[item.illustration]}</div><span class="art-tag">Esquema técnico</span>`
 
 const galleryBlock = (keys, heading, copy) => {
@@ -87,7 +87,11 @@ const galleryBlock = (keys, heading, copy) => {
 <div><h2 class="section-title section-title-sm">${esc(heading)}</h2><p class="section-copy">${esc(copy)}</p></div>
 </div>
 <div class="gallery-grid">
-${keys.map(key => `<figure class="gallery-item reveal">${picture(key, { sizes: '(max-width:700px) 100vw, (max-width:1100px) 50vw, 33vw' })}</figure>`).join('\n')}
+${keys.map(key => {
+  const credit = photos[key]?.credit
+  const caption = credit ? `<figcaption>Foto: ${esc(credit)}</figcaption>` : ''
+  return `<figure class="gallery-item reveal">${picture(key, { sizes: '(max-width:720px) 100vw, (max-width:1080px) 50vw, 33vw' })}${caption}</figure>`
+}).join('\n')}
 </div>
 ${illustrativeNote('Imagens ilustrativas de banco licenciado. Não representam obras executadas pela Designer Inox Brasil.')}
 </div>
@@ -104,18 +108,12 @@ export function homePage() {
     sistemas: '/sistemas-integrados-em-inox/',
     continuidade: '/manutencao/',
   }
-  const categoryLabel = {
-    fabricacao: 'Implantar e fabricar',
-    ar: 'Controlar ar e exaustão',
-    sistemas: 'Integrar frio, calor e comando',
-    continuidade: 'Reformar e manter',
-  }
 
   const serviceGroups = servicesByCategory
     .map(
       (category, index) => `<article class="solution-card reveal accent-${attr(categoryAccent[category.id] || 'steel')}">
 <div class="solution-card-head"><span class="num">0${index + 1}</span><span class="solution-count">${category.services.length} ${category.services.length === 1 ? 'serviço' : 'serviços'}</span></div>
-<h3>${esc(categoryLabel[category.id] || category.label)}</h3>
+<h3>${esc(category.label)}</h3>
 <p>${esc(category.note)}</p>
 <ul>${category.services.map(service => `<li><a href="/${attr(service.slug)}/">${esc(service.navTitle || service.title)} <span aria-hidden="true">↗</span></a></li>`).join('')}</ul>
 <a class="solution-main-link" href="${attr(categoryRoute[category.id] || '/servicos/')}">Começar por esta frente <span class="arrow" aria-hidden="true">→</span></a>
@@ -183,9 +181,9 @@ ${eyebrow('Cozinhas industriais · equipamentos · sistemas')}
 </div>
 <div class="hero-proof-strip">
 <div class="container hero-proof-grid">
-<div><strong>${services.length}</strong><span>frentes técnicas coordenáveis</span></div>
-<div><strong>${segments.length}</strong><span>segmentos de operação</span></div>
-<div><strong>${clientCount}</strong><span>organizações na lista de clientes</span></div>
+<div><strong>${services.length}</strong><span>serviços</span></div>
+<div><strong>${segments.length}</strong><span>segmentos</span></div>
+<div><strong>${clientCount}</strong><span>clientes listados</span></div>
 <div><strong>DF</strong><span>Brasília e entorno</span></div>
 </div>
 </div>
@@ -199,11 +197,11 @@ ${eyebrow('Cozinhas industriais · equipamentos · sistemas')}
 </div>
 </section>
 
-<section class="section solutions-section" id="servicos">
+<section class="section solutions-section">
 <div class="container">
 <div class="section-head">
 <div>${eyebrow('Soluções por objetivo')}</div>
-<div><h2 class="section-title">Menos catálogo. Mais clareza sobre o que resolve.</h2><p class="section-copy">As ${services.length} frentes técnicas estão organizadas em quatro caminhos. Você pode contratar uma etapa isolada ou coordenar projeto, fabricação, sistemas e instalação.</p></div>
+<div><h2 class="section-title">Menos catálogo. Mais clareza sobre o que resolve.</h2><p class="section-copy">Os ${services.length} serviços estão organizados em quatro caminhos. Você pode contratar uma etapa isolada ou coordenar projeto, fabricação, sistemas e instalação.</p></div>
 </div>
 <div class="solution-grid">${serviceGroups}</div>
 <div class="section-action-row"><a class="btn btn-outline" href="/servicos/">Explorar os ${services.length} serviços <span class="arrow" aria-hidden="true">→</span></a><a class="text-cta" data-cta="servicos-whatsapp" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Não sabe por onde começar? Fale com a equipe <span aria-hidden="true">↗</span></a></div>
@@ -219,7 +217,7 @@ ${eyebrow('Cozinhas industriais · equipamentos · sistemas')}
 
 <section class="section technical-section">
 <div class="container technical-grid">
-<div class="technical-art reveal">${picture('plasma', { sizes: '(max-width:1000px) 100vw, 46vw' })}<span class="art-tag">Imagem ilustrativa</span><div class="technical-stamp"><strong>Projeto aplicado</strong><span>medida · carga · fluxo · interfaces</span></div></div>
+<div class="technical-art reveal">${picture('plasma', { sizes: '(max-width:1080px) 100vw, 46vw' })}<span class="art-tag">Imagem ilustrativa</span><div class="technical-stamp"><strong>Projeto aplicado</strong><span>medida · carga · fluxo · interfaces</span></div></div>
 <div class="technical-copy reveal">
 ${eyebrow('Precisão antes da fabricação')}
 <h2>O inox é o resultado. A decisão começa antes.</h2>
@@ -235,7 +233,7 @@ ${eyebrow('Precisão antes da fabricação')}
 </div>
 </section>
 
-<section class="section section-void proof-section" id="clientes">
+<section class="section section-void proof-section">
 <div class="container proof-layout">
 <div class="proof-copy">
 ${eyebrow('Confiança construída')}
@@ -339,14 +337,14 @@ ${category.services
   return `<section class="page-hero">
 <div class="container page-hero-grid">
 <div>
-${eyebrow('Catálogo completo')}
+${eyebrow('Todos os serviços')}
 <h1>${services.length} serviços. Um só interlocutor.</h1>
 <p class="page-lead">Projeto, fabricação, sistemas térmicos, elétrica, exaustão e manutenção. Quando o mesmo fornecedor responde por estrutura e sistema, some a discussão sobre de quem é a responsabilidade da interface.</p>
 <div class="hero-actions">
 <a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Pedir orçamento <span class="arrow" aria-hidden="true">↗</span></a>
 </div>
 </div>
-<div class="page-art">${picture('equipment', { sizes: '(max-width:1000px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
+<div class="page-art">${picture('equipment', { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
 </div>
 <div class="page-ribbon"></div>
 </section>
@@ -386,6 +384,9 @@ ${service.hub
 </section>`
     : ''
 
+  const orcamentoLink = `/orcamento/?servico=${encodeURIComponent(service.title)}`
+  const serviceWhats = whatsapp(`Olá, encontrei a Designer Inox Brasil pelo site. Tenho interesse em: ${service.title}. Cidade/UF:`)
+
   return `<section class="page-hero">
 <div class="container page-hero-grid">
 <div>
@@ -393,8 +394,8 @@ ${eyebrow(service.navTitle)}
 <h1>${esc(service.title)}</h1>
 <p class="page-lead">${esc(service.lead)}</p>
 <div class="hero-actions">
-<a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Avaliar esta necessidade <span class="arrow" aria-hidden="true">↗</span></a>
-<a class="btn btn-outline" href="/servicos/">Ver todos os serviços</a>
+<a class="btn" href="${attr(serviceWhats)}" target="_blank" rel="noopener noreferrer">Avaliar esta necessidade <span class="arrow" aria-hidden="true">↗</span></a>
+<a class="btn btn-outline" href="${attr(orcamentoLink)}">Organizar solicitação</a>
 </div>
 </div>
 <div class="page-art">${mediaFor(service)}</div>
@@ -463,6 +464,7 @@ ${relatedBlock(service.related)}
 ${ctaBlock(
   'Conte o que a operação precisa resolver.',
   'Inclua cidade, uso, dimensões conhecidas e o que já existe no local. Fotos e plantas ajudam na triagem.',
+  { whatsHref: serviceWhats, formHref: orcamentoLink },
 )}`
 }
 
@@ -484,11 +486,11 @@ export function segmentsIndexPage() {
 <div class="container page-hero-grid">
 <div>
 ${eyebrow('Contextos de operação')}
-<h1>O mesmo aço. Exigências diferentes.</h1>
-<p class="page-lead">Volume, fluxo, calor, higiene, carga e continuidade mudam conforme o segmento. O material é o mesmo; o que muda é tudo o que decide o projeto.</p>
+<h1>${segments.length} segmentos. O que muda é tudo que decide o projeto.</h1>
+<p class="page-lead">Volume, fluxo, calor, higiene, carga e continuidade mudam conforme o contexto de operação. O material é o mesmo — as exigências, não.</p>
 <div class="hero-actions"><a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Pedir orçamento <span class="arrow" aria-hidden="true">↗</span></a></div>
 </div>
-<div class="page-art">${picture('modern-kitchen', { sizes: '(max-width:1000px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
+<div class="page-art">${picture('modern-kitchen', { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
 </div>
 <div class="page-ribbon"></div>
 </section>
@@ -499,6 +501,8 @@ ${ctaBlock('Sua operação tem exigência própria.', 'Descreva o contexto e o q
 }
 
 export function segmentPage(segment) {
+  const segmentWhats = whatsapp(`Olá, encontrei a Designer Inox Brasil pelo site. Minha operação é do segmento: ${segment.title}. Cidade/UF:`)
+
   const pressures = segment.pressures
     .map(
       (item, index) => `<div class="pressure reveal"><span class="n">${String(index + 1).padStart(2, '0')}</span><h3>${esc(item.label)}</h3><p>${esc(item.note)}</p></div>`,
@@ -522,9 +526,9 @@ export function segmentPage(segment) {
 ${eyebrow(segment.navTitle)}
 <h1>${esc(segment.title)}</h1>
 <p class="page-lead">${esc(segment.lead)}</p>
-<div class="hero-actions"><a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Avaliar minha operação <span class="arrow" aria-hidden="true">↗</span></a></div>
+<div class="hero-actions"><a class="btn" href="${attr(segmentWhats)}" target="_blank" rel="noopener noreferrer">Avaliar minha operação <span class="arrow" aria-hidden="true">↗</span></a></div>
 </div>
-<div class="page-art">${picture(segment.photo, { sizes: '(max-width:1000px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
+<div class="page-art">${picture(segment.photo, { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
 </div>
 <div class="page-ribbon"></div>
 </section>
@@ -559,7 +563,7 @@ ${segment.priorities
 </div>
 </section>
 
-${ctaBlock('Descreva a sua operação.', 'Cidade, volume, área e o que já existe no local. A avaliação inicial define os levantamentos necessários.')}`
+${ctaBlock('Descreva a sua operação.', 'Cidade, volume, área e o que já existe no local. A avaliação inicial define os levantamentos necessários.', { whatsHref: segmentWhats })}`
 }
 
 // ── Clientes ──────────────────────────────────────────────────────────────
@@ -582,11 +586,11 @@ export function clientsPage() {
 <div class="container page-hero-grid">
 <div>
 ${eyebrow('Clientes')}
-<h1>${clientCount} operações que já nos chamaram.</h1>
-<p class="page-lead">Hospitais, embaixadas, redes de varejo, restaurantes, hotelaria e construtoras. Contextos diferentes com uma coisa em comum: não podem parar.</p>
+<h1>${clientCount} clientes listados.</h1>
+<p class="page-lead">Hospitais, embaixadas, redes de varejo, restaurantes, hotelaria e construtoras organizados em ${clientGroups.length} grupos de atuação — um recorte por tipo de cliente, diferente dos ${segments.length} segmentos de solução.</p>
 <div class="hero-actions"><a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Pedir orçamento <span class="arrow" aria-hidden="true">↗</span></a></div>
 </div>
-<div class="page-art">${picture('buffet', { sizes: '(max-width:1000px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
+<div class="page-art">${picture('buffet', { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
 </div>
 <div class="page-ribbon"></div>
 </section>
@@ -619,7 +623,7 @@ ${eyebrow('Empresa')}
 <p class="page-lead">A Designer Inox Brasil projeta, fabrica, instala, integra sistemas e mantém estruturas e equipamentos em aço inox para operações profissionais em ${esc(site.region)}.</p>
 <div class="hero-actions"><a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Falar com a equipe <span class="arrow" aria-hidden="true">↗</span></a></div>
 </div>
-<div class="page-art">${picture('workshop', { sizes: '(max-width:1000px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
+<div class="page-art">${picture('workshop', { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
 </div>
 <div class="page-ribbon"></div>
 </section>
@@ -645,9 +649,9 @@ ${eyebrow('Empresa')}
 <div class="container">
 <div class="section-head"><div>${eyebrow('Alcance')}</div><div><h2 class="section-title">Onde atendemos.</h2><p class="section-copy">Base em ${esc(site.city)}/${esc(site.state)}, com atendimento no entorno e projetos executados em outras praças conforme o escopo.</p></div></div>
 <div class="fact-grid">
-<div class="fact reveal"><span>${clientCount}</span><strong>organizações atendidas</strong><p>Informadas pela direção da empresa.</p></div>
-<div class="fact reveal"><span>${services.length}</span><strong>frentes de serviço</strong><p>De projeto técnico a contrato de manutenção.</p></div>
-<div class="fact reveal"><span>${segments.length}</span><strong>segmentos mapeados</strong><p>Cada um com exigência própria.</p></div>
+<div class="fact reveal"><span>${clientCount}</span><strong>clientes listados</strong><p>Informados pela direção da empresa.</p></div>
+<div class="fact reveal"><span>${services.length}</span><strong>serviços</strong><p>De projeto técnico a contrato de manutenção.</p></div>
+<div class="fact reveal"><span>${segments.length}</span><strong>segmentos</strong><p>Cada um com exigência própria.</p></div>
 </div>
 </div>
 </section>
@@ -705,6 +709,8 @@ ${eyebrow('Orçamento pelo WhatsApp')}
 <div class="field-grid">
 <div class="field"><label for="nome">Seu nome</label><input id="nome" name="nome" type="text" autocomplete="name" placeholder="Como devemos chamar você"></div>
 <div class="field"><label for="cidade">Cidade / UF <span class="req" aria-hidden="true">*</span></label><input id="cidade" name="cidade" type="text" required autocomplete="address-level2" placeholder="Brasília / DF"></div>
+<div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" placeholder="Para retorno fora do WhatsApp"></div>
+<div class="field"><label for="telefone">Telefone</label><input id="telefone" name="telefone" type="tel" autocomplete="tel" placeholder="(00) 00000-0000"></div>
 <div class="field field-full"><label for="operacao">Qual é a operação? <span class="req" aria-hidden="true">*</span></label><input id="operacao" name="operacao" type="text" required placeholder="Restaurante, hospital, supermercado, hotel, indústria…"></div>
 <div class="field field-full"><label for="servico">Frente de interesse</label><select id="servico" name="servico"><option value="">Ainda não sei / preciso de orientação</option>${options}</select></div>
 <div class="field field-full"><label for="necessidade">O que precisa ser resolvido? <span class="req" aria-hidden="true">*</span></label><textarea id="necessidade" name="necessidade" required rows="6" placeholder="Conte o que existe hoje, o problema percebido e o resultado esperado."></textarea></div>
@@ -743,8 +749,13 @@ export function privacyPage() {
 <h2>Seus direitos</h2>
 <p>Nos termos da Lei Geral de Proteção de Dados (Lei 13.709/2018), você pode solicitar confirmação de tratamento, acesso, correção ou eliminação dos dados que tenha nos enviado por WhatsApp. O pedido pode ser feito pelo mesmo canal de contato.</p>
 
+<h2>Controlador</h2>
+${company.legalName
+  ? `<p>${esc(company.legalName)}${company.cnpj ? `, CNPJ ${esc(company.cnpj)}` : ''}.</p>`
+  : '<p><!-- TODO: razão social e CNPJ do controlador -->Designer Inox Brasil.</p>'}
+
 <h2>Contato</h2>
-<p>Para qualquer questão sobre privacidade, fale conosco pelo WhatsApp <a href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">${esc(contact.whatsappDisplay)}</a>.</p>
+<p>Para qualquer questão sobre privacidade ou exercício de direitos previstos na LGPD, entre em contato${contact.email ? ` pelo e-mail <a href="mailto:${attr(contact.email)}">${esc(contact.email)}</a> ou` : ''} pelo WhatsApp <a href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">${esc(contact.whatsappDisplay)}</a>.</p>
 </div></section>`
 }
 

@@ -10,10 +10,10 @@
  */
 
 export const categories = [
-  { id: 'fabricacao', label: 'Projeto e fabricação', note: 'Do levantamento à peça instalada.' },
-  { id: 'ar', label: 'Ar, exaustão e segurança', note: 'Captação, condução e tratamento do ar.' },
-  { id: 'sistemas', label: 'Sistemas térmicos e elétricos', note: 'Frio, calor, gás e comando.' },
-  { id: 'continuidade', label: 'Manutenção e continuidade', note: 'Manter a operação de pé.' },
+  { id: 'fabricacao', label: 'Implantar e fabricar', note: 'Projeto técnico, fabricação e instalação.' },
+  { id: 'ar', label: 'Controlar ar e exaustão', note: 'Captação, condução, filtragem e segurança contra incêndio.' },
+  { id: 'sistemas', label: 'Integrar frio, calor e comando', note: 'Refrigeração, aquecimento, CO₂ e automação elétrica.' },
+  { id: 'continuidade', label: 'Reformar e manter', note: 'Manutenção preventiva, corretiva e modernizações.' },
 ]
 
 export const services = [
@@ -435,7 +435,7 @@ export const services = [
     slug: 'sistemas-integrados-em-inox',
     category: 'sistemas',
     accent: 'teal',
-    title: 'Sistemas integrados ao inox',
+    title: 'Sistemas integrados em inox',
     navTitle: 'Sistemas integrados',
     short: 'Refrigeração, aquecimento, sensores e comandos incorporados ao equipamento.',
     meta: 'Integração de refrigeração, aquecimento, automação e comandos dentro de estruturas e equipamentos fabricados em aço inox.',

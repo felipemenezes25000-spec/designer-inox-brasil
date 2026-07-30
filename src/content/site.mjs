@@ -22,10 +22,19 @@ export const site = {
 export const contact = {
   whatsappNumber: '5561996831052',
   whatsappDisplay: '(61) 99683-1052',
+  // TODO: preencher com dados reais da empresa
+  email: 'contato@designerinoxbrasil.com.br',
   instagram: 'designerinoxbrasil',
   instagramUrl: 'https://www.instagram.com/designerinoxbrasil',
   hours: 'Segunda a sexta, 8h às 18h',
   emergency: 'Operação parada: sinalize no início da mensagem',
+}
+
+// TODO: preencher com dados oficiais para o rodapé, /empresa/ e /politica-de-privacidade/
+export const company = {
+  legalName: '', // razão social — ex.: 'Designer Inox Brasil Ltda.'
+  cnpj: '',      // ex.: '00.000.000/0001-00'
+  address: '',   // ex.: 'SIA Trecho 3, Brasília/DF'
 }
 
 /** Monta o link do WhatsApp com uma mensagem pré-preenchida e codificada. */

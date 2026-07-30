@@ -145,7 +145,11 @@
 
 *, *::before, *::after { box-sizing: border-box }
 
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100% }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h, 85px) + 16px);
+}
 
 body {
   margin: 0;
@@ -157,7 +161,6 @@ body {
   font-synthesis-weight: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 body.menu-open { overflow: hidden }
 
@@ -409,14 +412,18 @@ a:hover .arrow { transform: translate(3px, -3px) }
 }
 /* Texto metálico: o gradiente recorta no glifo e desliza devagar, imitando
    luz correndo em aço escovado. Congela em prefers-reduced-motion. */
+/* Dark-on-dark original removed. The gradient now uses only light stops
+   so every point meets ≥4.5:1 against the hero overlay (~#0a1216).
+   Measured range: #aebfc7 → #fff = 8.3:1 → 17.4:1. */
 .hero-title .metal {
   display: block;
-  background: linear-gradient(104deg, #0c1013 2%, #8e9aa1 20%, #182024 33%, #cfd9de 48%, #2a3439 62%, #0c1013 82%);
+  background: linear-gradient(104deg, #e9f1f4 2%, #ffffff 20%, #aebfc7 33%, #f0f6f8 48%, #c8d5db 62%, #e9f1f4 82%);
   background-size: 220% 100%;
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  animation: sheen 9s linear infinite;
+  -webkit-background-clip: text; background-clip: text; color: #e9f1f4;
+  animation: sheen 9s linear 2;
 }
 @keyframes sheen { to { background-position: -220% 0 } }
+/* 2.2 — WCAG 2.2.2: animation stops after 2 cycles (≈18s), not infinite */
 
 .hero-lead { font-size: var(--fs-lead); color: var(--ink-soft); max-width: 56ch; margin-bottom: 30px }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap }
@@ -471,7 +478,7 @@ a:hover .arrow { transform: translate(3px, -3px) }
 a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .photo img { transform: scale(1.045); filter: saturate(1) contrast(1.06) }
 
 .art-tag {
-  position: absolute; right: 12px; bottom: 12px; z-index: 2;
+  position: absolute; left: 12px; bottom: 12px; z-index: 2;
   font-family: var(--font-mono); font-size: var(--fs-2xs);
   text-transform: uppercase; letter-spacing: .12em;
   color: #dfeaee; background: rgba(5, 8, 10, .62);
@@ -490,6 +497,10 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
   content: ""; position: absolute; inset: 0; pointer-events: none;
   box-shadow: inset 0 0 0 1px var(--dark-line);
   background: linear-gradient(180deg, transparent 52%, rgba(5, 8, 10, .5));
+}
+.gallery-item figcaption {
+  position: absolute; bottom: 8px; left: 10px; z-index: 2;
+  font-size: var(--fs-2xs); color: var(--on-dark-muted); letter-spacing: .04em;
 }
 
 /* --- Cartões de caminho -------------------------------------------------- */
@@ -567,6 +578,7 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 .catalog-card h3 { font-size: var(--fs-lg); font-weight: 600; margin: 20px 0 12px; letter-spacing: -.035em }
 .catalog-card p { font-size: var(--fs-sm); color: var(--muted); margin-bottom: 20px }
 .catalog-card .linkline { margin-top: auto }
+.catalog-card:last-child:nth-child(odd) { max-width: 560px }
 
 /* --- Bloco técnico ------------------------------------------------------- */
 
@@ -672,10 +684,10 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 .page-art .photo { height: 100%; aspect-ratio: auto; min-height: 340px }
 .art-svg { height: 100%; min-height: 340px }
 .art-svg svg { width: 100%; height: 100%; display: block }
-.page-ribbon { height: 14px; background: var(--page-accent); margin-top: clamp(44px, 5vw, 76px) }
+.page-ribbon { height: 3px; background: var(--page-accent); margin-top: clamp(44px, 5vw, 76px) }
 
 .scope-grid { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: clamp(32px, 6vw, 88px) }
-.scope-title { position: sticky; top: 116px; align-self: start }
+.scope-title { position: sticky; top: calc(var(--header-h, 85px) + 24px); align-self: start }
 .scope-title h2 { font-size: var(--fs-display-md); margin: 16px 0 }
 .scope-list { border-top: 1px solid var(--line) }
 .scope-item { display: grid; grid-template-columns: 50px 1fr; gap: 18px; padding: 22px 0; border-bottom: 1px solid var(--line); align-items: baseline }
@@ -772,7 +784,7 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 
 .form-section { border-top: 0 }
 .form-layout { display: grid; grid-template-columns: minmax(0, .74fr) minmax(0, 1.26fr); gap: clamp(32px, 6vw, 82px) }
-.form-intro { position: sticky; top: 116px; align-self: start }
+.form-intro { position: sticky; top: calc(var(--header-h, 85px) + 24px); align-self: start }
 .form-intro h1 { font-size: var(--fs-display-lg); margin: 20px 0 18px }
 .form-intro > p { color: var(--muted); max-width: 46ch }
 .form-direct { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line) }
@@ -877,12 +889,12 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 
 @media (max-width: 1080px) {
   .nav-links {
-    position: fixed; inset: 120px 0 auto; z-index: 55;
+    position: fixed; inset: var(--header-h, 85px) 0 auto; z-index: 55;
     background: var(--bg); border-bottom: 1px solid var(--line);
     padding: 26px 24px 36px; flex-direction: column; align-items: stretch; gap: 0;
     transform: translateY(-135%); opacity: 0; pointer-events: none;
     transition: transform .42s var(--ease), opacity .3s;
-    max-height: calc(100dvh - 120px); overflow-y: auto;
+    max-height: calc(100dvh - var(--header-h, 85px)); overflow-y: auto;
   }
   .nav-links.open { transform: none; opacity: 1; pointer-events: auto }
   .nav-links a:not(.btn) { padding: 15px 0; border-bottom: 1px solid var(--line); font-size: var(--fs-md) }
@@ -911,7 +923,7 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
   :root { --container: calc(100vw - 32px) }
   .topline { display: none }
   .nav { height: 72px }
-  .nav-links { inset: 72px 0 auto; max-height: calc(100dvh - 72px) }
+  .nav-links { inset: var(--header-h, 72px) 0 auto; max-height: calc(100dvh - var(--header-h, 72px)) }
   .brand-symbol { width: 34px; height: 34px }
   .brand-name { font-size: 1.02rem }
 
@@ -1115,15 +1127,15 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 .solution-card li { border-bottom: 1px solid var(--line) }
 .solution-card li a { min-height: 48px; display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: var(--fs-xs); color: var(--ink-soft); transition: color .2s, padding .2s }
 .solution-card li a:hover { color: var(--accent-text); padding-left: 4px }
-.solution-main-link { margin-top: auto; font-weight: 700; font-size: var(--fs-sm); color: var(--accent-text); transition: color .25s }
+.solution-main-link { margin-top: auto; padding-top: 20px; font-weight: 700; font-size: var(--fs-sm); color: var(--accent-text); transition: color .25s }
 .solution-card:hover .solution-main-link { color: var(--ink) }
 .section-action-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 32px }
 .text-cta { color: var(--teal-ink); font-weight: 700; font-size: var(--fs-sm); text-align: right; transition: color .25s }
 .text-cta:hover { color: var(--ice-ink); text-decoration: underline; text-underline-offset: 3px }
 
-.conversion-panel-section { padding: clamp(12px, 1.5vw, 24px) 0 clamp(72px, 8.5vw, 148px); background: var(--paper-2) }
-.conversion-panel { background: var(--dark); color: var(--on-dark); padding: clamp(34px, 5vw, 70px); display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr); gap: clamp(32px, 6vw, 90px); align-items: end; position: relative; overflow: hidden }
-.conversion-panel::after { content: ""; position: absolute; width: 420px; height: 420px; border-radius: 50%; right: -190px; top: -210px; border: 70px solid rgba(79,195,220,.08) }
+.conversion-panel-section { padding: 0; background: var(--dark); color: var(--on-dark); position: relative; overflow: hidden }
+.conversion-panel-section::after { content: ""; position: absolute; width: 420px; height: 420px; border-radius: 50%; right: -190px; top: -210px; border: 70px solid rgba(79,195,220,.08) }
+.conversion-panel { padding: clamp(56px, 7vw, 100px) 0; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr); gap: clamp(32px, 6vw, 90px); align-items: end; position: relative }
 .conversion-panel .fine { color: var(--ice) }
 .conversion-panel h2 { font-size: var(--fs-display-md); margin-top: 14px; max-width: 16ch }
 .conversion-panel p { color: var(--on-dark-muted); margin-bottom: 22px; max-width: 50ch }
@@ -1131,14 +1143,14 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 
 .technical-section { background: linear-gradient(180deg, var(--bg), #e7edef) }
 .technical-art { overflow: visible }
-.technical-stamp { position: absolute; right: -18px; bottom: 28px; background: var(--ice); color: #04191f; padding: 18px 22px; box-shadow: 0 20px 46px rgba(6,12,16,.23) }
+.technical-stamp { position: absolute; right: -18px; bottom: 28px; z-index: 3; background: var(--ice); color: #04191f; padding: 18px 22px; box-shadow: 0 20px 46px rgba(6,12,16,.23) }
 .technical-stamp strong, .technical-stamp span { display: block }
 .technical-stamp strong { font-family: var(--font-display); font-size: var(--fs-md) }
 .technical-stamp span { font-family: var(--font-mono); font-size: var(--fs-2xs); text-transform: uppercase; letter-spacing: .1em; margin-top: 4px }
 .technical-link { margin-top: 30px }
 
 .proof-layout { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: clamp(44px, 7vw, 110px); align-items: start }
-.proof-copy { position: sticky; top: 120px }
+.proof-copy { position: sticky; top: calc(var(--header-h, 85px) + 24px) }
 .proof-section .section-copy { color: var(--on-dark-muted) }
 .btn-dark-outline { border-color: rgba(225,241,246,.28); color: var(--on-dark); margin-top: 30px }
 .btn-dark-outline:hover { background: var(--ice); border-color: var(--ice); color: #04191f }
@@ -1154,6 +1166,7 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 .cta-conversion small { text-align: center; font-size: var(--fs-xs); color: rgba(4,25,31,.7) }
 
 .quote-conversion-page { background: linear-gradient(150deg, #e7edef 0%, var(--bg) 42%, #f8fafb 100%) }
+.quote-conversion-page .whatsapp-float { display: none }
 .form-benefits { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); margin: 30px 0 }
 .form-benefits div { display: grid; grid-template-columns: 42px 1fr; gap: 12px; align-items: center; background: rgba(255,255,255,.66); min-height: 58px; padding: 10px 14px }
 .form-benefits strong { font-family: var(--font-mono); color: var(--teal-ink); font-size: var(--fs-xs) }
@@ -1208,8 +1221,8 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
   .section-action-row { align-items: stretch; flex-direction: column }
   .section-action-row .btn { width: 100% }
   .text-cta { text-align: left }
-  .conversion-panel-section { padding-bottom: 68px }
-  .conversion-panel { grid-template-columns: 1fr; padding: 30px 22px }
+  .conversion-panel-section { padding: 0 }
+  .conversion-panel { grid-template-columns: 1fr; padding: clamp(40px, 5vw, 56px) 0 }
   .technical-stamp { right: 10px; bottom: 10px; padding: 14px 16px }
   .proof-categories { grid-template-columns: 1fr }
   .proof-category { min-height: 150px }
