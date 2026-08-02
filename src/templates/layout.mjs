@@ -32,6 +32,40 @@ function assetUrl(relativePath) {
 const CSS_URL = assetUrl('assets/css/styles.css')
 const JS_URL = assetUrl('assets/js/main.js')
 
+/**
+ * Símbolo da marca — com hash, e por dois motivos.
+ *
+ * O primeiro é reparo. O vercel.json manda `immutable, max-age=31536000` para
+ * todo /assets/brand/, e a Vercel aplica o header por CAMINHO, não por status:
+ * enquanto o .vercelignore excluía estes arquivos, o 404 foi servido com essa
+ * mesma diretiva. Todo navegador que abriu o site naquela janela gravou o 404
+ * por um ano, e `immutable` significa literalmente "não revalide" — nenhum
+ * deploy alcança esse cache. Só uma URL nova, que é outra chave.
+ *
+ * O segundo é prevenção. Sem hash, trocar a logo também nunca chegaria a quem
+ * já visitou: o arquivo mudaria, a URL não, e o cache do visitante venceria em
+ * 2027. Com o sufixo derivado do conteúdo, qualquer alteração se propaga
+ * sozinha — mesma garantia que styles.css e main.js já tinham.
+ */
+const BRAND_SYMBOL = {
+  avif: assetUrl('assets/brand/symbol-negative.avif'),
+  webp: assetUrl('assets/brand/symbol-negative.webp'),
+  png: assetUrl('assets/brand/symbol-negative.png'),
+}
+
+/**
+ * O <picture> da marca. Header e rodapé usavam o mesmo bloco copiado, o que já
+ * foi meio caminho para a divergência: bastava alguém corrigir um dos dois.
+ *
+ * `loading` é parâmetro porque a marca do cabeçalho está acima da dobra e não
+ * pode ser adiada, enquanto a do rodapé nunca é vista no primeiro quadro.
+ */
+const brandSymbol = ({ loading = null } = {}) => `<picture class="brand-symbol">
+<source type="image/avif" srcset="${attr(BRAND_SYMBOL.avif)}">
+<source type="image/webp" srcset="${attr(BRAND_SYMBOL.webp)}">
+<img src="${attr(BRAND_SYMBOL.png)}" alt="" width="512" height="512"${loading ? ` loading="${loading}"` : ''} decoding="async">
+</picture>`
+
 /** Escapa texto para inserção segura em conteúdo HTML. */
 export const esc = value =>
   String(value)
@@ -88,11 +122,7 @@ const navMarkup = (current, { activeNav } = {}) =>
 const header = (current, opts) => `<header class="site-header">
 <div class="container nav">
 <a class="brand" href="/" aria-label="${attr(`${site.name} — página inicial`)}">
-<picture class="brand-symbol">
-<source type="image/avif" srcset="/assets/brand/symbol-negative.avif">
-<source type="image/webp" srcset="/assets/brand/symbol-negative.webp">
-<img src="/assets/brand/symbol-negative.png" alt="" width="512" height="512" decoding="async">
-</picture>
+${brandSymbol()}
 <span class="brand-name" translate="no">${esc(site.name)}</span>
 </a>
 <button class="menu-button" type="button" aria-label="Abrir navegação" aria-expanded="false" aria-controls="navegacao" data-menu-button><span></span></button>
@@ -108,11 +138,7 @@ const footer = () => `<footer class="footer">
 <div class="footer-grid">
 <div class="footer-brand">
 <div class="footer-lockup">
-<picture class="brand-symbol">
-<source type="image/avif" srcset="/assets/brand/symbol-negative.avif">
-<source type="image/webp" srcset="/assets/brand/symbol-negative.webp">
-<img src="/assets/brand/symbol-negative.png" alt="" width="512" height="512" loading="lazy" decoding="async">
-</picture>
+${brandSymbol({ loading: 'lazy' })}
 <span class="brand-name" translate="no">${esc(site.name)}</span>
 </div>
 <p>Projeto técnico, fabricação, instalação, sistemas e manutenção em aço inox, coordenados conforme a necessidade real do espaço e do uso.</p>
