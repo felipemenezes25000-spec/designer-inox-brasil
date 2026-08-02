@@ -19,18 +19,77 @@ const placeholders = JSON.parse(
 /**
  * Sufixo de cache-busting derivado do conteúdo do arquivo.
  *
- * styles.css e main.js não têm hash no nome, então uma URL fixa somada a um
- * Cache-Control longo deixaria visitantes recorrentes presos à versão antiga.
- * O ?v= muda junto com o conteúdo e força o download só quando algo mudou.
+ * Nenhum asset tem hash no nome, e o vercel.json serve /assets/ com
+ * `immutable, max-age=31536000`. Sem o ?v=, trocar um arquivo mantendo o nome
+ * nunca chegaria a quem já visitou: a URL não muda, e `immutable` instrui o
+ * navegador a nem revalidar. O sufixo muda junto com o conteúdo e força o
+ * download só quando algo mudou de fato.
+ *
+ * DUAS EXCEÇÕES DELIBERADAS — não "corrija":
+ *
+ * 1. As fontes. O <link rel="preload"> vive aqui, mas o @font-face que as
+ *    consome está dentro do styles.css, que é estático e não pode chamar esta
+ *    função. Hashear só o preload faria as duas URLs divergirem: o navegador
+ *    baixaria cada fonte DUAS vezes e ainda avisaria no console que o preload
+ *    não foi usado. Como não dá para hashear os dois lados, o certo é não
+ *    hashear nenhum.
+ *
+ * 2. og:image e o `logo` do JSON-LD. São buscados por crawler e por scraper de
+ *    rede social, que não compartilham o cache do visitante — a armadilha do
+ *    immutable não os atinge. E URL estável é preferível em dado estruturado.
  */
+const assetUrlCache = new Map()
+
 function assetUrl(relativePath) {
+  // Memoizado porque agora as fotos passam por aqui: são 70 arquivos, cada um
+  // referenciado em várias das 26 páginas. Sem cache o build releria e
+  // reidrataria o mesmo SHA centenas de vezes.
+  const cached = assetUrlCache.get(relativePath)
+  if (cached) return cached
+
   const bytes = readFileSync(new URL(`../../${relativePath}`, import.meta.url))
   const hash = createHash('sha256').update(bytes).digest('hex').slice(0, 10)
-  return `/${relativePath}?v=${hash}`
+  const url = `/${relativePath}?v=${hash}`
+  assetUrlCache.set(relativePath, url)
+  return url
 }
 
 const CSS_URL = assetUrl('assets/css/styles.css')
 const JS_URL = assetUrl('assets/js/main.js')
+
+/**
+ * Símbolo da marca — com hash, e por dois motivos.
+ *
+ * O primeiro é reparo. O vercel.json manda `immutable, max-age=31536000` para
+ * todo /assets/brand/, e a Vercel aplica o header por CAMINHO, não por status:
+ * enquanto o .vercelignore excluía estes arquivos, o 404 foi servido com essa
+ * mesma diretiva. Todo navegador que abriu o site naquela janela gravou o 404
+ * por um ano, e `immutable` significa literalmente "não revalide" — nenhum
+ * deploy alcança esse cache. Só uma URL nova, que é outra chave.
+ *
+ * O segundo é prevenção. Sem hash, trocar a logo também nunca chegaria a quem
+ * já visitou: o arquivo mudaria, a URL não, e o cache do visitante venceria em
+ * 2027. Com o sufixo derivado do conteúdo, qualquer alteração se propaga
+ * sozinha — mesma garantia que styles.css e main.js já tinham.
+ */
+const BRAND_SYMBOL = {
+  avif: assetUrl('assets/brand/symbol-negative.avif'),
+  webp: assetUrl('assets/brand/symbol-negative.webp'),
+  png: assetUrl('assets/brand/symbol-negative.png'),
+}
+
+/**
+ * O <picture> da marca. Header e rodapé usavam o mesmo bloco copiado, o que já
+ * foi meio caminho para a divergência: bastava alguém corrigir um dos dois.
+ *
+ * `loading` é parâmetro porque a marca do cabeçalho está acima da dobra e não
+ * pode ser adiada, enquanto a do rodapé nunca é vista no primeiro quadro.
+ */
+const brandSymbol = ({ loading = null } = {}) => `<picture class="brand-symbol">
+<source type="image/avif" srcset="${attr(BRAND_SYMBOL.avif)}">
+<source type="image/webp" srcset="${attr(BRAND_SYMBOL.webp)}">
+<img src="${attr(BRAND_SYMBOL.png)}" alt="" width="512" height="512"${loading ? ` loading="${loading}"` : ''} decoding="async">
+</picture>`
 
 /** Escapa texto para inserção segura em conteúdo HTML. */
 export const esc = value =>
@@ -57,7 +116,14 @@ export function picture(key, { sizes = '100vw', className = '', loading = 'lazy'
   const meta = photos[key]
   if (!meta) throw new Error(`Foto desconhecida: ${key}`)
 
-  const srcset = ext => PHOTO_WIDTHS.map(w => `/assets/img/photos/${key}-${w}.${ext} ${w}w`).join(', ')
+  // As URLs levam hash de conteúdo pelo mesmo motivo do símbolo da marca: o
+  // vercel.json serve /assets/img/ como immutable por um ano, então substituir
+  // uma foto mantendo o nome jamais chegaria a quem já visitou o site. O
+  // sufixo ?v= é seguro dentro de srcset — o separador ali é a vírgula, e o
+  // hash é hexadecimal.
+  const srcset = ext =>
+    PHOTO_WIDTHS.map(w => `${assetUrl(`assets/img/photos/${key}-${w}.${ext}`)} ${w}w`).join(', ')
+
   const placeholder = placeholders[key]
   const style = placeholder ? ` style="background-image:url(${placeholder})"` : ''
   const load = priority ? 'eager' : loading
@@ -66,7 +132,7 @@ export function picture(key, { sizes = '100vw', className = '', loading = 'lazy'
   return `<picture class="photo${className ? ` ${className}` : ''}"${style}>
 <source type="image/avif" srcset="${srcset('avif')}" sizes="${attr(sizes)}">
 <source type="image/webp" srcset="${srcset('webp')}" sizes="${attr(sizes)}">
-<img src="/assets/img/photos/${key}-1280.jpg" alt="${attr(meta.alt)}" width="1280" height="853" loading="${load}" decoding="async"${fetchPriority}>
+<img src="${assetUrl(`assets/img/photos/${key}-1280.jpg`)}" alt="${attr(meta.alt)}" width="1280" height="853" loading="${load}" decoding="async"${fetchPriority}>
 </picture>`
 }
 
@@ -88,12 +154,8 @@ const navMarkup = (current, { activeNav } = {}) =>
 const header = (current, opts) => `<header class="site-header">
 <div class="container nav">
 <a class="brand" href="/" aria-label="${attr(`${site.name} — página inicial`)}">
-<picture class="brand-symbol">
-<source type="image/avif" srcset="/assets/brand/symbol-negative.avif">
-<source type="image/webp" srcset="/assets/brand/symbol-negative.webp">
-<img src="/assets/brand/symbol-negative.png" alt="" width="512" height="512" decoding="async">
-</picture>
-<span class="brand-name">${esc(site.name)}</span>
+${brandSymbol()}
+<span class="brand-name" translate="no">${esc(site.name)}</span>
 </a>
 <button class="menu-button" type="button" aria-label="Abrir navegação" aria-expanded="false" aria-controls="navegacao" data-menu-button><span></span></button>
 <nav class="nav-links" id="navegacao" aria-label="Navegação principal" data-menu>
@@ -108,12 +170,8 @@ const footer = () => `<footer class="footer">
 <div class="footer-grid">
 <div class="footer-brand">
 <div class="footer-lockup">
-<picture class="brand-symbol">
-<source type="image/avif" srcset="/assets/brand/symbol-negative.avif">
-<source type="image/webp" srcset="/assets/brand/symbol-negative.webp">
-<img src="/assets/brand/symbol-negative.png" alt="" width="512" height="512" loading="lazy" decoding="async">
-</picture>
-<span class="brand-name">${esc(site.name)}</span>
+${brandSymbol({ loading: 'lazy' })}
+<span class="brand-name" translate="no">${esc(site.name)}</span>
 </div>
 <p>Projeto técnico, fabricação, instalação, sistemas e manutenção em aço inox, coordenados conforme a necessidade real do espaço e do uso.</p>
 <div class="footer-contact">
@@ -311,9 +369,9 @@ export function page({
 <meta name="twitter:title" content="${attr(fullTitle)}">
 <meta name="twitter:description" content="${attr(description)}">
 <meta name="twitter:image" content="${attr(site.origin + ogImage)}">
-<link rel="icon" href="/assets/brand/icon-32.png" sizes="32x32">
-<link rel="icon" href="/assets/brand/icon-16.png" sizes="16x16">
-<link rel="apple-touch-icon" href="/assets/brand/icon-180.png">
+<link rel="icon" href="${attr(assetUrl('assets/brand/icon-32.png'))}" sizes="32x32">
+<link rel="icon" href="${attr(assetUrl('assets/brand/icon-16.png'))}" sizes="16x16">
+<link rel="apple-touch-icon" href="${attr(assetUrl('assets/brand/icon-180.png'))}">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="preload" href="/assets/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>

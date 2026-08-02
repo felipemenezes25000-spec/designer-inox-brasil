@@ -46,6 +46,55 @@ function resolveTarget(reference, fromFile) {
   return resolved
 }
 
+/**
+ * Padrões efetivos do .vercelignore.
+ *
+ * Existe porque um asset excluído do deploy é invisível em desenvolvimento: o
+ * dev server serve o disco inteiro e o arquivo está lá. A divergência só
+ * aparece em produção, como 404 — e foi exatamente assim que a marca do
+ * cabeçalho ficou quebrada nas 25 páginas por vários deploys.
+ */
+async function loadDeployIgnore() {
+  try {
+    const raw = await readFile(path.join(root, '.vercelignore'), 'utf8')
+    return raw
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line && !line.startsWith('#'))
+  } catch {
+    return []
+  }
+}
+
+/**
+ * O caminho servido cai em algum padrão de exclusão?
+ *
+ * Cobre o subconjunto de sintaxe que o .vercelignore deste projeto usa:
+ * caminho literal, prefixo de diretório e glob de um segmento. É
+ * deliberadamente conservador — na dúvida devolve false. Um falso negativo
+ * apenas mantém o status quo; um falso positivo quebraria o build por um
+ * problema inexistente.
+ */
+function isDeployExcluded(servedPath, patterns) {
+  return patterns.some(pattern => {
+    const clean = pattern.replace(/^\/+/, '').replace(/\/+$/, '')
+    if (!clean) return false
+
+    if (clean.includes('*')) {
+      const source = clean
+        .split('*')
+        .map(part => part.replace(/[.+?^${}()|[\]\\]/g, '\\$&'))
+        .join('[^/]*')
+      const rx = new RegExp(`^${source}$`)
+      // Padrão sem barra casa pelo nome do arquivo, em qualquer nível — é a
+      // regra do gitignore, e é o que faz `*.md` pegar docs aninhados.
+      return clean.includes('/') ? rx.test(servedPath) : rx.test(servedPath.split('/').pop())
+    }
+
+    return servedPath === clean || servedPath.startsWith(`${clean}/`)
+  })
+}
+
 async function collectHtml(dir, out = []) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     if (['node_modules', '.git', '.vercel', 'src', 'scripts', 'docs', 'assets'].includes(entry.name)) continue
@@ -58,6 +107,7 @@ async function collectHtml(dir, out = []) {
 
 async function main() {
   const files = await collectHtml(root)
+  const deployIgnore = await loadDeployIgnore()
 
   for (const file of files) {
     const rel = path.relative(root, file).replace(/\\/g, '/')
@@ -123,7 +173,18 @@ async function main() {
 
     for (const reference of references) {
       const target = resolveTarget(reference, file)
-      if (target && !(await exists(target))) fail(rel, `referência quebrada: ${reference}`)
+      if (!target) continue
+
+      if (!(await exists(target))) {
+        fail(rel, `referência quebrada: ${reference}`)
+        continue
+      }
+
+      // Existe no disco não é o mesmo que existe em produção.
+      const served = path.relative(root, target).replace(/\\/g, '/')
+      if (isDeployExcluded(served, deployIgnore)) {
+        fail(rel, `.vercelignore exclui um arquivo que o HTML referencia — 404 em produção: ${reference}`)
+      }
     }
   }
 
@@ -166,6 +227,38 @@ async function main() {
   }
 
   if (!(await exists(path.join(root, 'robots.txt')))) fail('robots.txt', 'ausente')
+
+  // ── Manifesto ──────────────────────────────────────────────────────────
+  // O manifest.webmanifest referencia ícones e o símbolo da marca, mas não é
+  // HTML — ficava inteiramente fora da varredura acima. Estava apontando para
+  // symbol-negative.png durante todo o período em que o .vercelignore o
+  // excluía, e nada acusou.
+  const manifestPath = path.join(root, 'manifest.webmanifest')
+  if (await exists(manifestPath)) {
+    let manifest
+    try {
+      manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
+    } catch (error) {
+      fail('manifest.webmanifest', `JSON inválido: ${error.message}`)
+    }
+
+    for (const icon of manifest?.icons ?? []) {
+      const target = resolveTarget(icon.src, manifestPath)
+      if (!target) continue
+
+      if (!(await exists(target))) {
+        fail('manifest.webmanifest', `ícone inexistente: ${icon.src}`)
+        continue
+      }
+
+      const served = path.relative(root, target).replace(/\\/g, '/')
+      if (isDeployExcluded(served, deployIgnore)) {
+        fail('manifest.webmanifest', `.vercelignore exclui um ícone do manifesto — 404 em produção: ${icon.src}`)
+      }
+    }
+  } else {
+    warn('manifest.webmanifest', 'ausente — o HTML declara <link rel="manifest">')
+  }
 
   // ── Relatório ──────────────────────────────────────────────────────────
   console.log(`HTML verificados: ${files.length}`)

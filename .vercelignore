@@ -3,23 +3,33 @@
 # assets/content guarda os JPEG originais (4,2 MB) dos quais os derivados em
 # assets/img/photos são gerados — a fonte fica versionada para o manifesto de
 # proveniência continuar verificável, mas quem visita o site nunca a baixa.
-# Mesma lógica para o master da marca: 2,1 MB que existem como referência.
+# Mesma lógica para os masters da marca que ninguém referencia.
+#
+# ATENÇÃO: excluir daqui um arquivo que o HTML referencia produz 404 em
+# produção sem quebrar nada em desenvolvimento — o dev server serve o disco
+# inteiro. Foi o que aconteceu com symbol-negative.*: a exclusão veio de
+# quando o símbolo era só referência, e continuou depois que ele virou a marca
+# do cabeçalho e do rodapé de todas as páginas. O scripts/check.mjs agora
+# cruza este arquivo com os assets referenciados e falha o build antes disso
+# chegar ao ar.
 
 node_modules
 src
 scripts
 docs
+.agents
 .claude
+.playwright-cli
 .vscode
 
 assets/content
+
+# Masters sem referência no HTML. symbol-negative.* NÃO entra nesta lista:
+# é a marca usada no header, no rodapé e no logo do JSON-LD.
 assets/brand/logo-official.png
 assets/brand/symbol-positive.png
 assets/brand/symbol-positive.webp
 assets/brand/symbol-positive.avif
-assets/brand/symbol-negative.png
-assets/brand/symbol-negative.webp
-assets/brand/symbol-negative.avif
 
 # package.json fica: o vercel.json já zera buildCommand e installCommand, e
 # remover o manifesto só aumentaria a chance de detecção de framework estranha.
