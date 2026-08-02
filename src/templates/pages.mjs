@@ -707,10 +707,10 @@ ${eyebrow('Orçamento pelo WhatsApp')}
 <form class="quote-form" data-quote-form novalidate>
 <div class="quote-form-head"><span class="fine">Leva apenas as informações essenciais</span><h2>Prepare sua solicitação</h2><p>Nada é salvo neste site.</p></div>
 <div class="field-grid">
-<div class="field"><label for="nome">Seu nome</label><input id="nome" name="nome" type="text" autocomplete="name" placeholder="Como devemos chamar você"></div>
-<div class="field"><label for="cidade">Cidade / UF <span class="req" aria-hidden="true">*</span></label><input id="cidade" name="cidade" type="text" required autocomplete="address-level2" placeholder="Brasília / DF"></div>
-<div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" placeholder="Para retorno fora do WhatsApp"></div>
-<div class="field"><label for="telefone">Telefone</label><input id="telefone" name="telefone" type="tel" autocomplete="tel" placeholder="(00) 00000-0000"></div>
+<div class="field"><label for="nome">Seu nome</label><input id="nome" name="nome" type="text" autocomplete="name" spellcheck="false" placeholder="Ex.: Ana Ribeiro"></div>
+<div class="field"><label for="cidade">Cidade / UF <span class="req" aria-hidden="true">*</span></label><input id="cidade" name="cidade" type="text" required autocomplete="address-level2" spellcheck="false" placeholder="Ex.: Brasília / DF"></div>
+<div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" spellcheck="false" autocapitalize="off" inputmode="email" placeholder="Ex.: nome@empresa.com.br"></div>
+<div class="field"><label for="telefone">Telefone</label><input id="telefone" name="telefone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(61) 90000-0000"></div>
 <div class="field field-full"><label for="operacao">Qual é a operação? <span class="req" aria-hidden="true">*</span></label><input id="operacao" name="operacao" type="text" required placeholder="Restaurante, hospital, supermercado, hotel, indústria…"></div>
 <div class="field field-full"><label for="servico">Frente de interesse</label><select id="servico" name="servico"><option value="">Ainda não sei / preciso de orientação</option>${options}</select></div>
 <div class="field field-full"><label for="necessidade">O que precisa ser resolvido? <span class="req" aria-hidden="true">*</span></label><textarea id="necessidade" name="necessidade" required rows="6" placeholder="Conte o que existe hoje, o problema percebido e o resultado esperado."></textarea></div>

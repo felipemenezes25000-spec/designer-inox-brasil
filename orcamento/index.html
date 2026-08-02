@@ -28,7 +28,7 @@
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="preload" href="/assets/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/styles.css?v=2d573752c0">
+<link rel="stylesheet" href="/assets/css/styles.css?v=84801103ce">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://designer-inox-cinematic.vercel.app/"},{"@type":"ListItem","position":2,"name":"Pedir orçamento","item":"https://designer-inox-cinematic.vercel.app/orcamento/"}]}]}</script>
 </head>
 <body class="page-form">
@@ -42,7 +42,7 @@
 <source type="image/webp" srcset="/assets/brand/symbol-negative.webp">
 <img src="/assets/brand/symbol-negative.png" alt="" width="512" height="512" decoding="async">
 </picture>
-<span class="brand-name">Designer Inox Brasil</span>
+<span class="brand-name" translate="no">Designer Inox Brasil</span>
 </a>
 <button class="menu-button" type="button" aria-label="Abrir navegação" aria-expanded="false" aria-controls="navegacao" data-menu-button><span></span></button>
 <nav class="nav-links" id="navegacao" aria-label="Navegação principal" data-menu>
@@ -78,10 +78,10 @@
 <form class="quote-form" data-quote-form novalidate>
 <div class="quote-form-head"><span class="fine">Leva apenas as informações essenciais</span><h2>Prepare sua solicitação</h2><p>Nada é salvo neste site.</p></div>
 <div class="field-grid">
-<div class="field"><label for="nome">Seu nome</label><input id="nome" name="nome" type="text" autocomplete="name" placeholder="Como devemos chamar você"></div>
-<div class="field"><label for="cidade">Cidade / UF <span class="req" aria-hidden="true">*</span></label><input id="cidade" name="cidade" type="text" required autocomplete="address-level2" placeholder="Brasília / DF"></div>
-<div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" placeholder="Para retorno fora do WhatsApp"></div>
-<div class="field"><label for="telefone">Telefone</label><input id="telefone" name="telefone" type="tel" autocomplete="tel" placeholder="(00) 00000-0000"></div>
+<div class="field"><label for="nome">Seu nome</label><input id="nome" name="nome" type="text" autocomplete="name" spellcheck="false" placeholder="Ex.: Ana Ribeiro"></div>
+<div class="field"><label for="cidade">Cidade / UF <span class="req" aria-hidden="true">*</span></label><input id="cidade" name="cidade" type="text" required autocomplete="address-level2" spellcheck="false" placeholder="Ex.: Brasília / DF"></div>
+<div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" spellcheck="false" autocapitalize="off" inputmode="email" placeholder="Ex.: nome@empresa.com.br"></div>
+<div class="field"><label for="telefone">Telefone</label><input id="telefone" name="telefone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(61) 90000-0000"></div>
 <div class="field field-full"><label for="operacao">Qual é a operação? <span class="req" aria-hidden="true">*</span></label><input id="operacao" name="operacao" type="text" required placeholder="Restaurante, hospital, supermercado, hotel, indústria…"></div>
 <div class="field field-full"><label for="servico">Frente de interesse</label><select id="servico" name="servico"><option value="">Ainda não sei / preciso de orientação</option><option value="Cozinhas industriais em aço inox">Cozinhas industriais em aço inox</option><option value="Equipamentos e mobiliário em inox">Equipamentos e mobiliário em inox</option><option value="Projeto técnico e corte a plasma CNC">Projeto técnico e corte a plasma CNC</option><option value="Reformas e modernizações em inox">Reformas e modernizações em inox</option><option value="Coifas, ventilação e exaustão industrial">Coifas, ventilação e exaustão industrial</option><option value="Sistema saponificante para exaustão industrial">Sistema saponificante para exaustão industrial</option><option value="Sistemas de refrigeração industrial">Sistemas de refrigeração industrial</option><option value="Sistemas de aquecimento industrial">Sistemas de aquecimento industrial</option><option value="Instalação e manutenção de sistemas de CO₂">Instalação e manutenção de sistemas de CO₂</option><option value="Automação elétrica e painéis de comando">Automação elétrica e painéis de comando</option><option value="Sistemas integrados em inox">Sistemas integrados em inox</option><option value="Manutenção de cozinhas industriais e equipamentos">Manutenção de cozinhas industriais e equipamentos</option><option value="Manutenção de equipamentos hospitalares em inox">Manutenção de equipamentos hospitalares em inox</option></select></div>
 <div class="field field-full"><label for="necessidade">O que precisa ser resolvido? <span class="req" aria-hidden="true">*</span></label><textarea id="necessidade" name="necessidade" required rows="6" placeholder="Conte o que existe hoje, o problema percebido e o resultado esperado."></textarea></div>
@@ -104,7 +104,7 @@
 <source type="image/webp" srcset="/assets/brand/symbol-negative.webp">
 <img src="/assets/brand/symbol-negative.png" alt="" width="512" height="512" loading="lazy" decoding="async">
 </picture>
-<span class="brand-name">Designer Inox Brasil</span>
+<span class="brand-name" translate="no">Designer Inox Brasil</span>
 </div>
 <p>Projeto técnico, fabricação, instalação, sistemas e manutenção em aço inox, coordenados conforme a necessidade real do espaço e do uso.</p>
 <div class="footer-contact">

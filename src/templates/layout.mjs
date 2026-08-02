@@ -93,7 +93,7 @@ const header = (current, opts) => `<header class="site-header">
 <source type="image/webp" srcset="/assets/brand/symbol-negative.webp">
 <img src="/assets/brand/symbol-negative.png" alt="" width="512" height="512" decoding="async">
 </picture>
-<span class="brand-name">${esc(site.name)}</span>
+<span class="brand-name" translate="no">${esc(site.name)}</span>
 </a>
 <button class="menu-button" type="button" aria-label="Abrir navegação" aria-expanded="false" aria-controls="navegacao" data-menu-button><span></span></button>
 <nav class="nav-links" id="navegacao" aria-label="Navegação principal" data-menu>
@@ -113,7 +113,7 @@ const footer = () => `<footer class="footer">
 <source type="image/webp" srcset="/assets/brand/symbol-negative.webp">
 <img src="/assets/brand/symbol-negative.png" alt="" width="512" height="512" loading="lazy" decoding="async">
 </picture>
-<span class="brand-name">${esc(site.name)}</span>
+<span class="brand-name" translate="no">${esc(site.name)}</span>
 </div>
 <p>Projeto técnico, fabricação, instalação, sistemas e manutenção em aço inox, coordenados conforme a necessidade real do espaço e do uso.</p>
 <div class="footer-contact">
