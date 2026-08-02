@@ -39,3 +39,17 @@ npm-debug.log*
 /.payload-template
 
 .vercel
+
+# Ferramentas de agente
+# Snapshots de sessão do playwright-cli — saída descartável de execução.
+/.playwright-cli
+
+# Symlinks criados por `npx skills add`. O conteúdo real fica em
+# .agents/skills/ (versionado) e o skills-lock.json fixa as versões, então
+# `npx skills install` recria estes links. Versioná-los seria pior que inútil:
+# com core.symlinks=false — o padrão no Windows — o git grava o link como um
+# arquivo de texto contendo o caminho ABSOLUTO desta máquina, que quebra em
+# qualquer clone.
+/.claude/skills/frontend-design
+/.claude/skills/web-design-guidelines
+/.claude/skills/web-quality-audit
