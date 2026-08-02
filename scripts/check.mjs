@@ -228,6 +228,38 @@ async function main() {
 
   if (!(await exists(path.join(root, 'robots.txt')))) fail('robots.txt', 'ausente')
 
+  // ── Manifesto ──────────────────────────────────────────────────────────
+  // O manifest.webmanifest referencia ícones e o símbolo da marca, mas não é
+  // HTML — ficava inteiramente fora da varredura acima. Estava apontando para
+  // symbol-negative.png durante todo o período em que o .vercelignore o
+  // excluía, e nada acusou.
+  const manifestPath = path.join(root, 'manifest.webmanifest')
+  if (await exists(manifestPath)) {
+    let manifest
+    try {
+      manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
+    } catch (error) {
+      fail('manifest.webmanifest', `JSON inválido: ${error.message}`)
+    }
+
+    for (const icon of manifest?.icons ?? []) {
+      const target = resolveTarget(icon.src, manifestPath)
+      if (!target) continue
+
+      if (!(await exists(target))) {
+        fail('manifest.webmanifest', `ícone inexistente: ${icon.src}`)
+        continue
+      }
+
+      const served = path.relative(root, target).replace(/\\/g, '/')
+      if (isDeployExcluded(served, deployIgnore)) {
+        fail('manifest.webmanifest', `.vercelignore exclui um ícone do manifesto — 404 em produção: ${icon.src}`)
+      }
+    }
+  } else {
+    warn('manifest.webmanifest', 'ausente — o HTML declara <link rel="manifest">')
+  }
+
   // ── Relatório ──────────────────────────────────────────────────────────
   console.log(`HTML verificados: ${files.length}`)
 
