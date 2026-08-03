@@ -1346,6 +1346,31 @@ body { -webkit-tap-highlight-color: transparent }
    próprio painel. */
 .nav-links, .faq .faq-body, .trust-name-row { overscroll-behavior: contain }
 
+/* backdrop-filter sai nos aparelhos de toque.
+
+   Este não veio da camada nova — é da base — mas é provavelmente o maior
+   custo de rolagem em celular. O cabeçalho é sticky, então está na tela
+   durante a página inteira, e `backdrop-filter: blur(18px) saturate(1.4)`
+   obriga o navegador a desfocar de novo tudo que passa atrás dele a cada
+   quadro. Em GPU de celular isso sozinho segura a rolagem.
+
+   O critério é `pointer: coarse` e não largura de tela: o que importa aqui é
+   a força do aparelho, não quantos pixels ele tem. Uma janela de desktop
+   estreita continua com o vidro; um tablet potente perde, o que é o lado
+   seguro do erro. O fundo vira sólido — visualmente é quase o mesmo, já que
+   a barra é clara sobre conteúdo claro. */
+@media (pointer: coarse) {
+  .site-header {
+    background: var(--bg);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .hero-proof-strip { background: rgba(4, 9, 12, .96); backdrop-filter: none }
+  .hero-quote-card { background: #eff7f9; backdrop-filter: none }
+  .art-tag { background: rgba(5, 8, 10, .82); backdrop-filter: none }
+  .btn-hero-ghost { background: rgba(7, 14, 18, .58); backdrop-filter: none }
+}
+
 /* Alvos de toque que escaparam do bloco @media (pointer: coarse) da base.
 
    Medidos em emulação de toque real (não basta estreitar a janela — o
@@ -1516,13 +1541,20 @@ h3, h4 { letter-spacing: -.028em }
 /* Bloco cinematográfico: luz + grade + grão + escovação, nesta ordem de
    pintura. O grão vem por cima dos gradientes porque grão embaixo de
    gradiente é grão invisível. */
+/* A escovação saiu das superfícies GRANDES e ficou só nas faixas estreitas.
+
+   Ela é um repeating-linear-gradient de quatro paradas com período de 7px.
+   Numa faixa de 36px de altura isso é barato; espalhado pelas seções escuras
+   somava 3,39 megapixels de gradiente reavaliado sempre que a área precisava
+   ser rasterizada — e em rolagem isso é o tempo todo. O grão fica: é ele que
+   dá a textura cinematográfica, e um ladrilho de 160px se repete muito mais
+   barato do que um gradiente calculado pixel a pixel. */
 .section-void::before {
   background:
     var(--grain),
-    var(--brushed),
     radial-gradient(120% 78% at 78% -8%, color-mix(in oklab, var(--page-accent) 30%, transparent), transparent 62%),
     radial-gradient(90% 60% at 4% 104%, color-mix(in oklab, var(--teal) 22%, transparent), transparent 66%);
-  background-size: 160px 160px, auto, auto, auto;
+  background-size: 160px 160px, auto, auto;
   opacity: .58;
 }
 
@@ -1531,9 +1563,8 @@ h3, h4 { letter-spacing: -.028em }
   content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
   background:
     var(--grain),
-    var(--brushed),
     radial-gradient(88% 62% at 88% -10%, color-mix(in oklab, var(--page-accent) 15%, transparent), transparent 66%);
-  background-size: 160px 160px, auto, auto;
+  background-size: 160px 160px, auto;
   opacity: .5;
 }
 .section-dark > * { position: relative; z-index: 1 }
@@ -1552,18 +1583,16 @@ h3, h4 { letter-spacing: -.028em }
 .footer::before {
   background:
     var(--grain),
-    var(--brushed),
     radial-gradient(70% 60% at 8% 0%, color-mix(in oklab, var(--ice) 24%, transparent), transparent 62%);
-  background-size: 160px 160px, auto, auto;
+  background-size: 160px 160px, auto;
   opacity: .55;
 }
 
 .manifesto::before {
   background:
     var(--grain),
-    var(--brushed),
     radial-gradient(80% 60% at 20% 0%, color-mix(in oklab, var(--ice) 36%, transparent), transparent 66%);
-  background-size: 160px 160px, auto, auto;
+  background-size: 160px 160px, auto;
   opacity: .55;
 }
 
@@ -1589,10 +1618,15 @@ h3, h4 { letter-spacing: -.028em }
 
 /* O CTA é a única superfície colorida cheia do site. Grão + grade dão a ele
    a mesma densidade das seções escuras, senão ele lê como plástico. */
+/* Sem mix-blend-mode. Modo de mesclagem obriga o navegador a ler de volta o
+   que já foi pintado embaixo para compor o resultado, o que quebra o caminho
+   rápido de composição da seção inteira. Aqui o fundo é um gradiente ciano
+   claro e conhecido, então dá para chegar praticamente na mesma leitura com
+   um grão escuro em opacidade baixa — sem readback. */
 .cta::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background: var(--grain); background-size: 160px 160px;
-  opacity: .3; mix-blend-mode: multiply;
+  opacity: .18;
 }
 .cta > * { position: relative; z-index: 1 }
 
@@ -1628,28 +1662,33 @@ h3, h4 { letter-spacing: -.028em }
       content: ""; position: absolute; left: 0; right: 0; bottom: -1px;
       height: 2px; transform-origin: 0 50%; transform: scaleX(0);
       background: linear-gradient(90deg, var(--teal-ink), var(--ice-ink) 62%, var(--ice));
+      /* Camada própria: sem isto, animar a barra sujaria o header inteiro a
+         cada quadro — e o header tem backdrop-filter, cuja repintura é cara. */
+      will-change: transform;
       animation: read-progress linear both;
       animation-timeline: scroll(root block);
     }
     @keyframes read-progress { to { transform: scaleX(1) } }
-
-    /* O cabeçalho adensa conforme a página desce. Só opacidade, sombra e
-       borda mudam — nada de altura. Animar altura em elemento sticky
-       provoca reflow a cada quadro e briga com a âncora de rolagem. */
-    .site-header {
-      animation: header-settle linear both;
-      animation-timeline: scroll(root block);
-      animation-range: 0 220px;
-    }
-    @keyframes header-settle {
-      to {
-        background-color: color-mix(in srgb, var(--bg) 96%, transparent);
-        border-bottom-color: var(--line-strong);
-        box-shadow: 0 10px 30px rgba(6, 12, 16, .07);
-      }
-    }
   }
 }
+
+/* O "header-settle" foi removido daqui, e a razão vale registro.
+
+   A ideia era adensar o cabeçalho conforme a página desce, animando
+   background-color, border-bottom-color e box-shadow numa scroll timeline. O
+   efeito era bonito e o custo, invisível no código: animação com
+   `animation-timeline: scroll()` só roda fora da thread principal quando
+   anima propriedades de COMPOSIÇÃO — transform e opacity. As três que eu
+   escolhi são propriedades de PINTURA.
+
+   Resultado: a animação voltava para a thread principal e disparava recálculo
+   de estilo mais repintura a cada quadro de rolagem. E o alvo era o header
+   sticky, que tem backdrop-filter: blur(18px) saturate(1.4) — então cada
+   quadro repintava o header E refazia o desfoque de tudo atrás dele, durante
+   a página inteira, porque sticky nunca sai da tela.
+
+   Se algum dia o efeito voltar, tem que ser via opacity de um pseudo-elemento
+   promovido, nunca animando cor ou sombra do próprio header. */
 
 /* O sublinhado da navegação crescia da esquerda em qualquer situação. Sair
    pelo mesmo lado por onde entrou é o detalhe que faz o hover parecer
@@ -1822,11 +1861,16 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
    a faixa à primeira dobra, o movimento cobre exatamente o trecho visível. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: scroll()) {
+    /* Sem will-change aqui de propósito. A propriedade é uma promessa
+       permanente: promove a imagem a camada própria e a mantém assim para
+       sempre. Esta imagem tem 1920px de largura, então em celular com dpr 3 a
+       camada custa dezenas de MB de memória de GPU pelo tempo todo. Como a
+       animação anima transform — que já é de composição — o navegador promove
+       sozinho enquanto ela roda e libera depois. */
     .hero-media img {
       animation: hero-drift linear both;
       animation-timeline: scroll(root block);
       animation-range: 0 100vh;
-      will-change: transform;
     }
     @keyframes hero-drift {
       from { transform: scale(1.09) translateY(-2%) }
@@ -1852,14 +1896,17 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
   transform: translateY(26px) scale(.988);
   transition:
     opacity .82s var(--ease-out-expo),
-    transform .92s var(--ease-out-expo),
-    filter .82s var(--ease-out-expo);
+    transform .92s var(--ease-out-expo);
 }
-.js .reveal.is-visible { opacity: 1; transform: none; filter: none }
+.js .reveal.is-visible { opacity: 1; transform: none }
 
-@media (min-width: 1081px) {
-  .js .reveal { filter: blur(7px) }
-}
+/* O desfoque de entrada saiu.
+   filter: blur() obriga o elemento a ter superfície de renderização própria
+   enquanto o filtro estiver ativo. São 25 elementos .reveal só na home, e
+   numa rolagem rápida vários ficam desfocados ao mesmo tempo, cada um com o
+   seu passe de blur. Muito custo de GPU para um refinamento que quase
+   ninguém consegue nomear — opacidade e deslocamento já entregam a leitura
+   de profundidade. */
 
 /* A base escalonava até o 6º irmão; grades de 8, 12 e 13 itens (serviços,
    entregáveis, clientes) entravam em bloco a partir daí. O degrau encurta
