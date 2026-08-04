@@ -1098,6 +1098,11 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 .trust-band-grid { display: grid; grid-template-columns: minmax(230px, .72fr) minmax(0, 1.6fr) auto; align-items: center; gap: 26px }
 .trust-band p { font-size: var(--fs-xs); color: var(--ink-soft); line-height: 1.5 }
 .trust-band p span { display: block; font-family: var(--font-mono); font-size: var(--fs-2xs); text-transform: uppercase; letter-spacing: .14em; color: var(--teal-ink); margin-bottom: 3px }
+.trust-name-grid { display: grid; gap: 10px }
+.trust-name-grid .trust-name-row { display: flex; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line) }
+.trust-name-grid .trust-name-row strong { min-width: 120px; font-size: var(--fs-sm); font-weight: 600 }
+.trust-name-grid .trust-name-row span { font-size: var(--fs-sm); color: var(--ink-soft) }
+.trust-name-grid .trust-name-row a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px }
 .trust-name-row { display: flex; flex-wrap: wrap; gap: 7px }
 .trust-name-row span { padding: 7px 10px; background: rgba(255,255,255,.58); border: 1px solid rgba(12,16,19,.09); font-size: var(--fs-xs); color: var(--ink-soft) }
 .trust-band a { white-space: nowrap; font-weight: 700; font-size: var(--fs-xs); color: var(--teal-ink) }

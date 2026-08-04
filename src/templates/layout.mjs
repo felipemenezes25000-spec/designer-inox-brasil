@@ -176,6 +176,7 @@ ${brandSymbol({ loading: 'lazy' })}
 <p>Projeto técnico, fabricação, instalação, sistemas e manutenção em aço inox, coordenados conforme a necessidade real do espaço e do uso.</p>
 <div class="footer-contact">
 <a class="footer-phone" data-cta="footer-whatsapp" href="${attr(whatsapp())}" target="_blank" rel="noopener noreferrer">${esc(contact.whatsappDisplay)}</a>
+${contact.phone ? `<a href="tel:+55${contact.phone.replace(/\D/g, '')}">${esc(contact.phone)}</a>` : ''}
 ${contact.email ? `<a href="mailto:${attr(contact.email)}">${esc(contact.email)}</a>` : ''}
 <span>${esc(contact.hours)}</span>
 <span>${esc(site.region)}</span>
@@ -239,7 +240,7 @@ function structuredData({ type, title, description, path, breadcrumbs, faq }) {
       url: site.origin,
       logo: `${site.origin}/assets/brand/symbol-negative.png`,
       image: `${site.origin}/assets/img/og-default.jpg`,
-      telephone: `+${contact.whatsappNumber}`,
+      telephone: ['+5561996024701', `+${contact.whatsappNumber}`],
       openingHoursSpecification: {
         '@type': 'OpeningHoursSpecification',
         dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
