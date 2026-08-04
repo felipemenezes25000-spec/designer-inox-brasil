@@ -645,6 +645,21 @@ ${eyebrow('Empresa')}
 </div>
 </section>
 
+<section class="section">
+<div class="container">
+<div class="section-head"><div>${eyebrow('Identificação')}</div><div><h2 class="section-title section-title-sm">Dados da empresa.</h2></div></div>
+<div class="trust-name-grid">
+<div class="trust-name-row"><strong>Responsável</strong> <span>${esc(company.legalName)}</span></div>
+<div class="trust-name-row"><strong>Nome fantasia</strong> <span>Designer Inox</span></div>
+<div class="trust-name-row"><strong>CNPJ</strong> <span>${esc(company.cnpj)}</span></div>
+<div class="trust-name-row"><strong>Região</strong> <span>${esc(company.address)}</span></div>
+<div class="trust-name-row"><strong>Telefone</strong> <span><a href="tel:+5561996024701">${esc(contact.phone)}</a></span></div>
+<div class="trust-name-row"><strong>WhatsApp</strong> <span><a href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">${esc(contact.whatsappDisplay)}</a></span></div>
+${contact.email ? `<div class="trust-name-row"><strong>E-mail</strong> <span><a href="mailto:${attr(contact.email)}">${esc(contact.email)}</a></span></div>` : ''}
+</div>
+</div>
+</section>
+
 <section class="section section-void">
 <div class="container">
 <div class="section-head"><div>${eyebrow('Alcance')}</div><div><h2 class="section-title">Onde atendemos.</h2><p class="section-copy">Base em ${esc(site.city)}/${esc(site.state)}, com atendimento no entorno e projetos executados em outras praças conforme o escopo.</p></div></div>
