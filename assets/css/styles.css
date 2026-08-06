@@ -710,6 +710,12 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
 .hub-card p { font-size: var(--fs-sm); margin-bottom: 18px }
 .hub-card .linkline { margin-top: auto }
 
+.specialty-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px }
+.specialty-card { background: var(--paper); border: 1px solid var(--line); padding: 30px; display: flex; flex-direction: column }
+.specialty-card .n { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: .12em; color: var(--accent-text) }
+.specialty-card h3 { font-size: var(--fs-lg); margin: 14px 0 10px; font-weight: 600 }
+.specialty-card p { font-size: var(--fs-sm); color: var(--muted); line-height: 1.65 }
+
 .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px }
 .related-card { background: var(--paper); border: 1px solid var(--line); padding: 26px; min-height: 244px; display: flex; flex-direction: column; transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .3s }
 .related-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--accent-text) }

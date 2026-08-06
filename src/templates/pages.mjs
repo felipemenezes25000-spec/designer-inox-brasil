@@ -403,6 +403,22 @@ ${eyebrow(service.navTitle)}
 <div class="page-ribbon"></div>
 </section>
 
+${service.specialties ? `<section class="section">
+<div class="container">
+<div class="section-head">
+<div>${eyebrow('O que fabricamos e mantemos')}</div>
+<div><h2 class="section-title">Especialidades deste serviço.</h2><p class="section-copy">Equipamentos que fabricamos sob medida ou mantemos com assistência técnica especializada.</p></div>
+</div>
+<div class="specialty-grid">
+${service.specialties
+  .map(
+    (s, i) => `<div class="specialty-card reveal"><span class="n">${String(i + 1).padStart(2, '0')}</span><h3>${esc(s.name)}</h3><p>${esc(s.desc)}</p></div>`,
+  )
+  .join('\n')}
+</div>
+</div>
+</section>` : ''}
+
 <section class="section">
 <div class="container scope-grid">
 <div class="scope-title">
