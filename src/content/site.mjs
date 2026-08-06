@@ -20,8 +20,8 @@ export const site = {
 }
 
 export const contact = {
-  whatsappNumber: '5561996831052',
-  whatsappDisplay: '(61) 99683-1052',
+  whatsappNumber: '5561996024701',
+  whatsappDisplay: '(61) 99602-4701',
   phone: '(61) 99602-4701',
   email: 'contato@designerinoxbrasil.com.br',
   instagram: 'designerinoxbrasil',

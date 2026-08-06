@@ -102,7 +102,7 @@ Projeto de destino: **`designer-inox-cinematic`**.
 
 ## Contato configurado
 
-WhatsApp: `5561996831052` — (61) 99683-1052
+WhatsApp: `5561996024701` — (61) 99602-4701
 
 
 ## Redesign de conversão — julho de 2026

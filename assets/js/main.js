@@ -90,7 +90,7 @@
 
   if (form) {
     const status = form.querySelector('[data-form-status]')
-    const phone = form.dataset.phone || '5561996831052'
+    const phone = form.dataset.phone || '5561996024701'
 
     const setStatus = (message, state) => {
       if (!status) return
