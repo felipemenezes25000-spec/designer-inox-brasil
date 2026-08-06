@@ -15,7 +15,7 @@ export const segments = [
     short: 'Operações que coordenam preparo, cocção, higienização, circulação e atendimento no mesmo espaço.',
     meta: 'Cozinhas industriais, equipamentos em inox, exaustão e manutenção para restaurantes e cozinhas profissionais.',
     lead: 'O restaurante é o ambiente onde tudo acontece ao mesmo tempo e no mesmo metro quadrado. Pico de salão, cozinha em carga máxima e higienização competindo pelo mesmo espaço e pela mesma equipe.',
-    photo: 'kitchen',
+    photo: 'real-cozinha-industrial',
     pressures: [
       { label: 'Pico concentrado', note: 'A operação inteira se define em duas ou três horas por turno.' },
       { label: 'Espaço disputado', note: 'Cada metro cedido à circulação sai da produção.' },
@@ -61,7 +61,7 @@ export const segments = [
     short: 'Operações que combinam fabricação, armazenamento, exposição e atendimento.',
     meta: 'Estruturas em inox, refrigeração, CO₂ e manutenção para supermercados, redes de varejo e produção de alimentos.',
     lead: 'No varejo alimentar o produto fica exposto e o cliente vê tudo. Câmara, balcão, ilha e área de manipulação precisam funcionar de forma contínua — e qualquer falha de temperatura vira perda direta de estoque.',
-    photo: 'food-factory',
+    photo: 'real-varejo-ilha',
     pressures: [
       { label: 'Cadeia de frio contínua', note: 'Perda de temperatura vira perda de mercadoria no mesmo dia.' },
       { label: 'Produto exposto', note: 'O equipamento faz parte da experiência de compra.' },
@@ -84,7 +84,7 @@ export const segments = [
     short: 'Exigência sanitária alta, acesso restrito e continuidade que não admite improviso.',
     meta: 'Manutenção e fabricação em aço inox para hospitais e clínicas: nutrição, copa, mobiliário e estruturas de apoio.',
     lead: 'Hospital combina duas exigências que raramente andam juntas: rigor sanitário absoluto e impossibilidade de parar. A intervenção precisa caber no protocolo da unidade e no horário que ela autoriza.',
-    photo: 'equipment',
+    photo: 'real-hospital-prateleiras',
     pressures: [
       { label: 'Protocolo sanitário', note: 'Superfície e acabamento não podem reter resíduo.' },
       { label: 'Acesso controlado', note: 'Circulação, ruído e horário seguem a regra da unidade.' },

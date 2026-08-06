@@ -116,13 +116,16 @@ export const clientGroups = [
 export const clientCount = clientGroups.reduce((total, group) => total + group.clients.length, 0)
 
 /**
- * Catálogo das fotos ilustrativas.
+ * Catálogo das fotos.
  *
- * `alt` vem do manifesto de proveniência. Toda foto é de banco licenciado e
- * aparece rotulada como ilustrativa — nenhuma é apresentada como obra, equipe
- * ou cliente da empresa.
+ * `alt` vem do manifesto de proveniência. Fotos com `own: true` são obras reais
+ * da Designer Inox Brasil e aparecem legendadas como "Projeto Designer Inox",
+ * sem o aviso de imagem ilustrativa. As demais são de banco licenciado (Pexels)
+ * e continuam rotuladas como ilustrativas — nunca apresentadas como obra da
+ * empresa. Ver [[feedback-visual-identity]].
  */
 export const photos = {
+  // ── Banco licenciado (ilustrativas) ─────────────────────────────────────
   kitchen: { alt: 'Cozinha profissional com bancadas e equipamentos em aço inoxidável', credit: 'Bruno Makori' },
   welding: { alt: 'Profissional executando soldagem em estrutura metálica industrial', credit: 'JL Photographie' },
   plasma: { alt: 'Corte de chapa metálica por plasma em ambiente fabril', credit: 'Ana Victoria Valverde' },
@@ -133,7 +136,27 @@ export const photos = {
   workshop: { alt: 'Artesão utilizando esmerilhadeira com faíscas em oficina metalúrgica', credit: 'Swastik Arora' },
   'modern-kitchen': { alt: 'Interior de cozinha industrial moderna com equipamentos em aço inoxidável', credit: 'Alina Okan' },
   'industrial-kitchen': { alt: 'Cozinha industrial bem equipada com panelas suspensas e utensílios', credit: 'Elif' },
+
+  // ── Obras reais da Designer Inox Brasil ─────────────────────────────────
+  'real-cozinha-industrial': { alt: 'Cozinha industrial em operação com fogões, panelas e bancadas em aço inox', credit: 'Designer Inox Brasil', own: true },
+  'real-cozinha-inox': { alt: 'Bancadas e equipamentos em aço inox montados em cozinha industrial', credit: 'Designer Inox Brasil', own: true },
+  'real-fogao-industrial': { alt: 'Fogão industrial de seis bocas fabricado em aço inox', credit: 'Designer Inox Brasil', own: true },
+  'real-estufa': { alt: 'Estufa aquecida em aço inox com queimadores para linha de cocção', credit: 'Designer Inox Brasil', own: true },
+  'real-coifa-operacao': { alt: 'Coifa em aço inox sobre linha de cocção em cozinha industrial em operação', credit: 'Designer Inox Brasil', own: true },
+  'real-coifa-churrasqueira': { alt: 'Coifa em aço inox para churrasqueira com acabamento polido', credit: 'Designer Inox Brasil', own: true },
+  'real-exaustao-predial': { alt: 'Rede de dutos de exaustão industrial instalada em fachada de edifício', credit: 'Designer Inox Brasil', own: true },
+  'real-exaustao-equipe': { alt: 'Técnico da Designer Inox instalando sistema de exaustão em cobertura', credit: 'Designer Inox Brasil', own: true },
+  'real-saponificacao': { alt: 'Sistema saponificante para exaustão em aço inox com rolos filtrantes', credit: 'Designer Inox Brasil', own: true },
+  'real-saponificacao-detalhe': { alt: 'Detalhe dos rolos filtrantes de um sistema saponificante em aço inox', credit: 'Designer Inox Brasil', own: true },
+  'real-carrinho-inox': { alt: 'Carro de serviço em aço inox com três prateleiras e rodízios', credit: 'Designer Inox Brasil', own: true },
+  'real-pia-inox': { alt: 'Cuba e bancada em aço inox com ponto de água para operação profissional', credit: 'Designer Inox Brasil', own: true },
+  'real-copa-bancada': { alt: 'Copa com bancada e armários em aço inox instalados em ambiente acabado', credit: 'Designer Inox Brasil', own: true },
+  'real-hospital-cme': { alt: 'Suportes e cestos em aço inox para central de material esterilizado', credit: 'Designer Inox Brasil', own: true },
+  'real-hospital-prateleiras': { alt: 'Prateleiras em aço inox com pacotes cirúrgicos em ambiente hospitalar', credit: 'Designer Inox Brasil', own: true },
+  'real-balcao-refrigerado': { alt: 'Balcão refrigerado em aço inox para exposição de alimentos', credit: 'Designer Inox Brasil', own: true },
+  'real-varejo-expositor': { alt: 'Expositor giratório em aço inox para frutas em supermercado', credit: 'Designer Inox Brasil', own: true },
+  'real-varejo-ilha': { alt: 'Ilha de hortifruti em aço inox instalada em supermercado', credit: 'Designer Inox Brasil', own: true },
 }
 
 export const legalNotice =
-  'As fotografias deste site são imagens ilustrativas de banco licenciado (Pexels License). Não representam obras executadas, equipe, instalações ou clientes da Designer Inox Brasil.'
+  'As fotografias legendadas como “Projeto Designer Inox” retratam trabalhos executados pela empresa. As imagens ilustrativas de banco licenciado (Pexels License), sinalizadas como tal, servem apenas de contexto e não representam obras, equipe ou clientes da Designer Inox Brasil.'

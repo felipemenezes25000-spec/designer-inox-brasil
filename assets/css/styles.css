@@ -484,6 +484,15 @@ a:hover > .photo img, .gallery-item:hover .photo img, .technical-art:hover .phot
   color: #dfeaee; background: rgba(5, 8, 10, .62);
   backdrop-filter: blur(6px); padding: 5px 9px; pointer-events: none;
 }
+/* Selo de obra real: destaque com o acento glacial da marca. */
+.art-tag-own {
+  color: #05121a; background: var(--ice);
+  display: inline-flex; align-items: center; gap: 6px; font-weight: 700;
+}
+.art-tag-own::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  background: #05121a; flex: none;
+}
 .illustrative-note {
   margin-top: 26px; font-family: var(--font-mono); font-size: var(--fs-2xs);
   text-transform: uppercase; letter-spacing: .1em; color: var(--on-dark-muted);

@@ -27,8 +27,8 @@ export const services = [
     short: 'Projeto aplicado, fabricação, instalação e integração para operações profissionais.',
     meta: 'Projeto, fabricação e instalação de cozinhas industriais completas em aço inox para restaurantes, hospitais, redes e alimentação coletiva.',
     lead: 'Uma cozinha industrial não é uma lista de equipamentos. É um fluxo — recebimento, armazenagem, pré-preparo, cocção, distribuição e higienização — que precisa caber no espaço real e sobreviver ao uso diário.',
-    photo: 'industrial-kitchen',
-    gallery: ['kitchen', 'modern-kitchen', 'equipment'],
+    photo: 'real-cozinha-industrial',
+    gallery: ['real-cozinha-inox', 'real-fogao-industrial', 'real-coifa-operacao'],
     when: [
       'operação nova sendo implantada do zero',
       'mudança de ponto que exige refazer o layout',
@@ -69,8 +69,8 @@ export const services = [
     short: 'Peças dimensionadas para o espaço, o fluxo e o uso profissional.',
     meta: 'Fabricação sob medida de bancadas, mesas, pias, cubas, estantes, coifas e mobiliário em aço inox para operações profissionais.',
     lead: 'Equipamento de catálogo resolve o caso médio. Quando o espaço tem uma coluna no lugar errado, um desnível ou uma medida que não fecha, a peça precisa ser feita para aquele lugar.',
-    photo: 'equipment',
-    gallery: ['kitchen', 'workshop'],
+    photo: 'real-carrinho-inox',
+    gallery: ['real-pia-inox', 'real-copa-bancada', 'workshop'],
     when: [
       'medida que nenhum equipamento de linha atende',
       'substituição de peça danificada ou improvisada',
@@ -190,8 +190,8 @@ export const services = [
     short: 'Projeto, fabricação, instalação e manutenção completa de sistemas de exaustão industrial.',
     meta: 'Projeto, fabricação, instalação e manutenção de sistemas de exaustão industrial, coifas, dutos e ventilação. Conformidade com NR e NBR.',
     lead: 'Exaustão industrial é sistema, não peça avulsa. Captação, dutos, exaustor, filtragem e reposição de ar formam um conjunto — se um elemento está subdimensionado, a operação inteira sofre com calor, odor, poluentes e risco de não conformidade.',
-    photo: 'hood',
-    gallery: ['modern-kitchen', 'kitchen'],
+    photo: 'real-exaustao-predial',
+    gallery: ['real-exaustao-equipe', 'real-coifa-churrasqueira', 'real-coifa-operacao'],
     when: [
       'calor, fumaça, poluentes ou odor não estão sendo removidos',
       'ambiente com pressão negativa puxando ar de áreas indevidas',
@@ -245,8 +245,8 @@ export const services = [
     short: 'Tratamento químico da gordura dentro do duto, reduzindo acúmulo e risco de incêndio.',
     meta: 'Instalação e manutenção de sistema saponificante em coifas e dutos de exaustão industrial: dosagem, bicos, controle e redução de risco de incêndio.',
     lead: 'Gordura acumulada em duto de exaustão é combustível esperando ignição. O sistema saponificante ataca o problema na origem: dosa solução alcalina na captação e converte a gordura em composto solúvel, antes que ela endureça no duto.',
-    illustration: 'saponification',
-    gallery: ['hood', 'modern-kitchen'],
+    photo: 'real-saponificacao',
+    gallery: ['real-saponificacao-detalhe', 'real-exaustao-predial'],
     when: [
       'linha de fritura, grelha ou churrasco com alta geração de gordura',
       'duto com histórico de acúmulo rápido entre limpezas',
@@ -290,7 +290,7 @@ export const services = [
     meta: 'Instalação e manutenção de sistemas de refrigeração industrial: câmaras frigoríficas, balcões refrigerados, ilhas e conservação de alimentos.',
     lead: 'Refrigeração é onde a operação perde dinheiro em silêncio. Uma câmara que trabalha dois graus acima do ponto não para a cozinha — só encurta a validade de tudo que está dentro dela.',
     illustration: 'refrigeration',
-    gallery: ['food-factory', 'equipment'],
+    gallery: ['real-balcao-refrigerado', 'food-factory', 'equipment'],
     when: [
       'câmara ou balcão que não segura a temperatura de projeto',
       'implantação de área de conservação nova',
@@ -331,8 +331,8 @@ export const services = [
     short: 'Cocção, banho-maria, estufas e manutenção de temperatura.',
     meta: 'Instalação e manutenção de sistemas de aquecimento industrial: banho-maria, estufas, pass-through aquecido e linhas de cocção.',
     lead: 'Manter quente é tão técnico quanto manter frio. Distribuição irregular de calor em uma linha de distribuição produz o mesmo resultado de uma falha: alimento fora da faixa segura.',
-    illustration: 'heating',
-    gallery: ['buffet', 'industrial-kitchen'],
+    photo: 'real-fogao-industrial',
+    gallery: ['real-estufa', 'buffet', 'industrial-kitchen'],
     when: [
       'linha de distribuição que não sustenta a temperatura',
       'implantação de buffet, self-service ou pass-through',
@@ -508,8 +508,8 @@ export const services = [
     short: 'Atendimento preventivo, corretivo e contratos conforme criticidade.',
     meta: 'Manutenção preventiva e corretiva de cozinhas industriais, equipamentos em inox, exaustão, refrigeração e aquecimento.',
     lead: 'Manutenção corretiva é a mais cara que existe — você paga o conserto e a parada junto. O plano preventivo existe para transferir a intervenção para o horário que a operação escolhe.',
-    photo: 'welding',
-    gallery: ['workshop', 'kitchen'],
+    photo: 'real-exaustao-equipe',
+    gallery: ['workshop', 'real-cozinha-inox'],
     when: [
       'falha observada em equipamento ou estrutura',
       'rotina preventiva planejada por criticidade',
@@ -551,8 +551,8 @@ export const services = [
     short: 'Fabricação sob medida e manutenção de casos instrumentários, câmaras mortuárias, passa-volumes e carros térmicos.',
     meta: 'Fabricação e manutenção de equipamentos hospitalares em inox: casos instrumentários, câmaras mortuárias, passa-volumes e carros térmicos.',
     lead: 'Ambiente hospitalar não tolera improviso nem parada longa. Os equipamentos precisam de superfícies que não retenham resíduo, conformidade com Anvisa e RDC 50, e manutenção que se adapte ao protocolo da unidade — não o contrário.',
-    illustration: 'hospital',
-    gallery: ['equipment', 'kitchen'],
+    photo: 'real-hospital-cme',
+    gallery: ['real-hospital-prateleiras', 'real-copa-bancada', 'equipment'],
     specialties: [
       {
         name: 'Casos instrumentários',

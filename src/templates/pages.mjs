@@ -10,7 +10,7 @@ import { site, contact, company, whatsapp, clientGroups, clientCount, legalNotic
 import { services, servicesByCategory, serviceBySlug } from '../content/services.mjs'
 import { segments, segmentBySlug } from '../content/segments.mjs'
 import { illustrations } from './illustrations.mjs'
-import { esc, attr, picture, illustrativeNote } from './layout.mjs'
+import { esc, attr, picture, illustrativeNote, artTag, hasStockPhoto } from './layout.mjs'
 
 const WHATS = whatsapp()
 
@@ -75,11 +75,14 @@ const relatedBlock = slugs => {
 
 const mediaFor = item =>
   item.photo
-    ? `${picture(item.photo, { sizes: '(max-width:1080px) 100vw, 46vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span>`
+    ? `${picture(item.photo, { sizes: '(max-width:1080px) 100vw, 46vw', priority: true })}${artTag(item.photo)}`
     : `<div class="art-svg">${illustrations[item.illustration]}</div><span class="art-tag">Esquema técnico</span>`
 
 const galleryBlock = (keys, heading, copy) => {
   if (!keys?.length) return ''
+  const note = hasStockPhoto(keys)
+    ? illustrativeNote('Fotos legendadas “Projeto Designer Inox” são obras da empresa. As demais são imagens ilustrativas de banco licenciado.')
+    : ''
   return `<section class="section section-void">
 <div class="container">
 <div class="section-head section-head-stack">
@@ -88,12 +91,14 @@ const galleryBlock = (keys, heading, copy) => {
 </div>
 <div class="gallery-grid">
 ${keys.map(key => {
-  const credit = photos[key]?.credit
-  const caption = credit ? `<figcaption>Foto: ${esc(credit)}</figcaption>` : ''
+  const meta = photos[key]
+  const caption = meta?.own
+    ? '<figcaption>Projeto Designer Inox</figcaption>'
+    : meta?.credit ? `<figcaption>Foto: ${esc(meta.credit)}</figcaption>` : ''
   return `<figure class="gallery-item reveal">${picture(key, { sizes: '(max-width:720px) 100vw, (max-width:1080px) 50vw, 33vw' })}${caption}</figure>`
 }).join('\n')}
 </div>
-${illustrativeNote('Imagens ilustrativas de banco licenciado. Não representam obras executadas pela Designer Inox Brasil.')}
+${note}
 </div>
 </section>`
 }
@@ -151,7 +156,7 @@ export function homePage() {
   const guidanceWhats = whatsapp('Olá, encontrei a Designer Inox Brasil pelo site. Ainda não sei qual serviço preciso e gostaria de orientação. Minha necessidade é:')
 
   return `<section class="hero hero-conversion">
-<div class="hero-media" aria-hidden="true">${picture('industrial-kitchen', { sizes: '100vw', priority: true })}</div>
+<div class="hero-media" aria-hidden="true">${picture('real-cozinha-industrial', { sizes: '100vw', priority: true })}</div>
 <div class="hero-overlay" aria-hidden="true"></div>
 <div class="container hero-conversion-grid">
 <div class="hero-copy hero-copy-conversion">
@@ -217,7 +222,7 @@ ${eyebrow('Cozinhas industriais · equipamentos · sistemas')}
 
 <section class="section technical-section">
 <div class="container technical-grid">
-<div class="technical-art reveal">${picture('plasma', { sizes: '(max-width:1080px) 100vw, 46vw' })}<span class="art-tag">Imagem ilustrativa</span><div class="technical-stamp"><strong>Projeto aplicado</strong><span>medida · carga · fluxo · interfaces</span></div></div>
+<div class="technical-art reveal">${picture('plasma', { sizes: '(max-width:1080px) 100vw, 46vw' })}${artTag('plasma')}<div class="technical-stamp"><strong>Projeto aplicado</strong><span>medida · carga · fluxo · interfaces</span></div></div>
 <div class="technical-copy reveal">
 ${eyebrow('Precisão antes da fabricação')}
 <h2>O inox é o resultado. A decisão começa antes.</h2>
@@ -344,7 +349,7 @@ ${eyebrow('Todos os serviços')}
 <a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Pedir orçamento <span class="arrow" aria-hidden="true">↗</span></a>
 </div>
 </div>
-<div class="page-art">${picture('equipment', { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
+<div class="page-art">${picture('real-fogao-industrial', { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}${artTag('real-fogao-industrial')}</div>
 </div>
 <div class="page-ribbon"></div>
 </section>
@@ -506,7 +511,7 @@ ${eyebrow('Contextos de operação')}
 <p class="page-lead">Volume, fluxo, calor, higiene, carga e continuidade mudam conforme o contexto de operação. O material é o mesmo — as exigências, não.</p>
 <div class="hero-actions"><a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Pedir orçamento <span class="arrow" aria-hidden="true">↗</span></a></div>
 </div>
-<div class="page-art">${picture('modern-kitchen', { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
+<div class="page-art">${picture('real-varejo-ilha', { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}${artTag('real-varejo-ilha')}</div>
 </div>
 <div class="page-ribbon"></div>
 </section>
@@ -544,7 +549,7 @@ ${eyebrow(segment.navTitle)}
 <p class="page-lead">${esc(segment.lead)}</p>
 <div class="hero-actions"><a class="btn" href="${attr(segmentWhats)}" target="_blank" rel="noopener noreferrer">Avaliar minha operação <span class="arrow" aria-hidden="true">↗</span></a></div>
 </div>
-<div class="page-art">${picture(segment.photo, { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
+<div class="page-art">${picture(segment.photo, { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}${artTag(segment.photo)}</div>
 </div>
 <div class="page-ribbon"></div>
 </section>
@@ -606,7 +611,7 @@ ${eyebrow('Clientes')}
 <p class="page-lead">Hospitais, embaixadas, redes de varejo, restaurantes, hotelaria e construtoras organizados em ${clientGroups.length} grupos de atuação — um recorte por tipo de cliente, diferente dos ${segments.length} segmentos de solução.</p>
 <div class="hero-actions"><a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Pedir orçamento <span class="arrow" aria-hidden="true">↗</span></a></div>
 </div>
-<div class="page-art">${picture('buffet', { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
+<div class="page-art">${picture('real-varejo-expositor', { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}${artTag('real-varejo-expositor')}</div>
 </div>
 <div class="page-ribbon"></div>
 </section>
@@ -639,7 +644,7 @@ ${eyebrow('Empresa')}
 <p class="page-lead">A Designer Inox Brasil projeta, fabrica, instala, integra sistemas e mantém estruturas e equipamentos em aço inox para operações profissionais em ${esc(site.region)}.</p>
 <div class="hero-actions"><a class="btn" href="${attr(WHATS)}" target="_blank" rel="noopener noreferrer">Falar com a equipe <span class="arrow" aria-hidden="true">↗</span></a></div>
 </div>
-<div class="page-art">${picture('workshop', { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}<span class="art-tag">Imagem ilustrativa</span></div>
+<div class="page-art">${picture('real-exaustao-equipe', { sizes: '(max-width:1080px) 100vw, 40vw', priority: true })}${artTag('real-exaustao-equipe')}</div>
 </div>
 <div class="page-ribbon"></div>
 </section>

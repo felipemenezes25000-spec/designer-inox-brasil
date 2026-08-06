@@ -140,6 +140,16 @@ export function picture(key, { sizes = '100vw', className = '', loading = 'lazy'
 export const illustrativeNote = (text = 'Imagem ilustrativa') =>
   `<p class="illustrative-note">${esc(text)}</p>`
 
+/**
+ * Selo sobre a mídia do herói. Foto real da empresa recebe "Projeto Designer
+ * Inox"; foto de banco continua marcada como "Imagem ilustrativa".
+ */
+export const artTag = key =>
+  `<span class="art-tag${photos[key]?.own ? ' art-tag-own' : ''}">${photos[key]?.own ? 'Projeto Designer Inox' : 'Imagem ilustrativa'}</span>`
+
+/** Verdadeiro se alguma das chaves aponta para foto de banco (não-própria). */
+export const hasStockPhoto = keys => keys.some(k => !photos[k]?.own)
+
 const navMarkup = (current, { activeNav } = {}) =>
   nav
     .map(item => {
