@@ -358,7 +358,7 @@ git mv assets/brand/* public/brand/
 ls public/photos | wc -l && ls public/brand | wc -l
 ```
 
-Esperado: `197` fotos e `16` arquivos de marca. Número diferente significa arquivo perdido
+Esperado: `196` fotos e `16` arquivos de marca. Número diferente significa arquivo perdido
 no move — parar e investigar antes de seguir.
 
 - [ ] **Step 3: Baixar as fontes**
@@ -2829,7 +2829,7 @@ git push origin main
 |---|---|
 | Stack TanStack Start instalada | 1 |
 | Conteúdo portado para TS, sem reescrita | 2 |
-| 197 fotos + marca migradas | 3 |
+| 196 fotos + marca migradas | 3 |
 | Fontes auto-hospedadas, sem Google Fonts | 3 |
 | Regra de proveniência em código | 4 |
 | Aviso legal no rodapé | 5 |
