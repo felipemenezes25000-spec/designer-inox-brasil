@@ -796,25 +796,67 @@ export function accentText(accent: Accent | undefined) {
 }
 ```
 
-- [ ] **Step 3: PageHero**
+- [ ] **Step 3: Portar as ilustrações técnicas**
+
+`src/templates-legacy/illustrations.mjs` tem 7 diagramas SVG desenhados à mão
+(`saponification`, `refrigeration`, `heating`, `co2`, `automation`, `integration`,
+`hospital`). Quatro serviços — refrigeração, CO₂, automação e sistemas integrados — **não
+têm foto**: o diagrama é o visual deles. Sem isto, quatro páginas ficam sem imagem nenhuma.
+
+Criar `src/content/illustrations.ts` movendo o arquivo com `git mv` e anotando o tipo,
+mesmo método da Task 2 — o SVG não é redigitado:
+
+```ts
+export const illustrations: Record<string, string> = { /* … intocado … */ };
+```
+
+Criar `src/components/site/Illustration.tsx`:
+
+```tsx
+import { illustrations } from "@/content/illustrations";
+
+export function Illustration({ id, className = "" }: { id: string; className?: string }) {
+  const svg = illustrations[id];
+  if (!svg) return null;
+
+  // O SVG é conteúdo do próprio projeto, versionado no repositório — não vem de
+  // entrada de usuário nem de rede, então não há superfície de injeção aqui.
+  return (
+    <div
+      className={`aspect-[4/3] w-full overflow-hidden [&>svg]:h-full [&>svg]:w-full ${className}`}
+      dangerouslySetInnerHTML={{ __html: svg }}
+    />
+  );
+}
+```
+
+Verificar o contraste: os diagramas usam texto claro (`#dfe6ea`), o que sugere fundo
+escuro — compatível com o design novo. Confirmar renderizado na Task 8 e ajustar se
+brigarem com o fundo.
+
+- [ ] **Step 4: PageHero**
 
 Criar `src/components/site/PageHero.tsx`:
 
 ```tsx
 import type { ReactNode } from "react";
 import { Photo } from "./Photo";
+import { Illustration } from "./Illustration";
 
 export function PageHero({
   eyebrow,
   title,
   lead,
   photo,
+  illustration,
   children,
 }: {
   eyebrow: string;
   title: string;
   lead: string;
   photo?: string;
+  /** Alternativa à foto: 4 serviços de sistema não têm foto, têm diagrama. */
+  illustration?: string;
   children?: ReactNode;
 }) {
   return (
@@ -853,6 +895,12 @@ export function PageHero({
               />
             </div>
           )}
+
+          {!photo && illustration && (
+            <div className="reveal min-w-0" data-reveal style={{ transitionDelay: "160ms" }}>
+              <Illustration id={illustration} />
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -860,7 +908,65 @@ export function PageHero({
 }
 ```
 
-- [ ] **Step 4: ListSection**
+- [ ] **Step 5: DetailSection**
+
+Duas partes do conteúdo não são lista simples, são par título+descrição: `specialties` dos
+serviços (`{ name, desc }[]`, com descrição técnica longa) e `pressures` dos segmentos
+(`{ label, note }[]`). Um componente serve aos dois.
+
+Criar `src/components/site/DetailSection.tsx`:
+
+```tsx
+import { SectionShell, SectionHeading } from "./primitives";
+
+export interface DetailItem {
+  title: string;
+  text: string;
+}
+
+export function DetailSection({
+  index,
+  eyebrow,
+  title,
+  lead,
+  items,
+  columns = 2,
+}: {
+  index: string;
+  eyebrow: string;
+  title: string;
+  lead: string;
+  items: DetailItem[];
+  columns?: 2 | 3;
+}) {
+  if (!items.length) return null;
+
+  return (
+    <SectionShell className="py-20 sm:py-28">
+      <SectionHeading index={index} eyebrow={eyebrow} title={title} lead={lead} align="between" />
+      <ul
+        className={`mt-14 grid gap-px bg-border ${
+          columns === 3 ? "sm:grid-cols-2 lg:grid-cols-3" : "sm:grid-cols-2"
+        }`}
+      >
+        {items.map((item, i) => (
+          <li
+            key={item.title}
+            className="reveal specular bg-background p-6 sm:p-8 lg:p-10"
+            data-reveal
+            style={{ transitionDelay: `${i * 70}ms` }}
+          >
+            <h3 className="font-display text-xl font-bold tracking-tight">{item.title}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.text}</p>
+          </li>
+        ))}
+      </ul>
+    </SectionShell>
+  );
+}
+```
+
+- [ ] **Step 6: ListSection**
 
 Criar `src/components/site/ListSection.tsx`:
 
@@ -909,7 +1015,7 @@ export function ListSection({
 }
 ```
 
-- [ ] **Step 5: FaqSection**
+- [ ] **Step 7: FaqSection**
 
 Criar `src/components/site/FaqSection.tsx`:
 
@@ -959,7 +1065,7 @@ export function FaqSection({
 }
 ```
 
-- [ ] **Step 6: RelatedSection**
+- [ ] **Step 8: RelatedSection**
 
 Criar `src/components/site/RelatedSection.tsx`:
 
@@ -967,17 +1073,29 @@ Criar `src/components/site/RelatedSection.tsx`:
 import { serviceBySlug } from "@/content/services";
 import { SectionShell, SectionHeading } from "./primitives";
 
-export function RelatedSection({ slugs }: { slugs: string[] }) {
+export function RelatedSection({
+  slugs,
+  index = "08",
+  eyebrow = "Relacionados",
+  title = "O que costuma entrar junto.",
+  lead = "Serviços que aparecem no mesmo escopo com frequência.",
+}: {
+  slugs: string[];
+  index?: string;
+  eyebrow?: string;
+  title?: string;
+  lead?: string;
+}) {
   const related = slugs.map((s) => serviceBySlug.get(s)).filter((s) => s !== undefined);
   if (!related.length) return null;
 
   return (
     <SectionShell className="py-20 sm:py-28">
       <SectionHeading
-        index="08"
-        eyebrow="Relacionados"
-        title="O que costuma entrar junto."
-        lead="Serviços que aparecem no mesmo escopo com frequência."
+        index={index}
+        eyebrow={eyebrow}
+        title={title}
+        lead={lead}
         align="between"
       />
       <ul className="mt-14 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
@@ -1006,7 +1124,7 @@ export function RelatedSection({ slugs }: { slugs: string[] }) {
 }
 ```
 
-- [ ] **Step 7: CtaSection**
+- [ ] **Step 9: CtaSection**
 
 Criar `src/components/site/CtaSection.tsx`:
 
@@ -1039,7 +1157,7 @@ export function CtaSection({ subject }: { subject: string }) {
 }
 ```
 
-- [ ] **Step 8: Verificar a tipagem**
+- [ ] **Step 10: Verificar a tipagem**
 
 ```bash
 npx tsc --noEmit
@@ -1047,7 +1165,7 @@ npx tsc --noEmit
 
 Esperado: nenhum erro.
 
-- [ ] **Step 9: Commit**
+- [ ] **Step 11: Commit**
 
 ```bash
 git add src/components/site/ src/lib/accent.ts src/styles.css
@@ -1238,6 +1356,7 @@ import { serviceBySlug } from "@/content/services";
 import { PageShell } from "@/components/site/PageShell";
 import { PageHero } from "@/components/site/PageHero";
 import { ListSection } from "@/components/site/ListSection";
+import { DetailSection } from "@/components/site/DetailSection";
 import { FaqSection } from "@/components/site/FaqSection";
 import { RelatedSection } from "@/components/site/RelatedSection";
 import { CtaSection } from "@/components/site/CtaSection";
@@ -1280,16 +1399,26 @@ function ServicePage() {
         title={service.title}
         lead={service.lead}
         photo={service.photo}
+        illustration={service.illustration}
       />
 
+      {service.hub && (
+        <RelatedSection
+          slugs={service.hub}
+          index="02"
+          eyebrow="Sistemas"
+          title="Cada sistema tem sua própria página."
+          lead="A integração é o ponto de encontro. O detalhe de cada disciplina está aqui."
+        />
+      )}
+
       {service.specialties && (
-        <ListSection
+        <DetailSection
           index="02"
           eyebrow="Especialidades"
           title="Especialidades deste serviço."
           lead="Equipamentos que fabricamos sob medida ou mantemos com assistência técnica especializada."
-          items={service.specialties}
-          accent={service.accent}
+          items={service.specialties.map((s) => ({ title: s.name, text: s.desc }))}
         />
       )}
 
@@ -1415,9 +1544,9 @@ import { segmentBySlug } from "@/content/segments";
 import { PageShell } from "@/components/site/PageShell";
 import { PageHero } from "@/components/site/PageHero";
 import { ListSection } from "@/components/site/ListSection";
+import { DetailSection } from "@/components/site/DetailSection";
 import { RelatedSection } from "@/components/site/RelatedSection";
 import { CtaSection } from "@/components/site/CtaSection";
-import { SectionShell, SectionHeading } from "@/components/site/primitives";
 import { seo, jsonLd, organizationLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/segmentos/$segmento")({
@@ -1451,28 +1580,13 @@ function SegmentPage() {
         photo={segment.photo}
       />
 
-      <SectionShell className="py-20 sm:py-28">
-        <SectionHeading
-          index="02"
-          eyebrow="Pressões"
-          title="O que aperta nesta operação."
-          lead="As condições que definem as escolhas de projeto neste segmento."
-          align="between"
-        />
-        <ul className="mt-14 grid gap-px bg-border sm:grid-cols-2">
-          {segment.pressures.map((p, i) => (
-            <li
-              key={p.label}
-              className="reveal specular bg-background p-6 sm:p-8"
-              data-reveal
-              style={{ transitionDelay: `${i * 70}ms` }}
-            >
-              <h3 className="font-display text-xl font-bold tracking-tight">{p.label}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.note}</p>
-            </li>
-          ))}
-        </ul>
-      </SectionShell>
+      <DetailSection
+        index="02"
+        eyebrow="Pressões"
+        title="O que aperta nesta operação."
+        lead="As condições que definem as escolhas de projeto neste segmento."
+        items={segment.pressures.map((p) => ({ title: p.label, text: p.note }))}
+      />
 
       <ListSection
         index="03"
