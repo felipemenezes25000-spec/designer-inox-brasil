@@ -9,6 +9,13 @@ node_modules/
 *.tsbuildinfo
 next-env.d.ts
 
+# Build — TanStack Start / Vite / Nitro
+.output/
+.nitro/
+.tanstack/
+dist/
+*.local
+
 # Ambiente — nenhum arquivo local de ambiente é versionado.
 # Somente os dois modelos abaixo entram no repositório.
 .env

@@ -1,0 +1,386 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * DESIGNER INOX BRASIL — sistema de design "Inox Especular"
+ * Preto quase absoluto, grafite, titânio, branco mineral.
+ * Sinal único: azul-arco (corte a laser) usado com extrema parcimônia.
+ * Assinatura recorrente: feixe especular + linha de precisão com ticks.
+ */
+
+@theme inline {
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Archivo", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  --color-onyx: var(--onyx);
+  --color-graphite: var(--graphite);
+  --color-titanium: var(--titanium);
+  --color-mineral: var(--mineral);
+  --color-signal: var(--signal);
+
+  --animate-sheen: sheen 9s ease-in-out infinite;
+  --animate-scan: scan 7s cubic-bezier(0.5, 0, 0.2, 1) infinite;
+  --animate-hairline-in: hairline-in 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+:root {
+  --onyx: oklch(0.115 0.003 250);
+  --graphite: oklch(0.175 0.004 250);
+  --titanium: oklch(0.66 0.008 250);
+  --mineral: oklch(0.965 0.003 250);
+  --signal: oklch(0.78 0.11 235);
+
+  --background: oklch(0.115 0.003 250);
+  --foreground: oklch(0.965 0.003 250);
+  --card: oklch(0.155 0.004 250);
+  --card-foreground: oklch(0.965 0.003 250);
+  --popover: oklch(0.155 0.004 250);
+  --popover-foreground: oklch(0.965 0.003 250);
+  --primary: oklch(0.965 0.003 250);
+  --primary-foreground: oklch(0.115 0.003 250);
+  --secondary: oklch(0.2 0.004 250);
+  --secondary-foreground: oklch(0.965 0.003 250);
+  --muted: oklch(0.2 0.004 250);
+  --muted-foreground: oklch(0.72 0.007 250);
+  --accent: oklch(0.24 0.005 250);
+  --accent-foreground: oklch(0.965 0.003 250);
+  --destructive: oklch(0.62 0.2 27);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(1 0 0 / 11%);
+  --input: oklch(1 0 0 / 18%);
+  --ring: oklch(0.78 0.11 235);
+
+  --gradient-titanium: linear-gradient(
+    104deg,
+    oklch(0.42 0.006 250) 0%,
+    oklch(0.99 0.002 250) 18%,
+    oklch(0.55 0.006 250) 34%,
+    oklch(0.93 0.003 250) 52%,
+    oklch(0.46 0.006 250) 70%,
+    oklch(0.98 0.002 250) 86%,
+    oklch(0.6 0.006 250) 100%
+  );
+  --gradient-veil: linear-gradient(
+    to bottom,
+    oklch(0.115 0.003 250 / 0.35) 0%,
+    oklch(0.115 0.003 250 / 0.72) 52%,
+    oklch(0.115 0.003 250) 100%
+  );
+  --gradient-plate: linear-gradient(
+    158deg,
+    oklch(0.205 0.004 250) 0%,
+    oklch(0.145 0.003 250) 62%,
+    oklch(0.13 0.003 250) 100%
+  );
+}
+
+@keyframes sheen {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes scan {
+  0% {
+    transform: translateX(-120%) skewX(-14deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.9;
+  }
+  55% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateX(220%) skewX(-14deg);
+    opacity: 0;
+  }
+}
+
+@keyframes hairline-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--mineral);
+    color: var(--onyx);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ---------- tipografia ---------- */
+
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+@utility text-titanium-fill {
+  background-image: var(--gradient-titanium);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: var(--animate-sheen);
+}
+
+/* ---------- superfícies ---------- */
+
+@utility plate {
+  background: var(--gradient-plate);
+  border: 1px solid var(--color-border);
+  position: relative;
+  isolation: isolate;
+}
+
+@utility grid-etch {
+  background-image:
+    linear-gradient(to right, oklch(1 0 0 / 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(1 0 0 / 0.035) 1px, transparent 1px);
+  background-size: 96px 96px;
+}
+
+/* Assinatura: feixe especular que atravessa a superfície no hover */
+@utility specular {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -30% -60%;
+    background: linear-gradient(
+      100deg,
+      transparent 38%,
+      oklch(1 0 0 / 0.1) 47%,
+      oklch(1 0 0 / 0.26) 50%,
+      oklch(1 0 0 / 0.1) 53%,
+      transparent 62%
+    );
+    transform: translateX(-115%) skewX(-14deg);
+    transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: 1;
+  }
+  &:hover::after,
+  &:focus-within::after {
+    transform: translateX(115%) skewX(-14deg);
+  }
+}
+
+/* Linha de precisão com marcações — acompanha as seções */
+@utility precision-rail {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      oklch(1 0 0 / 0.16) 8%,
+      oklch(1 0 0 / 0.16) 92%,
+      transparent
+    );
+  }
+}
+
+@utility hairline {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    oklch(1 0 0 / 0.18),
+    oklch(1 0 0 / 0.05) 60%,
+    transparent
+  );
+  transform-origin: left;
+}
+
+/* ---------- interação ---------- */
+
+@utility btn-base {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 3.25rem;
+  padding-inline: 1.75rem;
+  transition:
+    background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@utility btn-solid {
+  background: var(--mineral);
+  color: var(--onyx);
+  border: 1px solid var(--mineral);
+  &:hover {
+    background: oklch(1 0 0);
+    transform: translateY(-2px);
+  }
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+@utility btn-ghost {
+  background: transparent;
+  color: var(--foreground);
+  border: 1px solid var(--color-border);
+  &:hover {
+    border-color: oklch(1 0 0 / 0.42);
+    background: oklch(1 0 0 / 0.04);
+    transform: translateY(-2px);
+  }
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+@utility link-underline {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.35em;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* ---------- scroll reveal ---------- */
+
+@utility reveal {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+  &[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal,
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
