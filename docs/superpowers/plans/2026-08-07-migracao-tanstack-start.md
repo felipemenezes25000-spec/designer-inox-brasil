@@ -753,24 +753,30 @@ Essa informação se perde se tudo renderizar em azul-sinal.
 
 Em `src/styles.css`, dentro do `:root`, acrescentar os acentos derivados da paleta escura:
 
+Os seis acentos realmente usados nos dados são `steel`, `teal`, `ice`, `mint`, `ember` e
+`volt` — confirmado varrendo todos os `accent:` de serviços, segmentos e grupos de cliente.
+`glacial` e `amber` estão na união `Accent` mas não são usados por nada: entraram por
+leitura do comentário que descreve a paleta, não do dado. **Remova os dois de
+`src/content/types.ts`** — união mais larga que o uso esconde erro de digitação.
+
 ```css
   --accent-steel: oklch(0.78 0.11 235);
-  --accent-glacial: oklch(0.82 0.09 215);
-  --accent-amber: oklch(0.8 0.12 65);
+  --accent-teal: oklch(0.8 0.1 195);
+  --accent-ice: oklch(0.85 0.07 220);
+  --accent-mint: oklch(0.82 0.1 165);
   --accent-ember: oklch(0.72 0.15 40);
   --accent-volt: oklch(0.86 0.15 100);
-  --accent-mint: oklch(0.82 0.1 165);
 ```
 
 E no bloco `@theme inline`:
 
 ```css
   --color-accent-steel: var(--accent-steel);
-  --color-accent-glacial: var(--accent-glacial);
-  --color-accent-amber: var(--accent-amber);
+  --color-accent-teal: var(--accent-teal);
+  --color-accent-ice: var(--accent-ice);
+  --color-accent-mint: var(--accent-mint);
   --color-accent-ember: var(--accent-ember);
   --color-accent-volt: var(--accent-volt);
-  --color-accent-mint: var(--accent-mint);
 ```
 
 Criar o helper em `src/lib/accent.ts`:
@@ -781,14 +787,17 @@ import type { Accent } from "@/content/types";
 /**
  * Classe de cor por acento. Mapa literal, não template string — o Tailwind
  * varre o código-fonte e não enxerga classe montada em runtime.
+ *
+ * `Record<Accent, string>` é de propósito: acrescentar um acento ao tipo sem
+ * dar cor a ele vira erro de compilação, não item invisível em produção.
  */
 const TEXT: Record<Accent, string> = {
   steel: "text-accent-steel",
-  glacial: "text-accent-glacial",
-  amber: "text-accent-amber",
+  teal: "text-accent-teal",
+  ice: "text-accent-ice",
+  mint: "text-accent-mint",
   ember: "text-accent-ember",
   volt: "text-accent-volt",
-  mint: "text-accent-mint",
 };
 
 export function accentText(accent: Accent | undefined) {
