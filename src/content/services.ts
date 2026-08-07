@@ -9,14 +9,16 @@
  * paleta inteira sai do símbolo da marca (engrenagem + floco de neve).
  */
 
-export const categories = [
+import type { Service, ServiceCategory } from './types'
+
+export const categories: ServiceCategory[] = [
   { id: 'fabricacao', label: 'Implantar e fabricar', note: 'Projeto técnico, fabricação e instalação.' },
   { id: 'ar', label: 'Controlar ar e exaustão', note: 'Captação, condução, filtragem e segurança contra incêndio.' },
   { id: 'sistemas', label: 'Integrar frio, calor e comando', note: 'Refrigeração, aquecimento, CO₂ e automação elétrica.' },
   { id: 'continuidade', label: 'Reformar e manter', note: 'Manutenção preventiva, corretiva e modernizações.' },
 ]
 
-export const services = [
+export const services: Service[] = [
   // ── Projeto e fabricação ────────────────────────────────────────────────
   {
     slug: 'cozinhas-industriais',
@@ -621,7 +623,8 @@ export const services = [
   },
 ]
 
-export const serviceBySlug = Object.fromEntries(services.map(service => [service.slug, service]))
+export const serviceBySlug = new Map(services.map((s) => [s.slug, s]))
+export const serviceSlugs = services.map((s) => s.slug)
 
 export const servicesByCategory = categories.map(category => ({
   ...category,

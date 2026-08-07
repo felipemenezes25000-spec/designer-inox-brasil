@@ -6,6 +6,8 @@
  * um telefone ou um item de menu é uma edição só — não 23.
  */
 
+import type { ClientGroup, PhotoEntry } from './types'
+
 export const site = {
   name: 'Designer Inox Brasil',
   legalName: 'Designer Inox Brasil',
@@ -37,7 +39,7 @@ export const company = {
 }
 
 /** Monta o link do WhatsApp com uma mensagem pré-preenchida e codificada. */
-export const whatsapp = (message = 'Olá, encontrei a Designer Inox Brasil pelo site e gostaria de solicitar uma avaliação. Minha necessidade é:') =>
+export const whatsapp = (message: string = 'Olá, encontrei a Designer Inox Brasil pelo site e gostaria de solicitar uma avaliação. Minha necessidade é:') =>
   `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(message)}`
 
 export const nav = [
@@ -68,7 +70,7 @@ export const nav = [
  *
  * Das 25 linhas informadas, restaram 23 organizações distintas.
  */
-export const clientGroups = [
+export const clientGroups: ClientGroup[] = [
   {
     sector: 'Saúde',
     note: 'Ambientes com exigência sanitária e continuidade crítica.',
@@ -124,7 +126,7 @@ export const clientCount = clientGroups.reduce((total, group) => total + group.c
  * e continuam rotuladas como ilustrativas — nunca apresentadas como obra da
  * empresa. Ver [[feedback-visual-identity]].
  */
-export const photos = {
+export const photos: Record<string, PhotoEntry> = {
   // ── Banco licenciado (ilustrativas) ─────────────────────────────────────
   kitchen: { alt: 'Cozinha profissional com bancadas e equipamentos em aço inoxidável', credit: 'Bruno Makori' },
   welding: { alt: 'Profissional executando soldagem em estrutura metálica industrial', credit: 'JL Photographie' },

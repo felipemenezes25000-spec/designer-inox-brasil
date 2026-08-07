@@ -6,7 +6,9 @@
  * um contexto com exigência própria que não cabia em nenhum dos outros três.
  */
 
-export const segments = [
+import type { Segment } from './types'
+
+export const segments: Segment[] = [
   {
     slug: 'restaurantes-e-cozinhas-profissionais',
     accent: 'ember',
@@ -101,4 +103,5 @@ export const segments = [
   },
 ]
 
-export const segmentBySlug = Object.fromEntries(segments.map(segment => [segment.slug, segment]))
+export const segmentBySlug = new Map(segments.map((s) => [s.slug, s]))
+export const segmentSlugs = segments.map((s) => s.slug)
