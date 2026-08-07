@@ -36,7 +36,8 @@ src/
     index.tsx               landing (10 seções do repo novo, intactas)
     servicos/index.tsx      índice dos 13 serviços
     $servico.tsx            13 páginas de serviço, dirigidas por dados
-    segmentos.tsx
+    segmentos/index.tsx     índice dos 4 segmentos
+    segmentos/$segmento.tsx 4 páginas de segmento, dirigidas por dados
     clientes.tsx
     empresa.tsx
     orcamento.tsx
@@ -76,15 +77,17 @@ Toda URL indexada se mantém, com barra final. Esta tabela é o contrato da migr
 `/automacao-eletrica/` · `/sistemas-integrados-em-inox/` · `/manutencao/` ·
 `/equipamentos-hospitalares/`
 
+**Segmentos (4)** — `segmentos/$segmento.tsx`, dirigida por `segments.ts`:
+
+`/segmentos/restaurantes-e-cozinhas-profissionais/` · `/segmentos/hotelaria-e-alimentacao-coletiva/` ·
+`/segmentos/producao-e-varejo-de-alimentos/` · `/segmentos/saude-e-ambientes-hospitalares/`
+
 **Institucionais (7):** `/servicos/` · `/segmentos/` · `/clientes/` · `/empresa/` ·
 `/orcamento/` · `/politica-de-privacidade/` · `/termos-de-uso/`
 
 **Home (1):** `/`
 
-Total: **21 páginas** + `404`.
-
-`/segmentos/` é uma página única com os 4 segmentos como seções — não são 4 páginas.
-Os slugs em `segments.ts` servem de âncora, não de rota.
+Total: **25 páginas** + `404`. Confere com as 25 `<loc>` do `sitemap.xml` atual.
 
 ### A rota dinâmica
 
@@ -198,8 +201,8 @@ de o deploy ser considerado pronto.**
 
 Nenhuma etapa é dada por concluída sem evidência:
 
-1. `npm run build` conclui e gera 21 arquivos HTML — contados, não presumidos
-2. Cada uma das 21 URLs resolve com o conteúdo correto
+1. `npm run build` conclui e gera 25 arquivos HTML — contados, não presumidos
+2. Cada uma das 25 URLs resolve com o conteúdo correto
 3. Chrome headless em home, serviço, índice e legal — desktop e mobile
 4. Fotos, marca e fontes respondem 200
 5. JSON-LD válido; canonical com barra final
@@ -217,8 +220,9 @@ a estratégia muda e precisa ser rediscutida antes.
 embrulha o nitro e pode não expor a configuração de pré-renderização. Se não expuser, é
 substituído pelo `defineConfig` padrão do TanStack Start.
 
-**Volume.** 13 páginas de serviço e 7 institucionais para reestilizar — 20 das 21. Só a
-home chega pronta do repo novo. É o grosso do trabalho e será entregue em etapas.
+**Volume.** 13 páginas de serviço, 4 de segmento e 7 institucionais para reestilizar —
+24 das 25. Só a home chega pronta do repo novo. É o grosso do trabalho e será entregue
+em etapas.
 
 **Fotos em fundo escuro.** Tratadas para layout claro. Risco de contraste ruim; mitigado
 pela revisão renderizada de cada seção.
