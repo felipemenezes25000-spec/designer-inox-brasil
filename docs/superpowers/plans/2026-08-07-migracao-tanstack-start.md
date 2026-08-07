@@ -12,6 +12,16 @@
 
 **Origem clonada:** `C:\Users\Felipe\AppData\Local\Temp\claude\C--Users-Felipe-Documents-DESIGNER-INOX\ba87fc49-095a-4a5d-8870-1de33c94db5b\scratchpad\inox-luxe-visions`
 
+**Dev server:** porta **8080** (definida pelo wrapper `@lovable.dev/vite-tanstack-config`), não 3000.
+
+**Captura headless:** o `useReveal` anima com `IntersectionObserver` e deixa o conteúdo em
+`opacity: 0` até o elemento entrar em viewport. Chrome headless antigo captura antes disso
+e a página sai em branco. Usar sempre:
+
+```bash
+"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless=new --disable-gpu --force-prefers-reduced-motion --virtual-time-budget=4000 --screenshot=/tmp/shot.png --window-size=1440,2400 --user-data-dir=/tmp/chrome-<nome> http://localhost:8080/
+```
+
 Neste documento essa pasta é referida como `$ORIGEM`. Se ela não existir, reclonar:
 
 ```bash
@@ -142,11 +152,11 @@ Esperado: instalação conclui sem erro de peer dependency que impeça o build.
 npm run dev
 ```
 
-Esperado: servidor sobe e `http://localhost:3000` mostra a landing com as 10 seções.
+Esperado: servidor sobe e `http://localhost:8080` mostra a landing com as 10 seções.
 Como o painel de browser roda com viewport 0 neste ambiente, verificar com Chrome headless:
 
 ```bash
-"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless --disable-gpu --screenshot=/tmp/home.png --window-size=1440,2400 --user-data-dir=/tmp/chrome-task1 http://localhost:3000
+"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless --disable-gpu --screenshot=/tmp/home.png --window-size=1440,2400 --user-data-dir=/tmp/chrome-task1 http://localhost:8080
 ```
 
 Esperado: captura mostra o hero escuro com o título e o menu. Encerrar o dev server.
@@ -431,7 +441,7 @@ npm run dev
 Com o servidor no ar:
 
 ```bash
-"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless --disable-gpu --screenshot=/tmp/fonts.png --window-size=1440,1200 --user-data-dir=/tmp/chrome-task3 http://localhost:3000
+"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless --disable-gpu --screenshot=/tmp/fonts.png --window-size=1440,1200 --user-data-dir=/tmp/chrome-task3 http://localhost:8080
 ```
 
 Esperado: os títulos aparecem em Archivo (grotesca condensada), não em Helvetica/Arial.
@@ -528,7 +538,7 @@ Adicionar temporariamente no fim da home (`src/routes/index.tsx`), antes de `</m
 Rodar `npm run dev` e capturar:
 
 ```bash
-"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless --disable-gpu --screenshot=/tmp/photo.png --window-size=1440,3000 --user-data-dir=/tmp/chrome-task4 http://localhost:3000
+"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless --disable-gpu --screenshot=/tmp/photo.png --window-size=1440,3000 --user-data-dir=/tmp/chrome-task4 http://localhost:8080
 ```
 
 Esperado: a primeira foto legendada **"Projeto Designer Inox"** em azul-sinal; a segunda
@@ -681,7 +691,7 @@ npm run dev
 ```
 
 ```bash
-"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless --disable-gpu --screenshot=/tmp/home-real.png --window-size=1440,6000 --user-data-dir=/tmp/chrome-task5 http://localhost:3000
+"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless --disable-gpu --screenshot=/tmp/home-real.png --window-size=1440,6000 --user-data-dir=/tmp/chrome-task5 http://localhost:8080
 ```
 
 Esperado: logo no topo, 13 serviços listados nas quatro frentes, fotos reais com selo,
@@ -1190,13 +1200,13 @@ npm run dev
 ```
 
 ```bash
-curl -s http://localhost:3000/ | grep -o '<link rel="canonical"[^>]*>'
+curl -s http://localhost:8080/ | grep -o '<link rel="canonical"[^>]*>'
 ```
 
 Esperado: `<link rel="canonical" href="https://designer-inox-cinematic.vercel.app/"/>`
 
 ```bash
-curl -s http://localhost:3000/ | grep -o 'application/ld+json' | head -1
+curl -s http://localhost:8080/ | grep -o 'application/ld+json' | head -1
 ```
 
 Esperado: `application/ld+json`
@@ -1358,7 +1368,7 @@ npm run dev
 ```
 
 ```bash
-for s in cozinhas-industriais equipamentos-em-inox projeto-tecnico-e-fabricacao-cnc reformas-e-modernizacoes coifas-ventilacao-e-exaustao saponificacao-em-exaustao refrigeracao-industrial aquecimento-industrial sistemas-de-co2 automacao-eletrica sistemas-integrados-em-inox manutencao equipamentos-hospitalares; do printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/$s/)" "$s"; done
+for s in cozinhas-industriais equipamentos-em-inox projeto-tecnico-e-fabricacao-cnc reformas-e-modernizacoes coifas-ventilacao-e-exaustao saponificacao-em-exaustao refrigeracao-industrial aquecimento-industrial sistemas-de-co2 automacao-eletrica sistemas-integrados-em-inox manutencao equipamentos-hospitalares; do printf "%s %s\n" "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/$s/)" "$s"; done
 ```
 
 Esperado: `200` nas 13 linhas.
@@ -1366,7 +1376,7 @@ Esperado: `200` nas 13 linhas.
 - [ ] **Step 4: Verificar que slug inventado dá 404**
 
 ```bash
-curl -s -o /dev/null -w '%{http_code}\n' http://localhost:3000/servico-que-nao-existe/
+curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8080/servico-que-nao-existe/
 ```
 
 Esperado: `404`
@@ -1374,7 +1384,7 @@ Esperado: `404`
 - [ ] **Step 5: Verificar uma página renderizada**
 
 ```bash
-"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless --disable-gpu --screenshot=/tmp/servico.png --window-size=1440,6000 --user-data-dir=/tmp/chrome-task8 http://localhost:3000/cozinhas-industriais/
+"/c/Program Files/Google/Chrome/Application/chrome.exe" --headless --disable-gpu --screenshot=/tmp/servico.png --window-size=1440,6000 --user-data-dir=/tmp/chrome-task8 http://localhost:8080/cozinhas-industriais/
 ```
 
 Esperado: hero com título e foto legendada "Projeto Designer Inox", quatro listas
@@ -1594,7 +1604,7 @@ npm run dev
 ```
 
 ```bash
-for s in "" restaurantes-e-cozinhas-profissionais hotelaria-e-alimentacao-coletiva producao-e-varejo-de-alimentos saude-e-ambientes-hospitalares; do printf "%s /segmentos/%s\n" "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/segmentos/$s)" "$s"; done
+for s in "" restaurantes-e-cozinhas-profissionais hotelaria-e-alimentacao-coletiva producao-e-varejo-de-alimentos saude-e-ambientes-hospitalares; do printf "%s /segmentos/%s\n" "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/segmentos/$s)" "$s"; done
 ```
 
 Esperado: `200` nas 5 linhas.
@@ -1671,8 +1681,8 @@ function ServicesIndex() {
 - [ ] **Step 2: Verificar**
 
 ```bash
-curl -s -o /dev/null -w '%{http_code}\n' http://localhost:3000/servicos/
-curl -s http://localhost:3000/servicos/ | grep -c 'href="/cozinhas-industriais/"'
+curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8080/servicos/
+curl -s http://localhost:8080/servicos/ | grep -c 'href="/cozinhas-industriais/"'
 ```
 
 Esperado: `200`, e ao menos `1` link para o serviço.
@@ -1966,7 +1976,7 @@ function QuotePage() {
 - [ ] **Step 4: Verificar as três**
 
 ```bash
-for p in clientes empresa orcamento; do printf "%s /%s\n" "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/$p/)" "$p"; done
+for p in clientes empresa orcamento; do printf "%s /%s\n" "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/$p/)" "$p"; done
 ```
 
 Esperado: `200` nas três.
@@ -2093,8 +2103,8 @@ Acrescentar os imports correspondentes no topo de `__root.tsx`.
 - [ ] **Step 4: Verificar**
 
 ```bash
-for p in politica-de-privacidade termos-de-uso; do printf "%s /%s\n" "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/$p/)" "$p"; done
-curl -s http://localhost:3000/nao-existe/ | grep -c "Esta página não existe"
+for p in politica-de-privacidade termos-de-uso; do printf "%s /%s\n" "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/$p/)" "$p"; done
+curl -s http://localhost:8080/nao-existe/ | grep -c "Esta página não existe"
 ```
 
 Esperado: `200` nas duas legais; `1` na busca do texto do 404.
