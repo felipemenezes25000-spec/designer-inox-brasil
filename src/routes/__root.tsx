@@ -89,14 +89,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "preload",
-        href: "/fonts/archivo-latin-400.woff2",
-        as: "font",
-        type: "font/woff2",
-        crossOrigin: "anonymous",
-      },
-      {
-        rel: "preload",
-        href: "/fonts/archivo-latin-700.woff2",
+        href: "/fonts/archivo-latin-variable.woff2",
         as: "font",
         type: "font/woff2",
         crossOrigin: "anonymous",

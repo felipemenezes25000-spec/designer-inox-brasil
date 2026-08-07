@@ -2,52 +2,26 @@
 @source "../src";
 @import "tw-animate-css";
 
+/*
+ * Archivo e JetBrains Mono são fontes variáveis: um arquivo cobre todo o eixo
+ * de peso. O Google serve o mesmo binário sob nomes diferentes por peso — usar
+ * um @font-face por peso baixaria o mesmo arquivo 4 vezes, 140KB por 35KB, e
+ * dois deles estão em preload, no caminho crítico.
+ */
 @font-face {
   font-family: "Archivo";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100 900;
   font-display: swap;
-  src: url("/fonts/archivo-latin-400.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Archivo";
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("/fonts/archivo-latin-500.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Archivo";
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url("/fonts/archivo-latin-600.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Archivo";
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url("/fonts/archivo-latin-700.woff2") format("woff2");
+  src: url("/fonts/archivo-latin-variable.woff2") format("woff2");
 }
 
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 800;
   font-display: swap;
-  src: url("/fonts/jetbrains-mono-latin-400.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "JetBrains Mono";
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("/fonts/jetbrains-mono-latin-500.woff2") format("woff2");
+  src: url("/fonts/jetbrains-mono-latin-variable.woff2") format("woff2");
 }
 
 @custom-variant dark (&:is(.dark *));
