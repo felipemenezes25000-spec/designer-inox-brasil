@@ -7,7 +7,7 @@
   "description": "Site institucional da Designer Inox Brasil — TanStack Start, pré-renderizado.",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && npx tsx scripts/sitemap.ts",
+    "build": "vite build && tsx scripts/sitemap.ts",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
@@ -83,6 +83,7 @@
     "nitro": "3.0.260603-beta",
     "prettier": "^3.7.3",
     "sharp": "^0.33.5",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
     "vite": "^8.2.0"
