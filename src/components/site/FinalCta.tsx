@@ -1,17 +1,5 @@
 import { SectionShell, MagneticLink } from "./primitives";
-import { contact, site, whatsapp } from "@/content/site";
-
-/**
- * Cenários de contato rápido. Sem equivalente em src/content/ ainda — a
- * página /orcamento/ (T11) pode formalizar isso depois. Texto copiado na
- * íntegra da fonte de conteúdo anterior, removida nesta tarefa.
- */
-const SCENARIOS = [
-  { id: "A", label: "Implantar ou ampliar uma operação" },
-  { id: "B", label: "Fabricar algo sob medida" },
-  { id: "C", label: "Corrigir falha, reformar ou manter" },
-  { id: "D", label: "Preciso de orientação" },
-] as const;
+import { contact, contactScenarios, site, whatsapp } from "@/content/site";
 
 export function FinalCta() {
   return (
@@ -86,7 +74,7 @@ export function FinalCta() {
           </p>
 
           <ul className="mt-8 flex flex-col gap-px bg-border">
-            {SCENARIOS.map((s) => (
+            {contactScenarios.map((s) => (
               <li key={s.id}>
                 <a
                   href={whatsapp(`Olá! Meu cenário: ${s.label}.`)}

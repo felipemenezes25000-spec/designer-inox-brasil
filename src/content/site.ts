@@ -6,7 +6,7 @@
  * um telefone ou um item de menu é uma edição só — não 23.
  */
 
-import type { ClientGroup, FaqItem, PhotoEntry } from './types'
+import type { ClientGroup, ContactScenario, FaqItem, PhotoEntry } from './types'
 
 export const site = {
   name: 'Designer Inox Brasil',
@@ -47,6 +47,19 @@ export const nav = [
   { label: 'Segmentos', href: '/segmentos/' },
   { label: 'Clientes', href: '/clientes/' },
   { label: 'Empresa', href: '/empresa/' },
+]
+
+/**
+ * Cenários de contato rápido usados no CTA final (home) e em /orcamento/.
+ *
+ * Único lugar que os define — FinalCta.tsx e a rota /orcamento/ importam
+ * daqui para não divergir.
+ */
+export const contactScenarios: ContactScenario[] = [
+  { id: 'A', label: 'Implantar ou ampliar uma operação' },
+  { id: 'B', label: 'Fabricar algo sob medida' },
+  { id: 'C', label: 'Corrigir falha, reformar ou manter' },
+  { id: 'D', label: 'Preciso de orientação' },
 ]
 
 /** Perguntas da home. As específicas de cada serviço moram em services.ts. */

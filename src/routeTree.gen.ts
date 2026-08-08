@@ -11,6 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicoRouteImport } from './routes/$servico'
+import { Route as ClientesRouteImport } from './routes/clientes'
+import { Route as EmpresaRouteImport } from './routes/empresa'
+import { Route as OrcamentoRouteImport } from './routes/orcamento'
+import { Route as PoliticaDePrivacidadeRouteImport } from './routes/politica-de-privacidade'
+import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
 import { Route as SegmentosIndexRouteImport } from './routes/segmentos/index'
 import { Route as SegmentosSegmentoRouteImport } from './routes/segmentos/$segmento'
 import { Route as ServicosIndexRouteImport } from './routes/servicos/index'
@@ -23,6 +28,31 @@ const IndexRoute = IndexRouteImport.update({
 const ServicoRoute = ServicoRouteImport.update({
   id: '/$servico',
   path: '/$servico',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientesRoute = ClientesRouteImport.update({
+  id: '/clientes',
+  path: '/clientes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmpresaRoute = EmpresaRouteImport.update({
+  id: '/empresa',
+  path: '/empresa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrcamentoRoute = OrcamentoRouteImport.update({
+  id: '/orcamento',
+  path: '/orcamento',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliticaDePrivacidadeRoute = PoliticaDePrivacidadeRouteImport.update({
+  id: '/politica-de-privacidade',
+  path: '/politica-de-privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermosDeUsoRoute = TermosDeUsoRouteImport.update({
+  id: '/termos-de-uso',
+  path: '/termos-de-uso',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SegmentosIndexRoute = SegmentosIndexRouteImport.update({
@@ -44,6 +74,11 @@ const ServicosIndexRoute = ServicosIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$servico': typeof ServicoRoute
+  '/clientes': typeof ClientesRoute
+  '/empresa': typeof EmpresaRoute
+  '/orcamento': typeof OrcamentoRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
   '/segmentos/$segmento': typeof SegmentosSegmentoRoute
   '/segmentos/': typeof SegmentosIndexRoute
   '/servicos/': typeof ServicosIndexRoute
@@ -51,6 +86,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$servico': typeof ServicoRoute
+  '/clientes': typeof ClientesRoute
+  '/empresa': typeof EmpresaRoute
+  '/orcamento': typeof OrcamentoRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
   '/segmentos/$segmento': typeof SegmentosSegmentoRoute
   '/segmentos': typeof SegmentosIndexRoute
   '/servicos': typeof ServicosIndexRoute
@@ -59,6 +99,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$servico': typeof ServicoRoute
+  '/clientes': typeof ClientesRoute
+  '/empresa': typeof EmpresaRoute
+  '/orcamento': typeof OrcamentoRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/termos-de-uso': typeof TermosDeUsoRoute
   '/segmentos/$segmento': typeof SegmentosSegmentoRoute
   '/segmentos/': typeof SegmentosIndexRoute
   '/servicos/': typeof ServicosIndexRoute
@@ -66,13 +111,37 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/$servico' | '/segmentos/$segmento' | '/segmentos/' | '/servicos/'
+    | '/'
+    | '/$servico'
+    | '/clientes'
+    | '/empresa'
+    | '/orcamento'
+    | '/politica-de-privacidade'
+    | '/termos-de-uso'
+    | '/segmentos/$segmento'
+    | '/segmentos/'
+    | '/servicos/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$servico' | '/segmentos/$segmento' | '/segmentos' | '/servicos'
+  to:
+    | '/'
+    | '/$servico'
+    | '/clientes'
+    | '/empresa'
+    | '/orcamento'
+    | '/politica-de-privacidade'
+    | '/termos-de-uso'
+    | '/segmentos/$segmento'
+    | '/segmentos'
+    | '/servicos'
   id:
     | '__root__'
     | '/'
     | '/$servico'
+    | '/clientes'
+    | '/empresa'
+    | '/orcamento'
+    | '/politica-de-privacidade'
+    | '/termos-de-uso'
     | '/segmentos/$segmento'
     | '/segmentos/'
     | '/servicos/'
@@ -81,6 +150,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ServicoRoute: typeof ServicoRoute
+  ClientesRoute: typeof ClientesRoute
+  EmpresaRoute: typeof EmpresaRoute
+  OrcamentoRoute: typeof OrcamentoRoute
+  PoliticaDePrivacidadeRoute: typeof PoliticaDePrivacidadeRoute
+  TermosDeUsoRoute: typeof TermosDeUsoRoute
   SegmentosSegmentoRoute: typeof SegmentosSegmentoRoute
   SegmentosIndexRoute: typeof SegmentosIndexRoute
   ServicosIndexRoute: typeof ServicosIndexRoute
@@ -100,6 +174,41 @@ declare module '@tanstack/react-router' {
       path: '/$servico'
       fullPath: '/$servico'
       preLoaderRoute: typeof ServicoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clientes': {
+      id: '/clientes'
+      path: '/clientes'
+      fullPath: '/clientes'
+      preLoaderRoute: typeof ClientesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/empresa': {
+      id: '/empresa'
+      path: '/empresa'
+      fullPath: '/empresa'
+      preLoaderRoute: typeof EmpresaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orcamento': {
+      id: '/orcamento'
+      path: '/orcamento'
+      fullPath: '/orcamento'
+      preLoaderRoute: typeof OrcamentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politica-de-privacidade': {
+      id: '/politica-de-privacidade'
+      path: '/politica-de-privacidade'
+      fullPath: '/politica-de-privacidade'
+      preLoaderRoute: typeof PoliticaDePrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/termos-de-uso': {
+      id: '/termos-de-uso'
+      path: '/termos-de-uso'
+      fullPath: '/termos-de-uso'
+      preLoaderRoute: typeof TermosDeUsoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/segmentos/': {
@@ -129,6 +238,11 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ServicoRoute: ServicoRoute,
+  ClientesRoute: ClientesRoute,
+  EmpresaRoute: EmpresaRoute,
+  OrcamentoRoute: OrcamentoRoute,
+  PoliticaDePrivacidadeRoute: PoliticaDePrivacidadeRoute,
+  TermosDeUsoRoute: TermosDeUsoRoute,
   SegmentosSegmentoRoute: SegmentosSegmentoRoute,
   SegmentosIndexRoute: SegmentosIndexRoute,
   ServicosIndexRoute: ServicosIndexRoute,

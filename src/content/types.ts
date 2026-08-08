@@ -77,3 +77,9 @@ export interface ClientGroup {
   accent: Accent;
   clients: string[];
 }
+
+/** Um atalho de contato rápido (ex.: "Preciso de orientação") usado no CTA final e em /orcamento/. */
+export interface ContactScenario {
+  id: string;
+  label: string;
+}
