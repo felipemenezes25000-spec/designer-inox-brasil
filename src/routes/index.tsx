@@ -11,68 +11,19 @@ import { References } from "@/components/site/References";
 import { Faq } from "@/components/site/Faq";
 import { FinalCta } from "@/components/site/FinalCta";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { company, contact, homeFaq, site } from "@/content/site";
-
-const title = "Designer Inox Brasil | Cozinhas industriais e manutenção";
-const description =
-  "Projeto técnico, fabricação sob medida, instalação, exaustão, refrigeração, aquecimento, automação e manutenção em aço inox. Brasília / DF e entorno.";
-
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": ["Organization", "LocalBusiness"],
-      "@id": "#organization",
-      name: site.name,
-      legalName: company.legalName,
-      description:
-        "Projeto técnico, fabricação, instalação, automação, refrigeração, exaustão e manutenção em aço inox para cozinhas industriais, hospitais e operações profissionais.",
-      telephone: `+${contact.whatsappNumber}`,
-      email: contact.email,
-      sameAs: [contact.instagramUrl],
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Brasília",
-        addressRegion: "DF",
-        addressCountry: "BR",
-      },
-      areaServed: { "@type": "AdministrativeArea", name: site.region },
-      openingHoursSpecification: {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        opens: "08:00",
-        closes: "18:00",
-      },
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "#faq",
-      mainEntity: homeFaq.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
-      })),
-    },
-  ],
-};
+import { homeFaq } from "@/content/site";
+import { seo, jsonLd, organizationLd, faqLd } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
-      { property: "og:locale", content: "pt_BR" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "/" }],
-    scripts: [
-      { type: "application/ld+json", children: JSON.stringify(organizationSchema) },
-    ],
-  }),
+  head: () => {
+    const base = seo({
+      title: "Designer Inox Brasil | Cozinhas industriais e manutenção",
+      description:
+        "Projeto técnico, fabricação sob medida, instalação, exaustão, refrigeração, aquecimento, automação e manutenção em aço inox. Brasília / DF e entorno.",
+      path: "/",
+    });
+    return { ...base, scripts: [jsonLd([organizationLd, faqLd(homeFaq)])] };
+  },
   component: Index,
 });
 
