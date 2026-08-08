@@ -1,21 +1,25 @@
 #!/usr/bin/env node
 /**
- * Verificador do site.
+ * Verificador da saída do build.
  *
- * Roda depois do gerador e falha o build em qualquer problema. Cobre as
- * classes de erro que um site estático publica em silêncio: link interno
- * morto, imagem sem alt, asset referenciado que não existe, canonical errado,
- * id duplicado e — a mais traiçoeira — HTML no disco divergente do que os
- * dados produzem hoje, sinal de que alguém editou o arquivo gerado à mão.
+ * Roda depois do build e falha em qualquer problema que um site
+ * pré-renderizado publica em silêncio: link interno morto, imagem sem alt,
+ * asset referenciado que não existe, canonical errado, id duplicado e
+ * sitemap divergente das páginas realmente publicadas.
+ *
+ * Lê a saída do build (dist/client por padrão), não a raiz do repositório.
+ * Não existe mais HTML versionado que possa divergir de um gerador — por
+ * isso o antigo scripts/generate.mjs e a checagem de "disco diverge do que o
+ * gerador produz" saíram daqui. O mesmo vale para o aviso de "HTML órfão":
+ * toda página em dist/client é, por construção, saída do build.
  */
 
 import { readdir, readFile, stat } from 'node:fs/promises'
 import path from 'node:path'
 
-import { site } from '../src/content/site.mjs'
-import { routes, errorPage } from './generate.mjs'
+import { site } from '../src/content/site'
 
-const root = process.cwd()
+const root = path.resolve(process.cwd(), process.argv[2] ?? 'dist/client')
 const errors = []
 const warnings = []
 
@@ -53,10 +57,14 @@ function resolveTarget(reference, fromFile) {
  * dev server serve o disco inteiro e o arquivo está lá. A divergência só
  * aparece em produção, como 404 — e foi exatamente assim que a marca do
  * cabeçalho ficou quebrada nas 25 páginas por vários deploys.
+ *
+ * Sempre lido da raiz do REPOSITÓRIO (process.cwd()), não da raiz de
+ * varredura (a saída do build): é lá que o .vercelignore mora, e as regras
+ * dentro dele descrevem caminhos relativos a ela, não à saída do build.
  */
 async function loadDeployIgnore() {
   try {
-    const raw = await readFile(path.join(root, '.vercelignore'), 'utf8')
+    const raw = await readFile(path.join(process.cwd(), '.vercelignore'), 'utf8')
     return raw
       .split('\n')
       .map(line => line.trim())
@@ -95,9 +103,26 @@ function isDeployExcluded(servedPath, patterns) {
   })
 }
 
+/**
+ * Todo arquivo em dist/client que não é um HTML gerado pelo prerender veio de
+ * public/ verbatim — é o que o Vite faz com publicDir. Precisa do prefixo
+ * "public/" para casar com os padrões do .vercelignore, que descrevem
+ * caminhos a partir da raiz do repositório, não da saída do build.
+ *
+ * Um bundle com hash (dist/client/assets/*.js, *.css) nasce dentro do
+ * container a partir de src/ e não tem um caminho de origem em public/ —
+ * prefixá-lo do mesmo jeito só faz o padrão não casar com nada, igual a
+ * antes. Uma referência relativa entre páginas (href para outra rota) sofre
+ * o mesmo: não é um caminho real, mas também não casa com nenhum padrão do
+ * .vercelignore, então não gera falso positivo.
+ */
+function toRepoPath(servedFromBuildRoot) {
+  return `public/${servedFromBuildRoot}`
+}
+
 async function collectHtml(dir, out = []) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
-    if (['node_modules', '.git', '.vercel', 'src', 'scripts', 'docs', 'assets'].includes(entry.name)) continue
+    if (entry.name.startsWith('.')) continue
     const full = path.join(dir, entry.name)
     if (entry.isDirectory()) await collectHtml(full, out)
     else if (entry.name.endsWith('.html')) out.push(full)
@@ -108,6 +133,10 @@ async function collectHtml(dir, out = []) {
 async function main() {
   const files = await collectHtml(root)
   const deployIgnore = await loadDeployIgnore()
+  // Substitui o antigo routes() de generate.mjs para a checagem do sitemap:
+  // em vez de comparar sitemap.xml contra uma lista declarada à parte, compara
+  // contra as páginas que o build realmente produziu (abaixo, por arquivo).
+  const builtUrls = []
 
   for (const file of files) {
     const rel = path.relative(root, file).replace(/\\/g, '/')
@@ -118,7 +147,13 @@ async function main() {
     if (h1Count !== 1) fail(rel, `esperado exatamente 1 <h1>, encontrado ${h1Count}`)
 
     if (!/<html lang="pt-BR">/.test(html)) fail(rel, 'atributo lang ausente ou diferente de pt-BR')
-    if (!/<meta charset="utf-8">/i.test(html)) fail(rel, 'meta charset ausente')
+    // React/TanStack Start serializam <meta charSet="utf-8"/> — void element
+    // autofechado, e "charSet" com o C maiúsculo do prop original, não o
+    // <meta charset="..."> em minúsculas e sem barra que o gerador estático
+    // antigo escrevia à mão. Nome de atributo HTML é case-insensitive e
+    // "/>" é só a forma XML-compatível do mesmo void element, então o /i e o
+    // "/?" tornam a checagem correta para esse formato, não mais frouxa.
+    if (!/<meta\s+charset="utf-8"\s*\/?>/i.test(html)) fail(rel, 'meta charset ausente')
     if (!/name="viewport"/.test(html)) fail(rel, 'meta viewport ausente')
 
     const title = html.match(/<title>([^<]*)<\/title>/)?.[1]
@@ -131,16 +166,18 @@ async function main() {
 
     // ── Canonical ────────────────────────────────────────────────────────
     // Canonical divergente da URL servida é causa clássica de página que
-    // simplesmente não indexa.
+    // simplesmente não indexa. A URL "certa" vem do caminho do arquivo, não
+    // do que o canonical afirma — por isso builtUrls recebe `expected` mesmo
+    // quando o canonical está errado: a página existe e será publicada nessa
+    // URL de qualquer forma, e o sitemap precisa listá-la.
     const canonical = html.match(/<link rel="canonical" href="([^"]*)"/)?.[1]
     if (rel !== '404.html') {
-      if (!canonical) {
-        fail(rel, 'canonical ausente')
-      } else {
-        const expected =
-          rel === 'index.html' ? `${site.origin}/` : `${site.origin}/${rel.replace(/index\.html$/, '')}`
-        if (canonical !== expected) fail(rel, `canonical "${canonical}" difere da URL servida "${expected}"`)
-      }
+      const expected =
+        rel === 'index.html' ? `${site.origin}/` : `${site.origin}/${rel.replace(/index\.html$/, '')}`
+      builtUrls.push(expected)
+
+      if (!canonical) fail(rel, 'canonical ausente')
+      else if (canonical !== expected) fail(rel, `canonical "${canonical}" difere da URL servida "${expected}"`)
     }
 
     // ── Acessibilidade ───────────────────────────────────────────────────
@@ -163,10 +200,14 @@ async function main() {
     }
 
     // ── Links e assets referenciados ─────────────────────────────────────
+    // srcset é /i porque React serializa o atributo do <source>/<img> como
+    // "srcSet" (case do prop JSX preservado) — igual ao charSet acima. Sem o
+    // /i essa checagem casava zero vezes neste build (208 ocorrências, todas
+    // em maiúscula) e nunca detectaria uma variante responsiva quebrada.
     const references = [
       ...[...html.matchAll(/\shref="([^"]+)"/g)].map(m => m[1]),
       ...[...html.matchAll(/\ssrc="([^"]+)"/g)].map(m => m[1]),
-      ...[...html.matchAll(/\ssrcset="([^"]+)"/g)].flatMap(m =>
+      ...[...html.matchAll(/\ssrcset="([^"]+)"/gi)].flatMap(m =>
         m[1].split(',').map(part => part.trim().split(/\s+/)[0]),
       ),
     ]
@@ -182,32 +223,9 @@ async function main() {
 
       // Existe no disco não é o mesmo que existe em produção.
       const served = path.relative(root, target).replace(/\\/g, '/')
-      if (isDeployExcluded(served, deployIgnore)) {
+      if (isDeployExcluded(toRepoPath(served), deployIgnore)) {
         fail(rel, `.vercelignore exclui um arquivo que o HTML referencia — 404 em produção: ${reference}`)
       }
-    }
-  }
-
-  // ── Divergência entre disco e gerador ──────────────────────────────────
-  // Se alguém editar um HTML gerado à mão, a próxima execução do gerador
-  // apaga a mudança sem avisar. Melhor falhar aqui, alto e claro.
-  const generated = [...routes(), errorPage]
-  for (const route of generated) {
-    const target = path.join(root, route.file)
-    if (!(await exists(target))) {
-      fail(route.file, 'declarado pelo gerador mas ausente no disco — rode npm run generate')
-      continue
-    }
-    const onDisk = await readFile(target, 'utf8')
-    if (onDisk !== route.html) {
-      fail(route.file, 'conteúdo no disco difere do que o gerador produz — rode npm run generate')
-    }
-  }
-
-  const generatedPaths = new Set(generated.map(route => path.join(root, route.file)))
-  for (const file of files) {
-    if (!generatedPaths.has(file)) {
-      warn(path.relative(root, file).replace(/\\/g, '/'), 'HTML órfão: não é produzido pelo gerador')
     }
   }
 
@@ -215,12 +233,11 @@ async function main() {
   if (await exists(path.join(root, 'sitemap.xml'))) {
     const sitemap = await readFile(path.join(root, 'sitemap.xml'), 'utf8')
     const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1])
-    const expected = routes().map(route => `${site.origin}${route.path}`)
     for (const loc of locs) {
-      if (!expected.includes(loc)) fail('sitemap.xml', `URL não corresponde a nenhuma rota: ${loc}`)
+      if (!builtUrls.includes(loc)) fail('sitemap.xml', `URL não corresponde a nenhuma página publicada: ${loc}`)
     }
-    for (const url of expected) {
-      if (!locs.includes(url)) fail('sitemap.xml', `rota ausente no sitemap: ${url}`)
+    for (const url of builtUrls) {
+      if (!locs.includes(url)) fail('sitemap.xml', `página publicada ausente no sitemap: ${url}`)
     }
   } else {
     fail('sitemap.xml', 'ausente')
@@ -252,7 +269,7 @@ async function main() {
       }
 
       const served = path.relative(root, target).replace(/\\/g, '/')
-      if (isDeployExcluded(served, deployIgnore)) {
+      if (isDeployExcluded(toRepoPath(served), deployIgnore)) {
         fail('manifest.webmanifest', `.vercelignore exclui um ícone do manifesto — 404 em produção: ${icon.src}`)
       }
     }
@@ -275,7 +292,7 @@ async function main() {
     return
   }
 
-  console.log('\n✓ Estrutura, canonical, alt, ids, links, assets, sitemap e sincronia com o gerador verificados.')
+  console.log('\n✓ Estrutura, canonical, alt, ids, links, assets, sitemap e manifesto verificados.')
 }
 
 await main()
