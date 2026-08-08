@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicoRouteImport } from './routes/$servico'
+import { Route as SegmentosIndexRouteImport } from './routes/segmentos/index'
+import { Route as SegmentosSegmentoRouteImport } from './routes/segmentos/$segmento'
+import { Route as ServicosIndexRouteImport } from './routes/servicos/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +25,65 @@ const ServicoRoute = ServicoRouteImport.update({
   path: '/$servico',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SegmentosIndexRoute = SegmentosIndexRouteImport.update({
+  id: '/segmentos/',
+  path: '/segmentos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SegmentosSegmentoRoute = SegmentosSegmentoRouteImport.update({
+  id: '/segmentos/$segmento',
+  path: '/segmentos/$segmento',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicosIndexRoute = ServicosIndexRouteImport.update({
+  id: '/servicos/',
+  path: '/servicos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$servico': typeof ServicoRoute
+  '/segmentos/$segmento': typeof SegmentosSegmentoRoute
+  '/segmentos/': typeof SegmentosIndexRoute
+  '/servicos/': typeof ServicosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$servico': typeof ServicoRoute
+  '/segmentos/$segmento': typeof SegmentosSegmentoRoute
+  '/segmentos': typeof SegmentosIndexRoute
+  '/servicos': typeof ServicosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$servico': typeof ServicoRoute
+  '/segmentos/$segmento': typeof SegmentosSegmentoRoute
+  '/segmentos/': typeof SegmentosIndexRoute
+  '/servicos/': typeof ServicosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$servico'
+  fullPaths:
+    '/' | '/$servico' | '/segmentos/$segmento' | '/segmentos/' | '/servicos/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$servico'
-  id: '__root__' | '/' | '/$servico'
+  to: '/' | '/$servico' | '/segmentos/$segmento' | '/segmentos' | '/servicos'
+  id:
+    | '__root__'
+    | '/'
+    | '/$servico'
+    | '/segmentos/$segmento'
+    | '/segmentos/'
+    | '/servicos/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ServicoRoute: typeof ServicoRoute
+  SegmentosSegmentoRoute: typeof SegmentosSegmentoRoute
+  SegmentosIndexRoute: typeof SegmentosIndexRoute
+  ServicosIndexRoute: typeof ServicosIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +102,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/segmentos/': {
+      id: '/segmentos/'
+      path: '/segmentos'
+      fullPath: '/segmentos/'
+      preLoaderRoute: typeof SegmentosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/segmentos/$segmento': {
+      id: '/segmentos/$segmento'
+      path: '/segmentos/$segmento'
+      fullPath: '/segmentos/$segmento'
+      preLoaderRoute: typeof SegmentosSegmentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servicos/': {
+      id: '/servicos/'
+      path: '/servicos'
+      fullPath: '/servicos/'
+      preLoaderRoute: typeof ServicosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ServicoRoute: ServicoRoute,
+  SegmentosSegmentoRoute: SegmentosSegmentoRoute,
+  SegmentosIndexRoute: SegmentosIndexRoute,
+  ServicosIndexRoute: ServicosIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
