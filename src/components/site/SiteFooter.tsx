@@ -1,20 +1,18 @@
 import { services } from "@/content/services";
 import { company, contact, legalNotice, nav, site, whatsapp } from "@/content/site";
+import { Brand } from "./Brand";
 
 export function SiteFooter() {
   return (
-    <footer className="relative border-t border-border">
+    // O rodape fecha a pagina na superficie escura: e o contraponto do hero.
+    <footer className="surface-dark relative border-t border-border">
       <div aria-hidden="true" className="grid-etch pointer-events-none absolute inset-0 opacity-60" />
 
       <div className="relative mx-auto w-full max-w-[1680px] px-5 sm:px-8 lg:px-14 2xl:px-20">
         <div className="grid gap-12 py-16 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)_minmax(0,0.9fr)] lg:gap-16 lg:py-24">
           <div className="min-w-0">
             <a href="/" className="flex items-center" aria-label={`${site.name} — página inicial`}>
-              <picture>
-                <source type="image/avif" srcSet="/brand/lockup-negative.avif" />
-                <source type="image/webp" srcSet="/brand/lockup-negative.webp" />
-                <img src="/brand/lockup-negative.png" alt={site.name} className="h-9 w-auto sm:h-10" />
-              </picture>
+              <Brand className="h-9 w-auto sm:h-10" />
             </a>
             <p className="mt-6 max-w-md text-sm leading-relaxed text-muted-foreground">
               Projeto técnico, fabricação, instalação, sistemas e manutenção em aço inox,

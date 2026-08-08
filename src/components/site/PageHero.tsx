@@ -22,7 +22,7 @@ export function PageHero({
   children?: ReactNode | undefined;
 }) {
   return (
-    <section className="relative border-t border-border">
+    <section className="surface-dark relative border-t border-border">
       <div className="mx-auto w-full max-w-[1680px] px-5 sm:px-8 lg:px-14 2xl:px-20">
         <div className="grid gap-12 py-20 sm:py-28 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-16 lg:py-32">
           <div className="min-w-0">

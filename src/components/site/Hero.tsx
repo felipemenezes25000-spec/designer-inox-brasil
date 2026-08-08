@@ -36,7 +36,13 @@ export function Hero() {
   if (!heroPhoto) return null;
 
   return (
-    <section id="topo" className="relative isolate min-h-[100svh] overflow-hidden">
+    <section
+      id="topo"
+      // O hero e a superficie escura por excelencia: e onde a foto de cozinha
+      // e o feixe especular funcionam, e o que sustenta a identidade dentro
+      // de um site claro.
+      className="surface-dark relative isolate min-h-[100svh] overflow-hidden"
+    >
       <div className="absolute inset-0 -z-10">
         <picture>
           <source type="image/avif" srcSet={heroSrcSet("avif")} sizes="100vw" />

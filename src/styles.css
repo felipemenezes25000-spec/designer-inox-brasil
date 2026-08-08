@@ -83,20 +83,101 @@
   --animate-hairline-in: hairline-in 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/*
+ * Duas superfícies, um vocabulário.
+ *
+ * `:root` é a superfície CLARA — o padrão do site. `.surface-dark` redeclara os
+ * MESMOS tokens com os valores escuros, então qualquer componente colocado lá
+ * dentro funciona sem saber em que superfície está. Trocar uma seção de clara
+ * para escura é acrescentar uma classe, não reescrever markup.
+ *
+ * Os traços, o feixe especular e a grade gravada eram branco com alpha baixo,
+ * cravado nas utilidades. Branco a 11% some sobre fundo claro. Aqui viram
+ * tokens de TINTA (`--ink-*`): sobre claro a tinta é escura, sobre escuro é
+ * clara. O gesto é o mesmo; o material inverte.
+ */
 :root {
   --onyx: oklch(0.115 0.003 250);
   --graphite: oklch(0.175 0.004 250);
   --titanium: oklch(0.66 0.008 250);
   --mineral: oklch(0.965 0.003 250);
-  --signal: oklch(0.78 0.11 235);
 
-  --accent-steel: oklch(0.78 0.11 235);
-  --accent-teal: oklch(0.8 0.1 195);
-  --accent-ice: oklch(0.85 0.07 220);
-  --accent-mint: oklch(0.82 0.1 165);
-  --accent-ember: oklch(0.72 0.15 40);
-  --accent-volt: oklch(0.86 0.15 100);
+  /* ── superfície clara ── */
+  --background: oklch(0.978 0.002 250);
+  --foreground: oklch(0.175 0.004 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.175 0.004 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.175 0.004 250);
+  --primary: oklch(0.175 0.004 250);
+  --primary-foreground: oklch(0.978 0.002 250);
+  --secondary: oklch(0.945 0.003 250);
+  --secondary-foreground: oklch(0.175 0.004 250);
+  --muted: oklch(0.945 0.003 250);
+  --muted-foreground: oklch(0.47 0.008 250);
+  --accent: oklch(0.93 0.004 250);
+  --accent-foreground: oklch(0.175 0.004 250);
+  --destructive: oklch(0.52 0.21 27);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.175 0.004 250 / 0.14);
+  --input: oklch(0.175 0.004 250 / 0.22);
 
+  /* Sinal e acentos calibrados para tinta sobre claro. Os valores da
+     superfície escura têm luminosidade alta e ficariam ilegíveis aqui. */
+  --signal: oklch(0.5 0.16 245);
+  --ring: oklch(0.5 0.16 245);
+  --accent-steel: oklch(0.5 0.15 245);
+  --accent-teal: oklch(0.5 0.11 200);
+  --accent-ice: oklch(0.54 0.1 232);
+  --accent-mint: oklch(0.49 0.11 165);
+  --accent-ember: oklch(0.54 0.17 38);
+  --accent-volt: oklch(0.53 0.13 105);
+
+  /* Tinta: traço, feixe e grade. Sobre claro, escurecem. */
+  --ink-hairline: oklch(0.175 0.004 250 / 0.16);
+  --ink-hairline-soft: oklch(0.175 0.004 250 / 0.06);
+  --ink-sheen: oklch(0.175 0.004 250 / 0.09);
+  --ink-sheen-soft: oklch(0.175 0.004 250 / 0.035);
+  --ink-etch: oklch(0.175 0.004 250 / 0.055);
+  --ink-overlay: oklch(0.175 0.004 250 / 0.05);
+  --ink-edge: oklch(0.175 0.004 250 / 0.38);
+
+  /* Botão sólido: inverte em relação à superfície. */
+  --btn-solid-bg: oklch(0.175 0.004 250);
+  --btn-solid-fg: oklch(0.978 0.002 250);
+  --btn-solid-bg-hover: oklch(0.115 0.003 250);
+
+  --gradient-titanium: linear-gradient(
+    104deg,
+    oklch(0.42 0.006 250) 0%,
+    oklch(0.72 0.004 250) 18%,
+    oklch(0.3 0.006 250) 34%,
+    oklch(0.66 0.004 250) 52%,
+    oklch(0.36 0.006 250) 70%,
+    oklch(0.7 0.004 250) 86%,
+    oklch(0.4 0.006 250) 100%
+  );
+  /* Véu sobre foto: dissolve para a cor da própria superfície. */
+  --gradient-veil: linear-gradient(
+    to bottom,
+    var(--background) 0%,
+    color-mix(in oklab, var(--background) 28%, transparent) 48%,
+    var(--background) 100%
+  );
+  --gradient-plate: linear-gradient(
+    158deg,
+    oklch(1 0 0) 0%,
+    oklch(0.985 0.002 250) 62%,
+    oklch(0.965 0.003 250) 100%
+  );
+}
+
+/*
+ * Superfície escura, aplicada por seção. O hero e o fechamento continuam
+ * pretos: é onde as fotos de cozinha e o feixe especular funcionam melhor, e
+ * é o que sustenta a identidade "Inox Especular" dentro de um site claro.
+ */
+.surface-dark {
   --background: oklch(0.115 0.003 250);
   --foreground: oklch(0.965 0.003 250);
   --card: oklch(0.155 0.004 250);
@@ -115,7 +196,27 @@
   --destructive-foreground: oklch(0.98 0 0);
   --border: oklch(1 0 0 / 11%);
   --input: oklch(1 0 0 / 18%);
+
+  --signal: oklch(0.78 0.11 235);
   --ring: oklch(0.78 0.11 235);
+  --accent-steel: oklch(0.78 0.11 235);
+  --accent-teal: oklch(0.8 0.1 195);
+  --accent-ice: oklch(0.85 0.07 220);
+  --accent-mint: oklch(0.82 0.1 165);
+  --accent-ember: oklch(0.72 0.15 40);
+  --accent-volt: oklch(0.86 0.15 100);
+
+  --ink-hairline: oklch(1 0 0 / 0.18);
+  --ink-hairline-soft: oklch(1 0 0 / 0.05);
+  --ink-sheen: oklch(1 0 0 / 0.26);
+  --ink-sheen-soft: oklch(1 0 0 / 0.1);
+  --ink-etch: oklch(1 0 0 / 0.035);
+  --ink-overlay: oklch(1 0 0 / 0.04);
+  --ink-edge: oklch(1 0 0 / 0.42);
+
+  --btn-solid-bg: oklch(0.965 0.003 250);
+  --btn-solid-fg: oklch(0.115 0.003 250);
+  --btn-solid-bg-hover: oklch(1 0 0);
 
   --gradient-titanium: linear-gradient(
     104deg,
@@ -139,6 +240,9 @@
     oklch(0.145 0.003 250) 62%,
     oklch(0.13 0.003 250) 100%
   );
+
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 @keyframes sheen {
@@ -256,8 +360,8 @@
 
 @utility grid-etch {
   background-image:
-    linear-gradient(to right, oklch(1 0 0 / 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(1 0 0 / 0.035) 1px, transparent 1px);
+    linear-gradient(to right, var(--ink-etch) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ink-etch) 1px, transparent 1px);
   background-size: 96px 96px;
 }
 
@@ -272,9 +376,9 @@
     background: linear-gradient(
       100deg,
       transparent 38%,
-      oklch(1 0 0 / 0.1) 47%,
-      oklch(1 0 0 / 0.26) 50%,
-      oklch(1 0 0 / 0.1) 53%,
+      var(--ink-sheen-soft) 47%,
+      var(--ink-sheen) 50%,
+      var(--ink-sheen-soft) 53%,
       transparent 62%
     );
     transform: translateX(-115%) skewX(-14deg);
@@ -300,8 +404,8 @@
     background: linear-gradient(
       to bottom,
       transparent,
-      oklch(1 0 0 / 0.16) 8%,
-      oklch(1 0 0 / 0.16) 92%,
+      var(--ink-hairline) 8%,
+      var(--ink-hairline) 92%,
       transparent
     );
   }
@@ -311,8 +415,8 @@
   height: 1px;
   background: linear-gradient(
     to right,
-    oklch(1 0 0 / 0.18),
-    oklch(1 0 0 / 0.05) 60%,
+    var(--ink-hairline),
+    var(--ink-hairline-soft) 60%,
     transparent
   );
   transform-origin: left;
@@ -340,11 +444,12 @@
 }
 
 @utility btn-solid {
-  background: var(--mineral);
-  color: var(--onyx);
-  border: 1px solid var(--mineral);
+  background: var(--btn-solid-bg);
+  color: var(--btn-solid-fg);
+  border: 1px solid var(--btn-solid-bg);
   &:hover {
-    background: oklch(1 0 0);
+    background: var(--btn-solid-bg-hover);
+    border-color: var(--btn-solid-bg-hover);
     transform: translateY(-2px);
   }
   &:active {
@@ -357,8 +462,8 @@
   color: var(--foreground);
   border: 1px solid var(--color-border);
   &:hover {
-    border-color: oklch(1 0 0 / 0.42);
-    background: oklch(1 0 0 / 0.04);
+    border-color: var(--ink-edge);
+    background: var(--ink-overlay);
     transform: translateY(-2px);
   }
   &:active {
@@ -419,4 +524,25 @@
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+/* ---------- marca por superfície ---------- */
+
+/*
+ * O lockup positivo é escuro (para fundo claro) e o negativo é claro (para
+ * fundo escuro). CSS não troca o `src` de um <img>, então os dois ficam no DOM
+ * e a superfície decide qual aparece — é o que permite o cabeçalho flutuar
+ * sobre o hero escuro e continuar legível depois, sobre o conteúdo claro.
+ */
+.brand-on-light {
+  display: block;
+}
+.brand-on-dark {
+  display: none;
+}
+.surface-dark .brand-on-light {
+  display: none;
+}
+.surface-dark .brand-on-dark {
+  display: block;
 }

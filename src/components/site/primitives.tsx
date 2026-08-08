@@ -43,7 +43,7 @@ export function SectionHeading({
     >
       <div className="min-w-0">
         <p className="reveal label-mono flex items-center gap-3" data-reveal>
-          <span className="text-mineral">{index}</span>
+          <span className="text-foreground">{index}</span>
           <span aria-hidden="true" className="h-px w-8 bg-border" />
           <span>{eyebrow}</span>
         </p>
