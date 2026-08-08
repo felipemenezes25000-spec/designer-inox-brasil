@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://designer-inox-cinematic.vercel.app/sitemap.xml
