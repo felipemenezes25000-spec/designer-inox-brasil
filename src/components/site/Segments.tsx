@@ -1,5 +1,6 @@
 import { SectionShell, SectionHeading } from "./primitives";
-import { SEGMENTS, whatsappLink } from "@/lib/site-data";
+import { segments } from "@/content/segments";
+import { whatsapp } from "@/content/site";
 
 export function Segments() {
   return (
@@ -18,22 +19,22 @@ export function Segments() {
       />
 
       <ul className="mt-14 grid gap-px bg-border sm:grid-cols-2">
-        {SEGMENTS.map((s, i) => (
+        {segments.map((s, i) => (
           <li
-            key={s.id}
+            key={s.slug}
             className="reveal specular group relative bg-background p-6 transition-colors duration-500 hover:bg-secondary/50 sm:p-10 lg:p-14"
             data-reveal
             style={{ transitionDelay: `${i * 70}ms` }}
           >
-            <p className="label-mono">Segmento {s.id}</p>
+            <p className="label-mono">Segmento {String(i + 1).padStart(2, "0")}</p>
             <h3 className="mt-6 max-w-md font-display text-[1.6rem] font-bold leading-[1.05] tracking-tight sm:text-3xl lg:text-[2.25rem]">
               {s.title}
             </h3>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
-              {s.text}
+              {s.short}
             </p>
             <a
-              href={whatsappLink(`Olá! Minha operação é: ${s.title}.`)}
+              href={whatsapp(`Olá! Minha operação é: ${s.title}.`)}
               target="_blank"
               rel="noopener noreferrer"
               className="label-mono mt-8 inline-flex min-h-11 items-center gap-3 text-foreground transition-colors hover:text-signal"
@@ -50,6 +51,18 @@ export function Segments() {
           </li>
         ))}
       </ul>
+
+      <div className="reveal mt-10" data-reveal>
+        <a
+          href="/segmentos/"
+          className="label-mono group inline-flex min-h-11 items-center gap-3 text-foreground transition-colors hover:text-signal"
+        >
+          Ver todos os segmentos
+          <span aria-hidden="true" className="transition-transform duration-500 group-hover:translate-x-1">
+            →
+          </span>
+        </a>
+      </div>
     </SectionShell>
   );
 }

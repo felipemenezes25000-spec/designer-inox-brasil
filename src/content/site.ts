@@ -6,7 +6,7 @@
  * um telefone ou um item de menu é uma edição só — não 23.
  */
 
-import type { ClientGroup, PhotoEntry } from './types'
+import type { ClientGroup, FaqItem, PhotoEntry } from './types'
 
 export const site = {
   name: 'Designer Inox Brasil',
@@ -47,6 +47,26 @@ export const nav = [
   { label: 'Segmentos', href: '/segmentos/' },
   { label: 'Clientes', href: '/clientes/' },
   { label: 'Empresa', href: '/empresa/' },
+]
+
+/** Perguntas da home. As específicas de cada serviço moram em services.ts. */
+export const homeFaq: FaqItem[] = [
+  {
+    q: 'A Designer Inox trabalha apenas com fabricação?',
+    a: 'Não. O escopo pode reunir projeto técnico aplicado, fabricação, instalação, sistemas de refrigeração, aquecimento, exaustão, CO₂, automação elétrica e manutenção, conforme a necessidade e a proposta aprovada.',
+  },
+  {
+    q: 'É possível solicitar uma solução completa para uma operação nova?',
+    a: 'Sim. O atendimento inicial organiza espaço, uso, equipamentos e sistemas envolvidos para definir quais etapas devem entrar no escopo.',
+  },
+  {
+    q: 'Vocês atendem contrato de manutenção para redes com várias unidades?',
+    a: 'Sim. O formato depende da quantidade de ativos, da dispersão das unidades, da criticidade e da frequência definida na proposta.',
+  },
+  {
+    q: 'O que devo enviar para receber uma avaliação melhor?',
+    a: 'Cidade, tipo de operação, fotos gerais e dos pontos críticos, medidas disponíveis e uma descrição do que precisa mudar. Projetos complexos podem exigir levantamento técnico no local.',
+  },
 ]
 
 /**

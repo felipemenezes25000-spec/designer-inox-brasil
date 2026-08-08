@@ -11,7 +11,7 @@ import { References } from "@/components/site/References";
 import { Faq } from "@/components/site/Faq";
 import { FinalCta } from "@/components/site/FinalCta";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { CONTACT, FAQ } from "@/lib/site-data";
+import { company, contact, homeFaq, site } from "@/content/site";
 
 const title = "Designer Inox Brasil | Cozinhas industriais e manutenção";
 const description =
@@ -23,20 +23,20 @@ const organizationSchema = {
     {
       "@type": ["Organization", "LocalBusiness"],
       "@id": "#organization",
-      name: CONTACT.name,
-      legalName: CONTACT.legalName,
+      name: site.name,
+      legalName: company.legalName,
       description:
         "Projeto técnico, fabricação, instalação, automação, refrigeração, exaustão e manutenção em aço inox para cozinhas industriais, hospitais e operações profissionais.",
-      telephone: CONTACT.phoneRaw,
-      email: CONTACT.email,
-      sameAs: [CONTACT.instagram],
+      telephone: `+${contact.whatsappNumber}`,
+      email: contact.email,
+      sameAs: [contact.instagramUrl],
       address: {
         "@type": "PostalAddress",
         addressLocality: "Brasília",
         addressRegion: "DF",
         addressCountry: "BR",
       },
-      areaServed: { "@type": "AdministrativeArea", name: CONTACT.area },
+      areaServed: { "@type": "AdministrativeArea", name: site.region },
       openingHoursSpecification: {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
@@ -47,7 +47,7 @@ const organizationSchema = {
     {
       "@type": "FAQPage",
       "@id": "#faq",
-      mainEntity: FAQ.map((f) => ({
+      mainEntity: homeFaq.map((f) => ({
         "@type": "Question",
         name: f.q,
         acceptedAnswer: { "@type": "Answer", text: f.a },

@@ -1,5 +1,17 @@
 import { SectionShell, MagneticLink } from "./primitives";
-import { CONTACT, SCENARIOS, whatsappLink } from "@/lib/site-data";
+import { contact, site, whatsapp } from "@/content/site";
+
+/**
+ * Cenários de contato rápido. Sem equivalente em src/content/ ainda — a
+ * página /orcamento/ (T11) pode formalizar isso depois. Texto copiado na
+ * íntegra da fonte de conteúdo anterior, removida nesta tarefa.
+ */
+const SCENARIOS = [
+  { id: "A", label: "Implantar ou ampliar uma operação" },
+  { id: "B", label: "Fabricar algo sob medida" },
+  { id: "C", label: "Corrigir falha, reformar ou manter" },
+  { id: "D", label: "Preciso de orientação" },
+] as const;
 
 export function FinalCta() {
   return (
@@ -32,20 +44,20 @@ export function FinalCta() {
           </p>
 
           <div className="reveal mt-10 flex flex-col gap-3 sm:flex-row" data-reveal>
-            <MagneticLink href={whatsappLink("Olá! Gostaria de pedir um orçamento.")} external>
+            <MagneticLink href={whatsapp("Olá! Gostaria de pedir um orçamento.")} external>
               Pedir orçamento no WhatsApp
             </MagneticLink>
-            <MagneticLink href={`mailto:${CONTACT.email}`} variant="ghost">
+            <MagneticLink href={`mailto:${contact.email}`} variant="ghost">
               Enviar por e-mail
             </MagneticLink>
           </div>
 
           <dl className="mt-12 grid gap-px bg-border sm:grid-cols-2">
             {[
-              { l: "Atendimento", v: CONTACT.area },
-              { l: "Horário", v: CONTACT.hours },
-              { l: "Telefone", v: CONTACT.phoneLabel, href: `tel:${CONTACT.phoneRaw}` },
-              { l: "E-mail", v: CONTACT.email, href: `mailto:${CONTACT.email}` },
+              { l: "Atendimento", v: site.region },
+              { l: "Horário", v: contact.hours },
+              { l: "Telefone", v: contact.whatsappDisplay, href: `tel:+${contact.whatsappNumber}` },
+              { l: "E-mail", v: contact.email, href: `mailto:${contact.email}` },
             ].map((c) => (
               <div key={c.l} className="min-w-0 bg-background p-6">
                 <dt className="label-mono">{c.l}</dt>
@@ -77,7 +89,7 @@ export function FinalCta() {
             {SCENARIOS.map((s) => (
               <li key={s.id}>
                 <a
-                  href={whatsappLink(`Olá! Meu cenário: ${s.label}.`)}
+                  href={whatsapp(`Olá! Meu cenário: ${s.label}.`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="specular group grid min-h-[68px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 bg-card px-5 py-4 transition-colors duration-500 hover:bg-secondary"
@@ -96,7 +108,7 @@ export function FinalCta() {
           </ul>
 
           <p className="label-mono mt-6 normal-case tracking-[0.1em]">
-            Atendimento {CONTACT.hours.toLowerCase()}.
+            Atendimento {contact.hours.toLowerCase()}.
           </p>
         </div>
       </div>

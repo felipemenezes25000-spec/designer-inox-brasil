@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CONTACT, NAV_LINKS, whatsappLink } from "@/lib/site-data";
+import { contact, nav, site, whatsapp } from "@/content/site";
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -35,23 +35,16 @@ export function SiteNav() {
     >
       <nav aria-label="Principal" className="mx-auto w-full max-w-[1680px] px-5 sm:px-8 lg:px-14 2xl:px-20">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-4 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
-          <a href="#topo" className="flex min-w-0 items-center gap-3" aria-label="Designer Inox Brasil — início">
-            <span aria-hidden="true" className="relative grid h-9 w-9 shrink-0 place-items-center border border-border">
-              <span className="block h-3.5 w-px bg-mineral" />
-              <span className="absolute block h-px w-3.5 bg-mineral" />
-            </span>
-            <span className="min-w-0">
-              <span className="block truncate font-display text-[0.9rem] font-bold uppercase tracking-[0.16em] leading-none">
-                Designer Inox
-              </span>
-              <span className="label-mono mt-1.5 block text-[0.6rem] tracking-[0.28em]">
-                Brasília / DF
-              </span>
-            </span>
+          <a href="/" className="flex min-w-0 items-center" aria-label={`${site.name} — página inicial`}>
+            <picture>
+              <source type="image/avif" srcSet="/brand/lockup-negative.avif" />
+              <source type="image/webp" srcSet="/brand/lockup-negative.webp" />
+              <img src="/brand/lockup-negative.png" alt={site.name} className="h-8 w-auto sm:h-9" />
+            </picture>
           </a>
 
           <ul className="hidden items-center gap-8 lg:flex">
-            {NAV_LINKS.map((l) => (
+            {nav.map((l) => (
               <li key={l.href}>
                 <a href={l.href} className="label-mono link-underline text-foreground/75 transition-colors hover:text-foreground">
                   {l.label}
@@ -62,7 +55,7 @@ export function SiteNav() {
 
           <div className="flex items-center justify-end gap-3">
             <a
-              href={whatsappLink("Olá! Gostaria de pedir um orçamento.")}
+              href={whatsapp("Olá! Gostaria de pedir um orçamento.")}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-base btn-solid hidden min-h-11 px-6 sm:inline-flex"
@@ -97,7 +90,7 @@ export function SiteNav() {
       >
         <div className="mx-auto w-full max-w-[1680px] px-5 pb-8 pt-2 sm:px-8">
           <ul>
-            {NAV_LINKS.map((l) => (
+            {nav.map((l) => (
               <li key={l.href} className="border-b border-border/70">
                 <a
                   href={l.href}
@@ -113,7 +106,7 @@ export function SiteNav() {
             ))}
           </ul>
           <a
-            href={whatsappLink("Olá! Gostaria de pedir um orçamento.")}
+            href={whatsapp("Olá! Gostaria de pedir um orçamento.")}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setOpen(false)}
@@ -122,7 +115,7 @@ export function SiteNav() {
             Pedir orçamento
           </a>
           <p className="label-mono mt-5 normal-case tracking-[0.1em]">
-            {CONTACT.phoneLabel} · {CONTACT.hours}
+            {contact.whatsappDisplay} · {contact.hours}
           </p>
         </div>
       </div>

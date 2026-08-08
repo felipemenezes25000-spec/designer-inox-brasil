@@ -1,5 +1,5 @@
 import { SectionShell, SectionHeading } from "./primitives";
-import { CLIENTS, CLIENT_CONTEXTS } from "@/lib/site-data";
+import { clientGroups } from "@/content/site";
 
 export function Clients() {
   return (
@@ -17,37 +17,44 @@ export function Clients() {
         lead="Elas precisam de acesso coordenado, higiene, continuidade, instalação limpa e escopo explícito. A lista informada pela empresa reúne hospitais, embaixadas, redes, restaurantes e construtoras."
       />
 
-      <div className="reveal mt-14 border-y border-border" data-reveal>
-        <ul className="grid grid-cols-2 gap-px bg-border sm:grid-cols-3 lg:grid-cols-4">
-          {CLIENTS.map((c) => (
-            <li
-              key={c}
-              className="specular flex min-h-[104px] items-center bg-background px-5 py-6 sm:px-8"
-            >
-              <span className="font-display text-sm font-bold uppercase leading-tight tracking-[0.08em] text-foreground/80 sm:text-base">
-                {c}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul className="mt-14 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
+        {clientGroups.map((g, i) => (
+          <li
+            key={g.sector}
+            className="reveal specular bg-background p-6 sm:p-8"
+            data-reveal
+            style={{ transitionDelay: `${i * 60}ms` }}
+          >
+            <h3 className="font-display text-lg font-bold tracking-tight sm:text-xl">{g.sector}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{g.note}</p>
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {g.clients.map((c) => (
+                <li
+                  key={c}
+                  className="border border-border px-3 py-2 font-display text-xs font-bold uppercase leading-none tracking-[0.06em] text-foreground/80"
+                >
+                  {c}
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
       <p className="label-mono mt-4 normal-case tracking-[0.1em]">
         Clientes informados pela empresa. Marcas citadas pertencem aos respectivos titulares.
       </p>
 
-      <ul className="mt-16 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
-        {CLIENT_CONTEXTS.map((c, i) => (
-          <li
-            key={c.title}
-            className="reveal bg-background p-6 sm:p-8"
-            data-reveal
-            style={{ transitionDelay: `${i * 60}ms` }}
-          >
-            <h3 className="font-display text-lg font-bold tracking-tight sm:text-xl">{c.title}</h3>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{c.text}</p>
-          </li>
-        ))}
-      </ul>
+      <div className="reveal mt-10" data-reveal>
+        <a
+          href="/clientes/"
+          className="label-mono group inline-flex min-h-11 items-center gap-3 text-foreground transition-colors hover:text-signal"
+        >
+          Ver todos os clientes
+          <span aria-hidden="true" className="transition-transform duration-500 group-hover:translate-x-1">
+            →
+          </span>
+        </a>
+      </div>
     </SectionShell>
   );
 }

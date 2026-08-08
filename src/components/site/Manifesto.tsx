@@ -1,6 +1,6 @@
-import weld from "@/assets/detail-weld.jpg";
+import { Photo } from "./Photo";
 import { SectionShell, SectionHeading, MagneticLink } from "./primitives";
-import { whatsappLink } from "@/lib/site-data";
+import { whatsapp } from "@/content/site";
 
 const axes = [
   { id: "01 / LER", title: "Espaço e fluxo" },
@@ -53,7 +53,7 @@ export function Manifesto() {
 
           <div className="reveal mt-10" data-reveal>
             <MagneticLink
-              href={whatsappLink("Olá! Quero entender melhor como funciona o projeto antes do orçamento.")}
+              href={whatsapp("Olá! Quero entender melhor como funciona o projeto antes do orçamento.")}
               variant="ghost"
               external
             >
@@ -62,26 +62,9 @@ export function Manifesto() {
           </div>
         </div>
 
-        <figure className="reveal min-w-0 lg:sticky lg:top-28 lg:self-start" data-reveal>
-          <div className="specular relative">
-            <img
-              src={weld}
-              alt="Detalhe de solda polida em tubo de aço inox"
-              loading="lazy"
-              decoding="async"
-              width={1200}
-              height={1504}
-              className="aspect-4/5 w-full object-cover"
-            />
-            <div aria-hidden="true" className="absolute inset-0 ring-1 ring-inset ring-border" />
-          </div>
-          <figcaption className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] gap-4 border-t border-border pt-4">
-            <span className="label-mono min-w-0 normal-case tracking-[0.12em]">
-              Imagem ilustrativa · acabamento de solda
-            </span>
-            <span className="label-mono shrink-0 text-signal">Ref. 01</span>
-          </figcaption>
-        </figure>
+        <div className="reveal min-w-0 lg:sticky lg:top-28 lg:self-start" data-reveal>
+          <Photo id="welding" className="aspect-4/5 w-full" sizes="(min-width: 1024px) 40vw, 100vw" />
+        </div>
       </div>
     </SectionShell>
   );

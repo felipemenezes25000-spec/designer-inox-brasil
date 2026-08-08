@@ -1,6 +1,20 @@
-import atelier from "@/assets/atelier.jpg";
+import { Photo } from "./Photo";
 import { SectionShell, SectionHeading } from "./primitives";
-import { METHOD } from "@/lib/site-data";
+
+/**
+ * As seis etapas do método de trabalho não têm equivalente em src/content/
+ * — não são serviço, segmento nem dado de contato — então o texto, copiado
+ * na íntegra da fonte de conteúdo anterior (removida nesta tarefa), mora
+ * aqui, único lugar que o usa.
+ */
+const METHOD = [
+  { id: "01", title: "Entender", text: "Operação, espaço e necessidade." },
+  { id: "02", title: "Levantar", text: "Medidas, acesso e interferências." },
+  { id: "03", title: "Definir", text: "Escopo, material e interfaces." },
+  { id: "04", title: "Fabricar", text: "Corte, conformação e acabamento." },
+  { id: "05", title: "Instalar", text: "Montagem e integração previstas." },
+  { id: "06", title: "Acompanhar", text: "Testes e orientação pós-entrega." },
+] as const;
 
 export function Method() {
   return (
@@ -19,20 +33,9 @@ export function Method() {
       />
 
       <div className="mt-14 grid gap-px bg-border lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-        <figure className="reveal specular relative min-h-[320px] bg-background" data-reveal>
-          <img
-            src={atelier}
-            alt="Fabricação de peça em chapa de aço inox na oficina"
-            loading="lazy"
-            decoding="async"
-            width={1600}
-            height={1008}
-            className="h-full w-full object-cover"
-          />
-          <figcaption className="label-mono absolute bottom-4 left-4 right-4 bg-background/70 px-3 py-2 normal-case tracking-[0.12em] backdrop-blur-md">
-            Imagem ilustrativa · etapa de fabricação
-          </figcaption>
-        </figure>
+        <div className="reveal specular min-h-[320px] bg-background" data-reveal>
+          <Photo id="workshop" className="h-full w-full" sizes="(min-width: 1024px) 45vw, 100vw" />
+        </div>
 
         <ol className="grid gap-px bg-border sm:grid-cols-2">
           {METHOD.map((m, i) => (

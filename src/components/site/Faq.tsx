@@ -1,5 +1,5 @@
 import { SectionShell, SectionHeading } from "./primitives";
-import { FAQ, whatsappLink } from "@/lib/site-data";
+import { homeFaq, whatsapp } from "@/content/site";
 
 export function Faq() {
   return (
@@ -17,7 +17,7 @@ export function Faq() {
             }
           />
           <a
-            href={whatsappLink("Olá! Tenho uma dúvida antes de pedir orçamento.")}
+            href={whatsapp("Olá! Tenho uma dúvida antes de pedir orçamento.")}
             target="_blank"
             rel="noopener noreferrer"
             className="label-mono link-underline mt-8 inline-flex min-h-11 items-center text-foreground"
@@ -27,7 +27,7 @@ export function Faq() {
         </div>
 
         <dl className="min-w-0">
-          {FAQ.map((item, i) => (
+          {homeFaq.map((item, i) => (
             <div key={item.q} className="reveal border-b border-border first:border-t" data-reveal>
               <details className="group">
                 <summary className="grid cursor-pointer list-none grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-4 py-6 marker:hidden [&::-webkit-details-marker]:hidden sm:gap-6 sm:py-8">

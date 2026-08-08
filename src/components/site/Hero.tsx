@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
-import heroImg from "@/assets/hero-cozinha.jpg";
 import { MagneticLink } from "./primitives";
-import { whatsappLink } from "@/lib/site-data";
+import { photos, whatsapp } from "@/content/site";
 
 const marks = [
   "Sob medida para o espaço real",
   "Do projeto à manutenção",
   "Escopo definido antes da fabricação",
 ];
+
+const heroPhotoId = "real-cozinha-industrial";
+const heroSizes = [640, 1280, 1920] as const;
+const heroSrcSet = (ext: "avif" | "webp") =>
+  heroSizes.map((s) => `/photos/${heroPhotoId}-${s}.${ext} ${s}w`).join(", ");
 
 export function Hero() {
   const [offset, setOffset] = useState(0);
@@ -26,19 +30,28 @@ export function Hero() {
     };
   }, []);
 
+  // Guarda de runtime em vez de `!`/`as`: sob `noUncheckedIndexedAccess`, o
+  // acesso ao catálogo é `PhotoEntry | undefined` mesmo com um id constante.
+  const heroPhoto = photos[heroPhotoId];
+  if (!heroPhoto) return null;
+
   return (
     <section id="topo" className="relative isolate min-h-[100svh] overflow-hidden">
       <div className="absolute inset-0 -z-10">
-        <img
-          src={heroImg}
-          alt="Cozinha industrial em aço inox com bancadas e coifa sob medida"
-          width={1920}
-          height={1280}
-          fetchPriority="high"
-          decoding="async"
-          className="h-[112%] w-full object-cover object-center"
-          style={{ transform: `translate3d(0, ${offset * 0.12}px, 0)` }}
-        />
+        <picture>
+          <source type="image/avif" srcSet={heroSrcSet("avif")} sizes="100vw" />
+          <source type="image/webp" srcSet={heroSrcSet("webp")} sizes="100vw" />
+          <img
+            src={`/photos/${heroPhotoId}-1280.jpg`}
+            alt={heroPhoto.alt}
+            width={1920}
+            height={1280}
+            fetchPriority="high"
+            decoding="async"
+            className="h-[112%] w-full object-cover object-center"
+            style={{ transform: `translate3d(0, ${offset * 0.12}px, 0)` }}
+          />
+        </picture>
         <div className="absolute inset-0" style={{ background: "var(--gradient-veil)" }} />
         <div className="grid-etch absolute inset-0" />
         {/* Assinatura: feixe especular atravessando a chapa */}
@@ -46,6 +59,9 @@ export function Hero() {
           aria-hidden="true"
           className="animate-scan absolute inset-y-0 -left-1/3 w-1/3 bg-linear-to-r from-transparent via-white/8 to-transparent"
         />
+        <span className="label-mono absolute right-5 top-24 bg-background/70 px-3 py-2 text-[0.65rem] text-signal backdrop-blur-md sm:right-8 lg:right-14 2xl:right-20">
+          Projeto Designer Inox
+        </span>
       </div>
 
       <div className="mx-auto flex min-h-[100svh] w-full max-w-[1680px] flex-col justify-end px-5 pb-8 pt-28 sm:px-8 sm:pb-12 lg:px-14 lg:pb-16 2xl:px-20">
@@ -87,7 +103,7 @@ export function Hero() {
             aquecimento, automação e manutenção em Brasília / DF e entorno.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <MagneticLink href={whatsappLink("Olá! Gostaria de pedir um orçamento.")} external>
+            <MagneticLink href={whatsapp("Olá! Gostaria de pedir um orçamento.")} external>
               Pedir orçamento
             </MagneticLink>
             <MagneticLink href="#solucoes" variant="ghost">

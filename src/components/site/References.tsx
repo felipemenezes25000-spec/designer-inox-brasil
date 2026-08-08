@@ -1,31 +1,18 @@
-import exaustao from "@/assets/sistema-exaustao.jpg";
-import cnc from "@/assets/fabricacao-cnc.jpg";
-import automacao from "@/assets/sistemas-automacao.jpg";
+import { Photo } from "./Photo";
 import { SectionShell, SectionHeading } from "./primitives";
+import { serviceBySlug } from "@/content/services";
 
+/**
+ * Cada referência aponta para o serviço real dono da foto (via slug
+ * explícito, não busca automática em `gallery` — várias fotos aparecem em
+ * mais de um serviço, então a busca seria ambígua). Título e legenda vêm de
+ * services.ts, não são reescritos aqui.
+ */
 const refs = [
-  {
-    img: cnc,
-    ratio: "aspect-4/5",
-    label: "Ref. 02",
-    title: "Corte e conformação",
-    caption: "Chapa, corte CNC e preparação de peças.",
-  },
-  {
-    img: exaustao,
-    ratio: "aspect-4/5",
-    label: "Ref. 03",
-    title: "Ar e exaustão",
-    caption: "Coifas, dutos, filtragem e condução.",
-  },
-  {
-    img: automacao,
-    ratio: "aspect-4/5",
-    label: "Ref. 04",
-    title: "Frio, calor e comando",
-    caption: "Refrigeração, quadros e automação elétrica.",
-  },
-];
+  { label: "Ref. 02", photoId: "real-coifa-operacao", serviceSlug: "coifas-ventilacao-e-exaustao" },
+  { label: "Ref. 03", photoId: "real-saponificacao", serviceSlug: "saponificacao-em-exaustao" },
+  { label: "Ref. 04", photoId: "real-hospital-cme", serviceSlug: "equipamentos-hospitalares" },
+] as const;
 
 export function References() {
   return (
@@ -44,43 +31,37 @@ export function References() {
       />
 
       <ul className="mt-14 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
-        {refs.map((r, i) => (
-          <li
-            key={r.label}
-            className="reveal group min-w-0 bg-background"
-            data-reveal
-            style={{ transitionDelay: `${i * 80}ms` }}
-          >
-            <figure className="min-w-0">
-              <div className="specular relative overflow-hidden">
-                <img
-                  src={r.img}
-                  alt={r.title}
-                  loading="lazy"
-                  decoding="async"
-                  width={1200}
-                  height={1408}
-                  className={`w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03] ${r.ratio}`}
-                />
-                <span className="label-mono absolute left-4 top-4 border border-border bg-background/60 px-3 py-2 backdrop-blur-md">
-                  {r.label}
-                </span>
-              </div>
-              <figcaption className="p-6">
-                <h3 className="font-display text-lg font-bold tracking-tight sm:text-xl">
-                  {r.title}
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground">{r.caption}</p>
-              </figcaption>
-            </figure>
-          </li>
-        ))}
+        {refs.map((r, i) => {
+          const service = serviceBySlug.get(r.serviceSlug);
+          return (
+            <li
+              key={r.photoId}
+              className="reveal group min-w-0 bg-background"
+              data-reveal
+              style={{ transitionDelay: `${i * 80}ms` }}
+            >
+              <figure className="min-w-0">
+                <div className="specular relative">
+                  <Photo
+                    id={r.photoId}
+                    className="aspect-4/5 transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  />
+                  <span className="label-mono absolute left-4 top-4 border border-border bg-background/60 px-3 py-2 backdrop-blur-md">
+                    {r.label}
+                  </span>
+                </div>
+                <figcaption className="p-6">
+                  <h3 className="font-display text-lg font-bold tracking-tight sm:text-xl">
+                    {service?.navTitle ?? r.serviceSlug}
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{service?.short ?? ""}</p>
+                </figcaption>
+              </figure>
+            </li>
+          );
+        })}
       </ul>
-
-      <p className="reveal label-mono mt-6 max-w-3xl normal-case leading-relaxed tracking-[0.1em]" data-reveal>
-        Imagens ilustrativas de contexto. Não representam obras, equipe ou clientes da
-        Designer Inox Brasil.
-      </p>
     </SectionShell>
   );
 }
