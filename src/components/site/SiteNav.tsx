@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { contact, nav, site, whatsapp } from "@/content/site";
+import { Brand } from "./Brand";
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -27,20 +28,19 @@ export function SiteNav() {
 
   return (
     <header
+      // No topo o cabeçalho flutua sobre o hero, que é escuro: por isso ele
+      // herda `surface-dark` e a marca aparece em negativo. Ao rolar, ganha
+      // fundo próprio da superfície clara e a marca inverte junto.
       className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 ${
         scrolled || open
           ? "border-b border-border bg-background/85 backdrop-blur-2xl"
-          : "border-b border-transparent bg-transparent"
+          : "surface-dark border-b border-transparent !bg-transparent"
       }`}
     >
       <nav aria-label="Principal" className="mx-auto w-full max-w-[1680px] px-5 sm:px-8 lg:px-14 2xl:px-20">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-4 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
           <a href="/" className="flex min-w-0 items-center" aria-label={`${site.name} — página inicial`}>
-            <picture>
-              <source type="image/avif" srcSet="/brand/lockup-negative.avif" />
-              <source type="image/webp" srcSet="/brand/lockup-negative.webp" />
-              <img src="/brand/lockup-negative.png" alt={site.name} className="h-8 w-auto sm:h-9" />
-            </picture>
+            <Brand />
           </a>
 
           <ul className="hidden items-center gap-8 lg:flex">

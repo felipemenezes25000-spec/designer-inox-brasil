@@ -3,13 +3,18 @@ import { contact, contactScenarios, site, whatsapp } from "@/content/site";
 
 export function FinalCta() {
   return (
-    <SectionShell id="contato" className="overflow-hidden py-20 sm:py-28 lg:py-36">
+    <SectionShell
+      id="contato"
+      // O fechamento espelha o hero: escuro, para a pagina abrir e fechar no
+      // mesmo material.
+      className="surface-dark overflow-hidden py-20 sm:py-28 lg:py-36"
+    >
       <div aria-hidden="true" className="grid-etch pointer-events-none absolute inset-0" />
 
       <div className="relative grid gap-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-20">
         <div className="min-w-0">
           <p className="reveal label-mono flex items-center gap-3" data-reveal>
-            <span className="text-mineral">08</span>
+            <span className="text-foreground">08</span>
             <span aria-hidden="true" className="h-px w-8 bg-border" />
             <span>Próximo passo</span>
           </p>
