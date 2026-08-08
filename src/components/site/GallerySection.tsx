@@ -1,6 +1,9 @@
 import { photos } from "@/content/site";
+import { gridFillerCount } from "@/lib/utils";
 import { Photo } from "./Photo";
 import { SectionShell, SectionHeading } from "./primitives";
+
+const COLUMNS = 3; // lg:grid-cols-3 abaixo
 
 /**
  * O título da seção também é uma afirmação.
@@ -46,6 +49,11 @@ export function GallerySection({ ids, index = "06" }: { ids: string[]; index?: s
               sizes="(min-width: 1024px) 33vw, 100vw"
             />
           </div>
+        ))}
+        {Array.from({ length: gridFillerCount(ids.length, COLUMNS) }).map((_, i) => (
+          // Preenche a última linha para o fundo do container (bg-border) não
+          // aparecer como célula cinza — ver gridFillerCount em lib/utils.
+          <div key={`filler-${i}`} aria-hidden="true" className="bg-background" />
         ))}
       </div>
     </SectionShell>

@@ -26,6 +26,7 @@ function SegmentsIndexPage() {
         eyebrow="Contextos de operação"
         title={`${segments.length} segmentos. O que muda é tudo que decide o projeto.`}
         lead="Volume, fluxo, calor, higiene, carga e continuidade mudam conforme o contexto de operação. O material é o mesmo — as exigências, não."
+        photo="real-coifa-operacao"
       />
 
       <CardGrid

@@ -6,6 +6,7 @@ import { Method } from "@/components/site/Method";
 import { CtaSection } from "@/components/site/CtaSection";
 import { SectionShell, SectionHeading } from "@/components/site/primitives";
 import { seo, jsonLd, organizationLd } from "@/lib/seo";
+import { gridFillerCount } from "@/lib/utils";
 
 export const Route = createFileRoute("/empresa")({
   head: () => {
@@ -64,6 +65,11 @@ function CompanyPage() {
                 )}
               </dd>
             </div>
+          ))}
+          {Array.from({ length: gridFillerCount(IDENTIFICATION.length, 2) }).map((_, i) => (
+            // Preenche a última linha para o fundo do container (bg-border)
+            // não aparecer como célula cinza — ver gridFillerCount em lib/utils.
+            <div key={`filler-${i}`} aria-hidden="true" className="bg-background" />
           ))}
         </dl>
       </SectionShell>

@@ -25,6 +25,7 @@ function ServicesIndexPage() {
         eyebrow="Todos os serviços"
         title={`${services.length} serviços. Um só interlocutor.`}
         lead="Projeto, fabricação, sistemas térmicos, elétrica, exaustão e manutenção. Quando o mesmo fornecedor responde por estrutura e sistema, some a discussão sobre de quem é a responsabilidade da interface."
+        photo="real-copa-bancada"
       />
 
       {categories.map((cat, i) => (

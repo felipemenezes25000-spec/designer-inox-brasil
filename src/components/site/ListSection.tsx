@@ -1,6 +1,9 @@
 import type { Accent } from "@/content/types";
 import { accentText } from "@/lib/accent";
+import { gridFillerCount } from "@/lib/utils";
 import { SectionShell, SectionHeading } from "./primitives";
+
+const COLUMNS = 3; // lg:grid-cols-3 abaixo
 
 export function ListSection({
   id,
@@ -35,6 +38,11 @@ export function ListSection({
             </span>
             <span className="min-w-0 text-sm leading-relaxed text-foreground/85">{item}</span>
           </li>
+        ))}
+        {Array.from({ length: gridFillerCount(items.length, COLUMNS) }).map((_, i) => (
+          // Preenche a última linha para o fundo do container (bg-border) não
+          // aparecer como célula cinza — ver gridFillerCount em lib/utils.
+          <li key={`filler-${i}`} aria-hidden="true" className="bg-background" />
         ))}
       </ul>
     </SectionShell>

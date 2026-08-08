@@ -1,3 +1,4 @@
+import { gridFillerCount } from "@/lib/utils";
 import { SectionShell, SectionHeading } from "./primitives";
 
 export interface DetailItem {
@@ -40,6 +41,11 @@ export function DetailSection({
             <h3 className="font-display text-xl font-bold tracking-tight">{item.title}</h3>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.text}</p>
           </li>
+        ))}
+        {Array.from({ length: gridFillerCount(items.length, columns) }).map((_, i) => (
+          // Preenche a última linha para o fundo do container (bg-border) não
+          // aparecer como célula cinza — ver gridFillerCount em lib/utils.
+          <li key={`filler-${i}`} aria-hidden="true" className="bg-background" />
         ))}
       </ul>
     </SectionShell>

@@ -1,4 +1,7 @@
+import { gridFillerCount } from "@/lib/utils";
 import { SectionShell, SectionHeading } from "./primitives";
+
+const COLUMNS = 3; // lg:grid-cols-3 abaixo
 
 export interface CardItem {
   href: string;
@@ -46,6 +49,11 @@ export function CardGrid({
               </span>
             </a>
           </li>
+        ))}
+        {Array.from({ length: gridFillerCount(items.length, COLUMNS) }).map((_, i) => (
+          // Preenche a última linha para o fundo do container (bg-border) não
+          // aparecer como célula cinza — ver gridFillerCount em lib/utils.
+          <li key={`filler-${i}`} aria-hidden="true" className="bg-background" />
         ))}
       </ul>
     </SectionShell>
