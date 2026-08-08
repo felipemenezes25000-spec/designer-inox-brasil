@@ -6,7 +6,7 @@
 
 ## Problema
 
-O site atual (`designer-inox-brasil`) é um gerador estático em Node que produz 21 páginas
+O site atual (`designer-inox-brasil`) é um gerador estático em Node que produz 25 páginas
 HTML com SEO completo e 28 fotos tratadas — 18 delas obras reais da empresa. Funciona, mas
 o acabamento visual está atrás do que o repositório `inox-luxe-visions` alcançou.
 
@@ -20,7 +20,7 @@ Adotar um pelo outro perde metade. A migração tem que juntar os dois.
 
 | Decisão | Escolha | Por quê |
 |---|---|---|
-| Escopo | Trocar a stack **e** migrar todo o conteúdo | Nenhuma das 21 páginas nem das 28 fotos pode se perder |
+| Escopo | Trocar a stack **e** migrar todo o conteúdo | Nenhuma das 25 páginas nem das 28 fotos pode se perder |
 | Servidor | Pré-renderizado (HTML estático no build) | Conteúdo é igual para todo visitante; mantém custo zero, SEO e o modelo de cache atual |
 | Páginas de serviço | Uma rota dirigida por dados | 13 páginas com a mesma estrutura; `services.ts` já modela tudo |
 | Fontes | Auto-hospedadas | O repo novo puxa do Google Fonts, o que quebra a CSP e adiciona requisição bloqueante |
@@ -53,7 +53,7 @@ src/
     segments.ts             4 segmentos
   styles.css                Inox Especular + tokens de accent do conteúdo
 public/
-  photos/                   197 arquivos (28 fotos × 3 tamanhos × 3 formatos)
+  photos/                   196 arquivos (28 fotos × 7 arquivos)
   brand/                    lockups, símbolos, favicons
   fonts/                    Archivo + JetBrains Mono (woff2)
 ```
@@ -120,8 +120,8 @@ grupos de clientes, catálogo de fotos, aviso legal).
 
 ## Fotos e proveniência
 
-As 28 fotos vão para `public/photos/` mantendo 3 tamanhos (640/1280/1920) × 3 formatos
-(avif/webp/jpg). O componente `<Photo>` lê o catálogo de `site.ts` e monta o `<picture>`
+As 28 fotos vão para `public/photos/` mantendo 3 larguras (640/1280/1920) em avif e webp, mais um jpg de fallback em 1280
+O componente `<Photo>` lê o catálogo de `site.ts` e monta o `<picture>`
 com fallback `avif → webp → jpg`.
 
 **A regra de proveniência é código, não disciplina:**
@@ -140,7 +140,7 @@ revisada renderizada; contraste e véu são ajustados onde necessário.
 `src/styles.css` do repo novo é mantido: onyx, grafite, titânio, mineral, azul-sinal,
 raio 0, Archivo + JetBrains Mono.
 
-`services.ts` usa `accent` por serviço (`steel`, `mint`, `volt`, glacial, âmbar) para
+`services.ts` usa `accent` por serviço (`steel`, `teal`, `ice`, `mint`, `ember`, `volt`) para
 codificar a natureza térmica/elétrica. Esses tokens são remapeados sobre a paleta escura —
 não se importa a paleta clara antiga, que brigaria com o sistema novo.
 

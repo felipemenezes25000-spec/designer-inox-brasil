@@ -1,36 +1,40 @@
-# Nada aqui é servido ao público, mas tudo é necessário no repositório.
+# Controla o que é ENVIADO para o container de build da Vercel — não o que é
+# publicado (isso é outputDirectory em vercel.json: dist/client). O deploy
+# roda via CLI, não integração Git, então .gitignore NÃO se aplica aqui: cada
+# exclusão precisa estar explícita neste arquivo, inclusive dist/ e .tanstack/
+# que o .gitignore já cobre para o git mas que a Vercel enviaria do mesmo
+# jeito sem essas linhas. node_modules, .git e .vercel já são ignorados por
+# padrão pela CLI e por isso não aparecem aqui.
 #
-# assets/content guarda os JPEG originais (4,2 MB) dos quais os derivados em
-# assets/img/photos são gerados — a fonte fica versionada para o manifesto de
-# proveniência continuar verificável, mas quem visita o site nunca a baixa.
-# Mesma lógica para os masters da marca que ninguém referencia.
-#
-# ATENÇÃO: excluir daqui um arquivo que o HTML referencia produz 404 em
-# produção sem quebrar nada em desenvolvimento — o dev server serve o disco
-# inteiro. Foi o que aconteceu com symbol-negative.*: a exclusão veio de
-# quando o símbolo era só referência, e continuou depois que ele virou a marca
-# do cabeçalho e do rodapé de todas as páginas. O scripts/check.mjs agora
-# cruza este arquivo com os assets referenciados e falha o build antes disso
-# chegar ao ar.
+# ATENÇÃO: excluir um caminho que o build referencia (src/, public/,
+# package.json, vite.config.ts, tsconfig.json, scripts/) quebra o build ou,
+# pior, produz 404 silencioso em produção sob um caminho com cache
+# "immutable" — o dev server local serve o disco inteiro e não acusa nada.
+# Foi o que aconteceu com symbol-negative.* na versão estática deste projeto.
+# O scripts/check.mjs cruza este arquivo com os assets que o HTML publicado
+# referencia e falha o build antes disso chegar ao ar.
 
-node_modules
-src
-scripts
-docs
+dist
+.tanstack
+
+# A Vercel só ignora .env.local e .env.*.local por padrão — um .env sem
+# sufixo seria enviado ao build. Nenhum existe neste repo hoje; exclusão
+# defensiva, espelhando o .gitignore.
+.env
+.env.*
+!.env.example
+!.env.test.example
+
+# Ferramentas de agente e documentação interna — não referenciadas pelo build.
 .agents
 .claude
 .playwright-cli
-.vscode
+docs
 
+# Masters brutos do gerador antigo (não o public/ novo): os JPEGs de origem
+# dos quais os derivados em assets/img/photos foram gerados. Ninguém os
+# baixa; ficam versionados só para o manifesto de proveniência continuar
+# verificável.
 assets/content
 
-# Masters sem referência no HTML. symbol-negative.* NÃO entra nesta lista:
-# é a marca usada no header, no rodapé e no logo do JSON-LD.
-assets/brand/logo-official.png
-assets/brand/symbol-positive.png
-assets/brand/symbol-positive.webp
-assets/brand/symbol-positive.avif
-
-# package.json fica: o vercel.json já zera buildCommand e installCommand, e
-# remover o manifesto só aumentaria a chance de detecção de framework estranha.
 *.md
