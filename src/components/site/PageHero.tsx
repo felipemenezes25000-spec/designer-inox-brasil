@@ -13,10 +13,13 @@ export function PageHero({
   eyebrow: string;
   title: string;
   lead: string;
-  photo?: string;
+  // `| undefined` explícito: com `exactOptionalPropertyTypes`, `photo?: string`
+  // recusaria `service.photo`, que é `string | undefined` — 4 dos 13 serviços
+  // não têm foto.
+  photo?: string | undefined;
   /** Alternativa à foto: 4 serviços de sistema não têm foto, têm diagrama. */
-  illustration?: string;
-  children?: ReactNode;
+  illustration?: string | undefined;
+  children?: ReactNode | undefined;
 }) {
   return (
     <section className="relative border-t border-border">
