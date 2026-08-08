@@ -1,5 +1,5 @@
 /** Codifica a natureza térmica/elétrica do item na cor de acento. */
-export type Accent = "steel" | "mint" | "volt" | "ember" | "glacial" | "amber" | "teal" | "ice";
+export type Accent = "steel" | "mint" | "volt" | "ember" | "teal" | "ice";
 
 export interface FaqItem {
   q: string;

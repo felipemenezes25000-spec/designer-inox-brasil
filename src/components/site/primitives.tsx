@@ -6,7 +6,10 @@ export function SectionShell({
   children,
   className = "",
 }: {
-  id?: string;
+  // `| undefined` explícito: SectionShell agora recebe id encaminhado de props
+  // opcionais de outros componentes (ex.: ListSection), que sob
+  // exactOptionalPropertyTypes chegam como string | undefined, não só ausentes.
+  id?: string | undefined;
   children: ReactNode;
   className?: string;
 }) {

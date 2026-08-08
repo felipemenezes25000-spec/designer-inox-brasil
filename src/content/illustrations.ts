@@ -24,14 +24,14 @@ const defs = `<defs>
 </filter>
 </defs>`
 
-const frame = (label, scale) => `<rect width="900" height="700" fill="#0b0e10"/>
+const frame = (label: string, scale: string) => `<rect width="900" height="700" fill="#0b0e10"/>
 <rect width="900" height="700" fill="url(#tg)"/>
 <g fill="#e9eef1" font-family="ui-monospace,monospace" font-size="14" opacity=".5" letter-spacing="1.5">
 <text x="44" y="58">${label}</text><text x="856" y="656" text-anchor="end">${scale}</text>
 </g>
 <path d="M44 74h150M706 74h150" stroke="var(--page-accent)" stroke-width="2" opacity=".55"/>`
 
-const wrap = (label, scale, inner) =>
+const wrap = (label: string, scale: string, inner: string) =>
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid slice">${defs}${frame(label, scale)}${inner}</svg>`
 
 /** Coifa em corte com bicos aspersores, central de dosagem e duto. */
@@ -268,7 +268,7 @@ const hospital = wrap(
 </g>`,
 )
 
-export const illustrations = {
+export const illustrations: Record<string, string> = {
   saponification,
   refrigeration,
   heating,
