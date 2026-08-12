@@ -12,7 +12,7 @@ export function SiteFooter() {
         <div className="grid gap-12 py-16 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)_minmax(0,0.9fr)] lg:gap-16 lg:py-24">
           <div className="min-w-0">
             <a href="/" className="flex items-center" aria-label={`${site.name} — página inicial`}>
-              <Brand className="h-9 w-auto sm:h-10" />
+              <Brand className="h-9 w-auto sm:h-10" textClassName="text-[13px] sm:text-[15px]" />
             </a>
             <p className="mt-6 max-w-md text-sm leading-relaxed text-muted-foreground">
               Projeto técnico, fabricação, instalação, sistemas e manutenção em aço inox,

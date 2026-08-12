@@ -10,7 +10,13 @@ import { site } from "@/content/site";
  * Os símbolos são decorativos; o nome visível é a única fonte textual da
  * marca, evitando anúncios duplicados por leitores de tela.
  */
-export function Brand({ className = "h-10 w-auto sm:h-11" }: { className?: string }) {
+export function Brand({
+  className = "h-11 w-auto sm:h-12 lg:h-[52px]",
+  textClassName = "text-[14px] sm:text-[17px] lg:text-[18px]",
+}: {
+  className?: string;
+  textClassName?: string;
+}) {
   return (
     <span className="inline-flex min-w-0 items-center gap-2 sm:gap-3">
       <span className="inline-flex shrink-0 items-center" aria-hidden="true">
@@ -39,7 +45,9 @@ export function Brand({ className = "h-10 w-auto sm:h-11" }: { className?: strin
         </picture>
       </span>
 
-      <span className="min-w-0 whitespace-nowrap font-display text-[12.5px] font-semibold leading-none tracking-[-0.025em] text-foreground sm:text-[15px]">
+      <span
+        className={`min-w-0 whitespace-nowrap font-display font-bold leading-none tracking-[-0.035em] text-foreground ${textClassName}`}
+      >
         {site.name}
       </span>
     </span>
