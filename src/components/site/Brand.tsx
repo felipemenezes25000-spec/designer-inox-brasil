@@ -10,7 +10,7 @@ import { site } from "@/content/site";
  */
 export function Brand({
   className = "h-11 w-auto sm:h-12 lg:h-[52px]",
-  textClassName = "text-[14px] sm:text-[17px] lg:text-[18px]",
+  textClassName = "text-[15px] sm:text-[18px] lg:text-[20px]",
 }: {
   className?: string;
   textClassName?: string;
@@ -55,13 +55,14 @@ export function Brand({
 
       <span className="min-w-0">
         <span
-          className={`block whitespace-nowrap bg-clip-text font-display font-black uppercase leading-[0.88] tracking-[-0.055em] text-transparent ${textClassName}`}
+          className={`block whitespace-nowrap bg-clip-text font-display font-black uppercase leading-[0.92] tracking-[-0.045em] text-transparent ${textClassName}`}
           style={{ backgroundImage: "var(--gradient-titanium)" }}
         >
-          AUTOMAÇÃO <span className="text-signal">INDUSTRIAL</span>
+          <span className="block sm:inline">AUTOMAÇÃO</span>
+          <span className="block text-signal sm:ml-1.5 sm:inline">INDUSTRIAL</span>
         </span>
 
-        <span className="mt-1 flex items-center gap-1.5 whitespace-nowrap font-mono text-[6px] font-semibold uppercase leading-none tracking-[0.16em] text-foreground/55 sm:text-[7px] lg:text-[7.5px]">
+        <span className="mt-1.5 flex items-center gap-1.5 whitespace-nowrap font-mono text-[8px] font-semibold uppercase leading-none tracking-[0.12em] text-foreground/70 sm:text-[9px] lg:text-[10px]">
           <span className="h-px w-3 bg-signal/80 sm:w-4" aria-hidden="true" />
           {site.name}
           <span className="h-px flex-1 bg-gradient-to-r from-signal/55 to-transparent" aria-hidden="true" />

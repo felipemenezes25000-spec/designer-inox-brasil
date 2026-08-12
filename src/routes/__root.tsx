@@ -9,6 +9,7 @@ import {
 import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import readabilityCss from "../readability.css?url";
 import { contact, site } from "@/content/site";
 import { PageShell } from "@/components/site/PageShell";
 import { PageHero } from "@/components/site/PageHero";
@@ -62,6 +63,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: appCss,
+      },
+      {
+        rel: "stylesheet",
+        href: readabilityCss,
       },
       {
         rel: "preload",

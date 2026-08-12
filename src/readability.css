@@ -1,0 +1,65 @@
+/*
+ * Camada de legibilidade.
+ *
+ * Carregada depois do sistema visual principal para aumentar o corpo tipográfico
+ * sem desmontar a hierarquia do design. Como as utilities de texto do Tailwind 4
+ * leem estes tokens em runtime, o ajuste vale também para variantes responsivas
+ * (sm:, md:, lg:) em todas as páginas.
+ */
+:root {
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.55;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.6;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.65;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.55;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.4;
+  --text-2xl: 1.6875rem;
+  --text-2xl--line-height: 1.28;
+  --text-3xl: 2.0625rem;
+  --text-3xl--line-height: 1.2;
+
+  --leading-relaxed: 1.7;
+  --leading-snug: 1.42;
+
+  /* Mais contraste para textos de apoio sem perder a hierarquia visual. */
+  --muted-foreground: oklch(0.42 0.008 250);
+}
+
+.surface-dark {
+  --muted-foreground: oklch(0.78 0.007 250);
+}
+
+body {
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+/* Labels e CTAs eram 11px com tracking muito aberto. Em telas reais isso
+ * cansava a leitura; 12px, peso 600 e tracking menor mantêm o caráter técnico. */
+.label-mono {
+  font-size: 0.75rem !important;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.15em;
+}
+
+.btn-base {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.14em;
+}
+
+@media (max-width: 39.999rem) {
+  .label-mono {
+    letter-spacing: 0.12em;
+  }
+
+  .btn-base {
+    letter-spacing: 0.11em;
+  }
+}

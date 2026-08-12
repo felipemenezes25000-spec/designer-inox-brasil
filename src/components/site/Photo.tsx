@@ -3,6 +3,8 @@ import { photos } from "@/content/site";
 type Size = 640 | 1280 | 1920;
 
 const SIZES: Size[] = [640, 1280, 1920];
+const FALLBACK_WIDTH = 1280;
+const FALLBACK_HEIGHT = 853; // derivados em scripts/images.mjs são recortados em 3:2
 
 function srcSet(id: string, ext: "avif" | "webp") {
   return SIZES.map((s) => `/photos/${id}-${s}.${ext} ${s}w`).join(", ");
@@ -32,6 +34,8 @@ export function Photo({
         <img
           src={`/photos/${id}-1280.jpg`}
           alt={entry.alt}
+          width={FALLBACK_WIDTH}
+          height={FALLBACK_HEIGHT}
           loading={priority ? "eager" : "lazy"}
           decoding={priority ? "sync" : "async"}
           fetchPriority={priority ? "high" : "auto"}
