@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { MagneticLink } from "./primitives";
-import { photos, whatsapp } from "@/content/site";
+import { clientCount, photos, whatsapp } from "@/content/site";
 
 const marks = [
-  "Sob medida para o espaço real",
-  "Do projeto à manutenção",
-  "Escopo definido antes da fabricação",
+  `${clientCount} organizações na lista de clientes`,
+  "Fotos de obras executadas",
+  "Brasília / DF e entorno",
 ];
 
 const heroPhotoId = "real-cozinha-industrial";
@@ -109,8 +109,13 @@ export function Hero() {
             aquecimento, automação e manutenção em Brasília / DF e entorno.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <MagneticLink href={whatsapp("Olá! Gostaria de pedir um orçamento.")} external>
-              Pedir orçamento
+            <MagneticLink
+              href={whatsapp("Olá! Quero enviar fotos e pedir um orçamento.")}
+              external
+              data-conversion="whatsapp_home_hero"
+              data-subject="home"
+            >
+              Enviar fotos e pedir orçamento
             </MagneticLink>
             <MagneticLink href="#solucoes" variant="ghost">
               Ver soluções

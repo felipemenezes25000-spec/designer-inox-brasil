@@ -24,7 +24,7 @@ export function PageHero({
   return (
     <section className="surface-dark relative border-t border-border">
       <div className="mx-auto w-full max-w-[1680px] px-5 sm:px-8 lg:px-14 2xl:px-20">
-        <div className="grid gap-12 py-20 sm:py-28 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-16 lg:py-32">
+        <div className="grid gap-12 pb-20 pt-32 sm:pb-28 sm:pt-36 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-16 lg:pb-32 lg:pt-40">
           <div className="min-w-0">
             <p className="reveal label-mono flex items-center gap-3" data-reveal>
               <span aria-hidden="true" className="h-px w-8 bg-border" />

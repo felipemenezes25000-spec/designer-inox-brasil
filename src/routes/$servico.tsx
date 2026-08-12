@@ -2,6 +2,8 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { serviceBySlug } from "@/content/services";
 import { PageShell } from "@/components/site/PageShell";
 import { PageHero } from "@/components/site/PageHero";
+import { HeroLeadActions } from "@/components/site/HeroLeadActions";
+import { LeadBand } from "@/components/site/LeadBand";
 import { ListSection } from "@/components/site/ListSection";
 import { DetailSection } from "@/components/site/DetailSection";
 import { FaqSection } from "@/components/site/FaqSection";
@@ -51,7 +53,9 @@ function ServicePage() {
         lead={service.lead}
         photo={service.photo}
         illustration={service.illustration}
-      />
+      >
+        <HeroLeadActions subject={service.navTitle} />
+      </PageHero>
 
       {service.specialties && (
         <DetailSection
@@ -80,6 +84,8 @@ function ServicePage() {
         items={service.deliverables}
         accent={service.accent}
       />
+
+      <LeadBand subject={service.navTitle} />
 
       <ListSection
         index="05"
