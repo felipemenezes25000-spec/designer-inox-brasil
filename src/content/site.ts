@@ -25,7 +25,7 @@ export const contact = {
   whatsappNumber: '5561996024701',
   whatsappDisplay: '(61) 99602-4701',
   phone: '(61) 99602-4701',
-  email: 'contato@designerinoxbrasil.com.br',
+  email: 'designerinoxdf@gmail.com',
   instagram: 'designerinoxbrasil',
   instagramUrl: 'https://www.instagram.com/designerinoxbrasil',
   hours: 'Segunda a sexta, 8h às 18h',
