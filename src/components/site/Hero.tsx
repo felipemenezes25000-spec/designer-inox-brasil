@@ -71,38 +71,30 @@ export function Hero() {
       </div>
 
       <div className="mx-auto flex min-h-[100svh] w-full max-w-[1680px] flex-col justify-end px-5 pb-8 pt-28 sm:px-8 sm:pb-12 lg:px-14 lg:pb-16 2xl:px-20">
-        <p className="reveal label-mono" data-reveal>
+        <p className="label-mono">
           Projeto · Fabricação · Sistemas · Manutenção
         </p>
 
         <h1 className="display mt-6 text-[clamp(2.6rem,9.2vw,9rem)] sm:mt-8">
           <span
-            className="reveal block text-titanium-fill pb-[0.06em]"
-            data-reveal
-            style={{ transitionDelay: "80ms" }}
+            className="block pb-[0.06em] text-titanium-fill"
           >
             Engenharia em inox
           </span>
           <span
-            className="reveal block text-foreground/85"
-            data-reveal
-            style={{ transitionDelay: "170ms" }}
+            className="block text-foreground/85"
           >
             para a operação
           </span>
           <span
-            className="reveal block text-foreground/85"
-            data-reveal
-            style={{ transitionDelay: "260ms" }}
+            className="block text-foreground/85"
           >
             funcionar de verdade.
           </span>
         </h1>
 
         <div
-          className="reveal mt-10 grid gap-8 border-t border-border pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-14"
-          data-reveal
-          style={{ transitionDelay: "340ms" }}
+          className="mt-10 grid gap-8 border-t border-border pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-14"
         >
           <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             Projeto técnico, fabricação sob medida, instalação, exaustão, refrigeração,

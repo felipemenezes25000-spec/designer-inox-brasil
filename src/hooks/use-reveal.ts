@@ -5,6 +5,7 @@ export function useReveal() {
   useEffect(() => {
     const nodes = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
     if (!nodes.length) return;
+    if (!("IntersectionObserver" in window)) return;
 
     const io = new IntersectionObserver(
       (entries) => {
