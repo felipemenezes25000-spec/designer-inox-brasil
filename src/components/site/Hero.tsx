@@ -65,7 +65,7 @@ export function Hero() {
           aria-hidden="true"
           className="animate-scan absolute inset-y-0 -left-1/3 w-1/3 bg-linear-to-r from-transparent via-white/8 to-transparent"
         />
-        <span className="label-mono absolute right-5 top-24 bg-background/70 px-3 py-2 text-[0.65rem] text-signal backdrop-blur-md sm:right-8 lg:right-14 2xl:right-20">
+        <span className="label-mono absolute right-8 top-28 hidden bg-background/70 px-3 py-2 text-[0.65rem] text-signal backdrop-blur-md sm:inline-block lg:right-14 2xl:right-20">
           Projeto Designer Inox
         </span>
       </div>
